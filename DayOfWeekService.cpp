@@ -17,13 +17,13 @@ QStringList DayOfWeekService::parseDaysString(const QString& daysString)
     QStringList days;
     if (daysString.isEmpty()) return days;
 
-    QString normalized = daysString;
+    auto normalized = daysString;
     normalized = normalized.replace(';', ',');
     normalized = normalized.replace(' ', ',');
     days = normalized.split(',', Qt::SkipEmptyParts);
 
-    for (int i = 0; i < days.size(); ++i) {
-        days[i] = translateDay(days[i].trimmed());
+    for (auto &day : days) {
+        day = translateDay(day.trimmed());
     }
 
     return days;
@@ -53,7 +53,7 @@ bool DayOfWeekService::isDayInList(const QString& day, const QStringList& daysLi
 
 QString DayOfWeekService::translateDay(const QString& day)
 {
-    QString lowerDay = day.toLower();
+    auto lowerDay = day.toLower();
 
     if (lowerDay == "понедельник" || lowerDay == "понед" || lowerDay == "mon" || lowerDay == "monday")
         return "пн";

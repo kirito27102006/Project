@@ -29,6 +29,11 @@ private slots:
 
 private:
     void setupUI();
+    bool validateInput();
+    void createAndAddRoute();
+    QVector<QSharedPointer<Stop>> getIntermediateStops();
+    QVector<int> parseTravelTimes();
+    QStringList parseDays();
 
     TransportSchedule* schedule;
 

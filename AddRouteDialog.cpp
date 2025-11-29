@@ -1,4 +1,6 @@
 #include "AddRouteDialog.h"
+#include "DayOfWeekService.h"
+#include <QInputDialog>
 
 AddRouteDialog::AddRouteDialog(TransportSchedule* schedule, QWidget *parent)
     : QDialog(parent), schedule(schedule) {
@@ -131,100 +133,129 @@ void AddRouteDialog::removeIntermediateStop() {
 
 void AddRouteDialog::accept() {
     try {
-        // Create transport
-        TransportType transportType(transportTypeCombo->currentText());
-        Transport transport(transportType, routeNumberSpin->value());
-
-        // Create stops
-        auto startStop = schedule->findOrCreateStop(startStopEdit->text().trimmed(), startCoordEdit->text().trimmed());
-        auto endStop = schedule->findOrCreateStop(endStopEdit->text().trimmed(), endCoordEdit->text().trimmed());
-
-        // Get intermediate stops
-        QVector<QSharedPointer<Stop>> intermediateStops;
-        for (auto i = 0; i < intermediateStopsList->count(); ++i) {
-            auto itemText = intermediateStopsList->item(i)->text();
-            auto name = itemText.left(itemText.indexOf(" ("));
-            auto coord = itemText.mid(itemText.indexOf("(") + 1);
-            coord = coord.left(coord.indexOf(")"));
-            intermediateStops.push_back(schedule->findOrCreateStop(name, coord));
-        }
-
-        // Parse travel times
-        QVector<int> travelTimes;
-        auto timeStrings = travelTimesEdit->text().split(",");
-        for (const auto& timeStr : timeStrings) {
-            bool ok;
-            auto time = timeStr.trimmed().toInt(&ok);
-            if (ok && time > 0) {
-                travelTimes.push_back(time);
-            }
-        }
-
-        // Parse days - поддерживаем разные форматы ввода
-        QStringList days;
-        auto daysText = daysEdit->text().trimmed();
-        if (!daysText.isEmpty()) {
-            // Простой способ разбить строку без QRegExp
-            // Заменяем все возможные разделители на запятые, затем разбиваем по запятым
-            auto normalized = daysText;
-            normalized = normalized.replace(';', ',');
-            normalized = normalized.replace(' ', ',');
-            days = normalized.split(',', Qt::SkipEmptyParts);
-
-            // Приводим к стандартному формату (двухбуквенные сокращения)
-            for (auto i = 0; i < days.size(); ++i) {
-                auto day = days[i].toLower();
-                if (day == "понедельник" || day == "понед" || day == "mon" || day == "monday") day = "пн";
-                else if (day == "вторник" || day == "втор" || day == "tue" || day == "tuesday") day = "вт";
-                else if (day == "среда" || day == "сред" || day == "wed" || day == "wednesday") day = "ср";
-                else if (day == "четверг" || day == "четв" || day == "thu" || day == "thursday") day = "чт";
-                else if (day == "пятница" || day == "пятн" || day == "fri" || day == "friday") day = "пт";
-                else if (day == "суббота" || day == "субб" || day == "sat" || day == "saturday") day = "сб";
-                else if (day == "воскресенье" || day == "воскр" || day == "sun" || day == "sunday") day = "вс";
-
-                days[i] = day;
-            }
-        }
-
-        // Проверяем обязательные поля
-        if (startStopEdit->text().trimmed().isEmpty()) {
-            QMessageBox::warning(this, "Ошибка", "Введите начальную остановку");
+        if (!validateInput()) {
             return;
         }
 
-        if (endStopEdit->text().trimmed().isEmpty()) {
-            QMessageBox::warning(this, "Ошибка", "Введите конечную остановку");
-            return;
-        }
-
-        if (travelTimes.isEmpty()) {
-            QMessageBox::warning(this, "Ошибка", "Введите время движения между остановками");
-            return;
-        }
-
-        if (days.isEmpty()) {
-            QMessageBox::warning(this, "Ошибка", "Введите дни работы маршрута");
-            return;
-        }
-
-        // Проверяем соответствие количества временных интервалов
-        auto totalStops = 1 + intermediateStops.size() + 1; // начальная + промежуточные + конечная
-        if (travelTimes.size() != totalStops - 1) {
-            QMessageBox::warning(this, "Ошибка",
-                                 QString("Количество временных интервалов (%1) должно соответствовать количеству перегонов (%2)\n\n"
-                                         "Пример: для маршрута с 3 остановками нужно 2 временных интервала")
-                                     .arg(travelTimes.size()).arg(totalStops - 1));
-            return;
-        }
-
-        // Create start time
-        TimeTransport startTime(startHourSpin->value(), startMinuteSpin->value());
-
-        schedule->addRoute(transport, startStop, endStop, intermediateStops, travelTimes, days, startTime);
-
+        createAndAddRoute();
         QDialog::accept();
 
     } catch (const std::exception& e) {
-        QMessageBox::critical(this, "Ошибка", QString("Ошибка при добавлении маршрута: %1").arg(e.what()));
+        QMessageBox::critical(this, "Ошибка",
+                              QString("Ошибка при добавлении маршрута: %1").arg(e.what()));
     }
+}
+
+bool AddRouteDialog::validateInput() {
+    if (startStopEdit->text().trimmed().isEmpty()) {
+        QMessageBox::warning(this, "Ошибка", "Введите начальную остановку");
+        return false;
+    }
+
+    if (endStopEdit->text().trimmed().isEmpty()) {
+        QMessageBox::warning(this, "Ошибка", "Введите конечную остановку");
+        return false;
+    }
+
+    auto travelTimes = parseTravelTimes();
+    if (travelTimes.isEmpty()) {
+        QMessageBox::warning(this, "Ошибка", "Введите время движения между остановками");
+        return false;
+    }
+
+    auto days = parseDays();
+    if (days.isEmpty()) {
+        QMessageBox::warning(this, "Ошибка", "Введите дни работы маршрута");
+        return false;
+    }
+
+    auto intermediateStops = getIntermediateStops();
+    auto totalStops = 1 + intermediateStops.size() + 1;
+    if (travelTimes.size() != totalStops - 1) {
+        QMessageBox::warning(this, "Ошибка",
+                             QString("Количество временных интервалов (%1) должно соответствовать количеству перегонов (%2)\n\n"
+                                     "Пример: для маршрута с 3 остановками нужно 2 временных интервала")
+                                 .arg(travelTimes.size()).arg(totalStops - 1));
+        return false;
+    }
+
+    return true;
+}
+
+void AddRouteDialog::createAndAddRoute() {
+    // Create transport
+    TransportType transportType(transportTypeCombo->currentText());
+    Transport transport(transportType, routeNumberSpin->value());
+
+    // Create stops
+    auto startStop = schedule->findOrCreateStop(
+        startStopEdit->text().trimmed(), startCoordEdit->text().trimmed());
+    auto endStop = schedule->findOrCreateStop(
+        endStopEdit->text().trimmed(), endCoordEdit->text().trimmed());
+
+    // Get intermediate stops and travel times
+    auto intermediateStops = getIntermediateStops();
+    auto travelTimes = parseTravelTimes();
+    auto days = parseDays();
+
+    // Create start time
+    TimeTransport startTime(startHourSpin->value(), startMinuteSpin->value());
+
+    schedule->addRoute(transport, startStop, endStop, intermediateStops,
+                       travelTimes, days, startTime);
+}
+
+QVector<QSharedPointer<Stop>> AddRouteDialog::getIntermediateStops() {
+    QVector<QSharedPointer<Stop>> intermediateStops;
+    for (auto i = 0; i < intermediateStopsList->count(); ++i) {
+        auto itemText = intermediateStopsList->item(i)->text();
+        auto name = itemText.left(itemText.indexOf(" ("));
+        auto coord = itemText.mid(itemText.indexOf("(") + 1);
+        coord = coord.left(coord.indexOf(")"));
+        intermediateStops.push_back(schedule->findOrCreateStop(name, coord));
+    }
+    return intermediateStops;
+}
+
+QVector<int> AddRouteDialog::parseTravelTimes() {
+    QVector<int> travelTimes;
+    auto timeStrings = travelTimesEdit->text().split(",");
+    for (const auto& timeStr : timeStrings) {
+        bool ok;
+        auto time = timeStr.trimmed().toInt(&ok);
+        if (ok && time > 0) {
+            travelTimes.push_back(time);
+        }
+    }
+    return travelTimes;
+}
+
+QStringList AddRouteDialog::parseDays() {
+    QStringList days;
+    if (auto daysText = daysEdit->text().trimmed(); !daysText.isEmpty()) {
+        auto normalized = daysText;
+        normalized = normalized.replace(';', ',');
+        normalized = normalized.replace(' ', ',');
+        days = normalized.split(',', Qt::SkipEmptyParts);
+
+        for (auto &day : days) {
+            day = day.trimmed().toLower();
+
+            if (day == "понедельник" || day == "понед" || day == "mon" || day == "monday")
+                day = "пн";
+            else if (day == "вторник" || day == "втор" || day == "tue" || day == "tuesday")
+                day = "вт";
+            else if (day == "среда" || day == "сред" || day == "wed" || day == "wednesday")
+                day = "ср";
+            else if (day == "четверг" || day == "четв" || day == "thu" || day == "thursday")
+                day = "чт";
+            else if (day == "пятница" || day == "пятн" || day == "fri" || day == "friday")
+                day = "пт";
+            else if (day == "суббота" || day == "субб" || day == "sat" || day == "saturday")
+                day = "сб";
+            else if (day == "воскресенье" || day == "воскр" || day == "sun" || day == "sunday")
+                day = "вс";
+        }
+    }
+    return days;
 }
