@@ -1,5 +1,6 @@
 #include "DayOfWeekService.h"
 #include <QMap>
+#include <algorithm>
 
 QString DayOfWeekService::getCurrentDay()
 {
@@ -43,12 +44,14 @@ bool DayOfWeekService::isRouteActiveToday(const QStringList& routeDays)
 bool DayOfWeekService::isDayInList(const QString& day, const QStringList& daysList)
 {
     QString normalizedDay = translateDay(day.toLower());
-    for (const QString& routeDay : daysList) {
-        if (routeDay.toLower() == normalizedDay) {
-            return true;
-        }
-    }
-    return false;
+
+    // Используем стандартный алгоритм с лямбдой
+    auto it = std::find_if(daysList.begin(), daysList.end(),
+                           [&normalizedDay](const QString& routeDay) {
+                               return routeDay.toLower() == normalizedDay;
+                           });
+
+    return it != daysList.end();
 }
 
 QString DayOfWeekService::translateDay(const QString& day)

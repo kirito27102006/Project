@@ -3,6 +3,7 @@
 #include <QMessageBox>
 #include <QDebug>
 #include <QTabWidget>
+#include <algorithm>
 
 FindTransportDialog::FindTransportDialog(TransportSchedule* schedule, QWidget *parent)
     : QDialog(parent), schedule(schedule) {
@@ -120,7 +121,8 @@ void FindTransportDialog::findNextTransport() {
         TimeTransport arrivalTime;
         try {
             arrivalTime = route.getArrivalTimeAtStop(stopName);
-        } catch (...) {
+        } catch (const std::runtime_error& e) {
+            qDebug() << "Ошибка получения времени прибытия:" << e.what();
             continue;
         }
 
@@ -176,7 +178,7 @@ void FindTransportDialog::populateAllRoutesTable(const QString& stopName) {
 
     for (const auto& scheduleItem : allSchedules) {
         const auto& route = scheduleItem.getRoute();
-        auto passesThroughStop = false;
+        bool passesThroughStop = false;
 
         for (const auto& routeStop : route.getStops()) {
             if (routeStop.stop->getName().compare(stopName, Qt::CaseInsensitive) == 0) {

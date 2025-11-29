@@ -140,8 +140,14 @@ void AddRouteDialog::accept() {
         createAndAddRoute();
         QDialog::accept();
 
+    } catch (const std::invalid_argument& e) {
+        QMessageBox::critical(this, "Ошибка ввода данных",
+                              QString("Ошибка при добавлении маршрута: %1").arg(e.what()));
+    } catch (const std::runtime_error& e) {
+        QMessageBox::critical(this, "Ошибка выполнения",
+                              QString("Ошибка при добавлении маршрута: %1").arg(e.what()));
     } catch (const std::exception& e) {
-        QMessageBox::critical(this, "Ошибка",
+        QMessageBox::critical(this, "Неизвестная ошибка",
                               QString("Ошибка при добавлении маршрута: %1").arg(e.what()));
     }
 }
@@ -170,8 +176,7 @@ bool AddRouteDialog::validateInput() {
     }
 
     auto intermediateStops = getIntermediateStops();
-    auto totalStops = 1 + intermediateStops.size() + 1;
-    if (travelTimes.size() != totalStops - 1) {
+    if (auto totalStops = 1 + intermediateStops.size() + 1; travelTimes.size() != totalStops - 1) {
         QMessageBox::warning(this, "Ошибка",
                              QString("Количество временных интервалов (%1) должно соответствовать количеству перегонов (%2)\n\n"
                                      "Пример: для маршрута с 3 остановками нужно 2 временных интервала")
@@ -205,7 +210,7 @@ void AddRouteDialog::createAndAddRoute() {
                        travelTimes, days, startTime);
 }
 
-QVector<QSharedPointer<Stop>> AddRouteDialog::getIntermediateStops() {
+QVector<QSharedPointer<Stop>> AddRouteDialog::getIntermediateStops() const {
     QVector<QSharedPointer<Stop>> intermediateStops;
     for (auto i = 0; i < intermediateStopsList->count(); ++i) {
         auto itemText = intermediateStopsList->item(i)->text();
@@ -217,7 +222,7 @@ QVector<QSharedPointer<Stop>> AddRouteDialog::getIntermediateStops() {
     return intermediateStops;
 }
 
-QVector<int> AddRouteDialog::parseTravelTimes() {
+QVector<int> AddRouteDialog::parseTravelTimes() const {
     QVector<int> travelTimes;
     auto timeStrings = travelTimesEdit->text().split(",");
     for (const auto& timeStr : timeStrings) {
@@ -230,13 +235,12 @@ QVector<int> AddRouteDialog::parseTravelTimes() {
     return travelTimes;
 }
 
-QStringList AddRouteDialog::parseDays() {
-    QStringList days;
+QStringList AddRouteDialog::parseDays() const {
     if (auto daysText = daysEdit->text().trimmed(); !daysText.isEmpty()) {
         auto normalized = daysText;
         normalized = normalized.replace(';', ',');
         normalized = normalized.replace(' ', ',');
-        days = normalized.split(',', Qt::SkipEmptyParts);
+        auto days = normalized.split(',', Qt::SkipEmptyParts);
 
         for (auto &day : days) {
             day = day.trimmed().toLower();
@@ -256,6 +260,7 @@ QStringList AddRouteDialog::parseDays() {
             else if (day == "воскресенье" || day == "воскр" || day == "sun" || day == "sunday")
                 day = "вс";
         }
+        return days;
     }
-    return days;
+    return {};
 }

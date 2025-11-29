@@ -20,7 +20,7 @@ class AddRouteDialog : public QDialog {
     Q_OBJECT
 
 public:
-    AddRouteDialog(TransportSchedule* schedule, QWidget *parent = nullptr);
+    explicit AddRouteDialog(TransportSchedule* schedule, QWidget *parent = nullptr);
 
 private slots:
     void addIntermediateStop();
@@ -31,9 +31,9 @@ private:
     void setupUI();
     bool validateInput();
     void createAndAddRoute();
-    QVector<QSharedPointer<Stop>> getIntermediateStops();
-    QVector<int> parseTravelTimes();
-    QStringList parseDays();
+    QVector<QSharedPointer<Stop>> getIntermediateStops() const;
+    QVector<int> parseTravelTimes() const;
+    QStringList parseDays() const;
 
     TransportSchedule* schedule;
 

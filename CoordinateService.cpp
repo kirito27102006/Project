@@ -16,7 +16,8 @@ CoordinateService::Coordinate CoordinateService::parseCoordinate(const QString& 
         return Coordinate(0, 0, false);
     }
 
-    bool ok1, ok2;
+    bool ok1;
+    bool ok2;
     double lat = parts[0].trimmed().toDouble(&ok1);
     double lon = parts[1].trimmed().toDouble(&ok2);
 

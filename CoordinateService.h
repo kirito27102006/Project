@@ -13,7 +13,7 @@ public:
         double longitude;
         bool isValid;
 
-        Coordinate(double lat = 0, double lon = 0, bool valid = false)
+        explicit Coordinate(double lat = 0, double lon = 0, bool valid = false)
             : latitude(lat), longitude(lon), isValid(valid) {}
     };
 

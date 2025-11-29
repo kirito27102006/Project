@@ -52,7 +52,7 @@ build cmake_object_order_depends_target_yyy: phony || yyy_autogen yyy_autogen/EW
 build CMakeFiles/yyy.dir/yyy_autogen/mocs_compilation.cpp.obj: CXX_COMPILER__yyy_unscanned_Debug C$:/Users/Asus/Desktop/yyy/yyy/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug/yyy_autogen/mocs_compilation.cpp || cmake_object_order_depends_target_yyy
   DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
   DEP_FILE = CMakeFiles\yyy.dir\yyy_autogen\mocs_compilation.cpp.obj.d
-  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always
+  FLAGS = -DQT_QML_DEBUG -g -std=gnu++20 -fdiagnostics-color=always
   INCLUDES = -IC:/Users/Asus/Desktop/yyy/yyy/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug/yyy_autogen/include -isystem C:/Qt/6.9.3/mingw_64/include/QtCore -isystem C:/Qt/6.9.3/mingw_64/include -isystem C:/Qt/6.9.3/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.9.3/mingw_64/include/QtWidgets -isystem C:/Qt/6.9.3/mingw_64/include/QtGui
   OBJECT_DIR = CMakeFiles\yyy.dir
   OBJECT_FILE_DIR = CMakeFiles\yyy.dir\yyy_autogen
@@ -60,7 +60,7 @@ build CMakeFiles/yyy.dir/yyy_autogen/mocs_compilation.cpp.obj: CXX_COMPILER__yyy
 build CMakeFiles/yyy.dir/main.cpp.obj: CXX_COMPILER__yyy_unscanned_Debug C$:/Users/Asus/Desktop/yyy/yyy/main.cpp || cmake_object_order_depends_target_yyy
   DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
   DEP_FILE = CMakeFiles\yyy.dir\main.cpp.obj.d
-  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always
+  FLAGS = -DQT_QML_DEBUG -g -std=gnu++20 -fdiagnostics-color=always
   INCLUDES = -IC:/Users/Asus/Desktop/yyy/yyy/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug/yyy_autogen/include -isystem C:/Qt/6.9.3/mingw_64/include/QtCore -isystem C:/Qt/6.9.3/mingw_64/include -isystem C:/Qt/6.9.3/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.9.3/mingw_64/include/QtWidgets -isystem C:/Qt/6.9.3/mingw_64/include/QtGui
   OBJECT_DIR = CMakeFiles\yyy.dir
   OBJECT_FILE_DIR = CMakeFiles\yyy.dir
@@ -68,7 +68,7 @@ build CMakeFiles/yyy.dir/main.cpp.obj: CXX_COMPILER__yyy_unscanned_Debug C$:/Use
 build CMakeFiles/yyy.dir/mainwindow.cpp.obj: CXX_COMPILER__yyy_unscanned_Debug C$:/Users/Asus/Desktop/yyy/yyy/mainwindow.cpp || cmake_object_order_depends_target_yyy
   DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
   DEP_FILE = CMakeFiles\yyy.dir\mainwindow.cpp.obj.d
-  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always
+  FLAGS = -DQT_QML_DEBUG -g -std=gnu++20 -fdiagnostics-color=always
   INCLUDES = -IC:/Users/Asus/Desktop/yyy/yyy/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug/yyy_autogen/include -isystem C:/Qt/6.9.3/mingw_64/include/QtCore -isystem C:/Qt/6.9.3/mingw_64/include -isystem C:/Qt/6.9.3/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.9.3/mingw_64/include/QtWidgets -isystem C:/Qt/6.9.3/mingw_64/include/QtGui
   OBJECT_DIR = CMakeFiles\yyy.dir
   OBJECT_FILE_DIR = CMakeFiles\yyy.dir
@@ -76,7 +76,7 @@ build CMakeFiles/yyy.dir/mainwindow.cpp.obj: CXX_COMPILER__yyy_unscanned_Debug C
 build CMakeFiles/yyy.dir/TransportType.cpp.obj: CXX_COMPILER__yyy_unscanned_Debug C$:/Users/Asus/Desktop/yyy/yyy/TransportType.cpp || cmake_object_order_depends_target_yyy
   DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
   DEP_FILE = CMakeFiles\yyy.dir\TransportType.cpp.obj.d
-  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always
+  FLAGS = -DQT_QML_DEBUG -g -std=gnu++20 -fdiagnostics-color=always
   INCLUDES = -IC:/Users/Asus/Desktop/yyy/yyy/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug/yyy_autogen/include -isystem C:/Qt/6.9.3/mingw_64/include/QtCore -isystem C:/Qt/6.9.3/mingw_64/include -isystem C:/Qt/6.9.3/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.9.3/mingw_64/include/QtWidgets -isystem C:/Qt/6.9.3/mingw_64/include/QtGui
   OBJECT_DIR = CMakeFiles\yyy.dir
   OBJECT_FILE_DIR = CMakeFiles\yyy.dir
@@ -84,7 +84,7 @@ build CMakeFiles/yyy.dir/TransportType.cpp.obj: CXX_COMPILER__yyy_unscanned_Debu
 build CMakeFiles/yyy.dir/TransportSchedule.cpp.obj: CXX_COMPILER__yyy_unscanned_Debug C$:/Users/Asus/Desktop/yyy/yyy/TransportSchedule.cpp || cmake_object_order_depends_target_yyy
   DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
   DEP_FILE = CMakeFiles\yyy.dir\TransportSchedule.cpp.obj.d
-  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always
+  FLAGS = -DQT_QML_DEBUG -g -std=gnu++20 -fdiagnostics-color=always
   INCLUDES = -IC:/Users/Asus/Desktop/yyy/yyy/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug/yyy_autogen/include -isystem C:/Qt/6.9.3/mingw_64/include/QtCore -isystem C:/Qt/6.9.3/mingw_64/include -isystem C:/Qt/6.9.3/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.9.3/mingw_64/include/QtWidgets -isystem C:/Qt/6.9.3/mingw_64/include/QtGui
   OBJECT_DIR = CMakeFiles\yyy.dir
   OBJECT_FILE_DIR = CMakeFiles\yyy.dir
@@ -92,7 +92,7 @@ build CMakeFiles/yyy.dir/TransportSchedule.cpp.obj: CXX_COMPILER__yyy_unscanned_
 build CMakeFiles/yyy.dir/Transport.cpp.obj: CXX_COMPILER__yyy_unscanned_Debug C$:/Users/Asus/Desktop/yyy/yyy/Transport.cpp || cmake_object_order_depends_target_yyy
   DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
   DEP_FILE = CMakeFiles\yyy.dir\Transport.cpp.obj.d
-  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always
+  FLAGS = -DQT_QML_DEBUG -g -std=gnu++20 -fdiagnostics-color=always
   INCLUDES = -IC:/Users/Asus/Desktop/yyy/yyy/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug/yyy_autogen/include -isystem C:/Qt/6.9.3/mingw_64/include/QtCore -isystem C:/Qt/6.9.3/mingw_64/include -isystem C:/Qt/6.9.3/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.9.3/mingw_64/include/QtWidgets -isystem C:/Qt/6.9.3/mingw_64/include/QtGui
   OBJECT_DIR = CMakeFiles\yyy.dir
   OBJECT_FILE_DIR = CMakeFiles\yyy.dir
@@ -100,7 +100,7 @@ build CMakeFiles/yyy.dir/Transport.cpp.obj: CXX_COMPILER__yyy_unscanned_Debug C$
 build CMakeFiles/yyy.dir/TimeTransport.cpp.obj: CXX_COMPILER__yyy_unscanned_Debug C$:/Users/Asus/Desktop/yyy/yyy/TimeTransport.cpp || cmake_object_order_depends_target_yyy
   DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
   DEP_FILE = CMakeFiles\yyy.dir\TimeTransport.cpp.obj.d
-  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always
+  FLAGS = -DQT_QML_DEBUG -g -std=gnu++20 -fdiagnostics-color=always
   INCLUDES = -IC:/Users/Asus/Desktop/yyy/yyy/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug/yyy_autogen/include -isystem C:/Qt/6.9.3/mingw_64/include/QtCore -isystem C:/Qt/6.9.3/mingw_64/include -isystem C:/Qt/6.9.3/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.9.3/mingw_64/include/QtWidgets -isystem C:/Qt/6.9.3/mingw_64/include/QtGui
   OBJECT_DIR = CMakeFiles\yyy.dir
   OBJECT_FILE_DIR = CMakeFiles\yyy.dir
@@ -108,7 +108,7 @@ build CMakeFiles/yyy.dir/TimeTransport.cpp.obj: CXX_COMPILER__yyy_unscanned_Debu
 build CMakeFiles/yyy.dir/Stop.cpp.obj: CXX_COMPILER__yyy_unscanned_Debug C$:/Users/Asus/Desktop/yyy/yyy/Stop.cpp || cmake_object_order_depends_target_yyy
   DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
   DEP_FILE = CMakeFiles\yyy.dir\Stop.cpp.obj.d
-  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always
+  FLAGS = -DQT_QML_DEBUG -g -std=gnu++20 -fdiagnostics-color=always
   INCLUDES = -IC:/Users/Asus/Desktop/yyy/yyy/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug/yyy_autogen/include -isystem C:/Qt/6.9.3/mingw_64/include/QtCore -isystem C:/Qt/6.9.3/mingw_64/include -isystem C:/Qt/6.9.3/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.9.3/mingw_64/include/QtWidgets -isystem C:/Qt/6.9.3/mingw_64/include/QtGui
   OBJECT_DIR = CMakeFiles\yyy.dir
   OBJECT_FILE_DIR = CMakeFiles\yyy.dir
@@ -116,7 +116,7 @@ build CMakeFiles/yyy.dir/Stop.cpp.obj: CXX_COMPILER__yyy_unscanned_Debug C$:/Use
 build CMakeFiles/yyy.dir/Schedule.cpp.obj: CXX_COMPILER__yyy_unscanned_Debug C$:/Users/Asus/Desktop/yyy/yyy/Schedule.cpp || cmake_object_order_depends_target_yyy
   DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
   DEP_FILE = CMakeFiles\yyy.dir\Schedule.cpp.obj.d
-  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always
+  FLAGS = -DQT_QML_DEBUG -g -std=gnu++20 -fdiagnostics-color=always
   INCLUDES = -IC:/Users/Asus/Desktop/yyy/yyy/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug/yyy_autogen/include -isystem C:/Qt/6.9.3/mingw_64/include/QtCore -isystem C:/Qt/6.9.3/mingw_64/include -isystem C:/Qt/6.9.3/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.9.3/mingw_64/include/QtWidgets -isystem C:/Qt/6.9.3/mingw_64/include/QtGui
   OBJECT_DIR = CMakeFiles\yyy.dir
   OBJECT_FILE_DIR = CMakeFiles\yyy.dir
@@ -124,7 +124,7 @@ build CMakeFiles/yyy.dir/Schedule.cpp.obj: CXX_COMPILER__yyy_unscanned_Debug C$:
 build CMakeFiles/yyy.dir/RouteDetailsDialog.cpp.obj: CXX_COMPILER__yyy_unscanned_Debug C$:/Users/Asus/Desktop/yyy/yyy/RouteDetailsDialog.cpp || cmake_object_order_depends_target_yyy
   DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
   DEP_FILE = CMakeFiles\yyy.dir\RouteDetailsDialog.cpp.obj.d
-  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always
+  FLAGS = -DQT_QML_DEBUG -g -std=gnu++20 -fdiagnostics-color=always
   INCLUDES = -IC:/Users/Asus/Desktop/yyy/yyy/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug/yyy_autogen/include -isystem C:/Qt/6.9.3/mingw_64/include/QtCore -isystem C:/Qt/6.9.3/mingw_64/include -isystem C:/Qt/6.9.3/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.9.3/mingw_64/include/QtWidgets -isystem C:/Qt/6.9.3/mingw_64/include/QtGui
   OBJECT_DIR = CMakeFiles\yyy.dir
   OBJECT_FILE_DIR = CMakeFiles\yyy.dir
@@ -132,7 +132,7 @@ build CMakeFiles/yyy.dir/RouteDetailsDialog.cpp.obj: CXX_COMPILER__yyy_unscanned
 build CMakeFiles/yyy.dir/Route.cpp.obj: CXX_COMPILER__yyy_unscanned_Debug C$:/Users/Asus/Desktop/yyy/yyy/Route.cpp || cmake_object_order_depends_target_yyy
   DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
   DEP_FILE = CMakeFiles\yyy.dir\Route.cpp.obj.d
-  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always
+  FLAGS = -DQT_QML_DEBUG -g -std=gnu++20 -fdiagnostics-color=always
   INCLUDES = -IC:/Users/Asus/Desktop/yyy/yyy/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug/yyy_autogen/include -isystem C:/Qt/6.9.3/mingw_64/include/QtCore -isystem C:/Qt/6.9.3/mingw_64/include -isystem C:/Qt/6.9.3/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.9.3/mingw_64/include/QtWidgets -isystem C:/Qt/6.9.3/mingw_64/include/QtGui
   OBJECT_DIR = CMakeFiles\yyy.dir
   OBJECT_FILE_DIR = CMakeFiles\yyy.dir
@@ -140,7 +140,7 @@ build CMakeFiles/yyy.dir/Route.cpp.obj: CXX_COMPILER__yyy_unscanned_Debug C$:/Us
 build CMakeFiles/yyy.dir/FindTransportDialog.cpp.obj: CXX_COMPILER__yyy_unscanned_Debug C$:/Users/Asus/Desktop/yyy/yyy/FindTransportDialog.cpp || cmake_object_order_depends_target_yyy
   DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
   DEP_FILE = CMakeFiles\yyy.dir\FindTransportDialog.cpp.obj.d
-  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always
+  FLAGS = -DQT_QML_DEBUG -g -std=gnu++20 -fdiagnostics-color=always
   INCLUDES = -IC:/Users/Asus/Desktop/yyy/yyy/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug/yyy_autogen/include -isystem C:/Qt/6.9.3/mingw_64/include/QtCore -isystem C:/Qt/6.9.3/mingw_64/include -isystem C:/Qt/6.9.3/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.9.3/mingw_64/include/QtWidgets -isystem C:/Qt/6.9.3/mingw_64/include/QtGui
   OBJECT_DIR = CMakeFiles\yyy.dir
   OBJECT_FILE_DIR = CMakeFiles\yyy.dir
@@ -148,7 +148,7 @@ build CMakeFiles/yyy.dir/FindTransportDialog.cpp.obj: CXX_COMPILER__yyy_unscanne
 build CMakeFiles/yyy.dir/AddRouteDialog.cpp.obj: CXX_COMPILER__yyy_unscanned_Debug C$:/Users/Asus/Desktop/yyy/yyy/AddRouteDialog.cpp || cmake_object_order_depends_target_yyy
   DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
   DEP_FILE = CMakeFiles\yyy.dir\AddRouteDialog.cpp.obj.d
-  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always
+  FLAGS = -DQT_QML_DEBUG -g -std=gnu++20 -fdiagnostics-color=always
   INCLUDES = -IC:/Users/Asus/Desktop/yyy/yyy/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug/yyy_autogen/include -isystem C:/Qt/6.9.3/mingw_64/include/QtCore -isystem C:/Qt/6.9.3/mingw_64/include -isystem C:/Qt/6.9.3/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.9.3/mingw_64/include/QtWidgets -isystem C:/Qt/6.9.3/mingw_64/include/QtGui
   OBJECT_DIR = CMakeFiles\yyy.dir
   OBJECT_FILE_DIR = CMakeFiles\yyy.dir
@@ -156,7 +156,7 @@ build CMakeFiles/yyy.dir/AddRouteDialog.cpp.obj: CXX_COMPILER__yyy_unscanned_Deb
 build CMakeFiles/yyy.dir/ScheduleReader.cpp.obj: CXX_COMPILER__yyy_unscanned_Debug C$:/Users/Asus/Desktop/yyy/yyy/ScheduleReader.cpp || cmake_object_order_depends_target_yyy
   DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
   DEP_FILE = CMakeFiles\yyy.dir\ScheduleReader.cpp.obj.d
-  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always
+  FLAGS = -DQT_QML_DEBUG -g -std=gnu++20 -fdiagnostics-color=always
   INCLUDES = -IC:/Users/Asus/Desktop/yyy/yyy/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug/yyy_autogen/include -isystem C:/Qt/6.9.3/mingw_64/include/QtCore -isystem C:/Qt/6.9.3/mingw_64/include -isystem C:/Qt/6.9.3/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.9.3/mingw_64/include/QtWidgets -isystem C:/Qt/6.9.3/mingw_64/include/QtGui
   OBJECT_DIR = CMakeFiles\yyy.dir
   OBJECT_FILE_DIR = CMakeFiles\yyy.dir
@@ -164,7 +164,7 @@ build CMakeFiles/yyy.dir/ScheduleReader.cpp.obj: CXX_COMPILER__yyy_unscanned_Deb
 build CMakeFiles/yyy.dir/ScheduleWriter.cpp.obj: CXX_COMPILER__yyy_unscanned_Debug C$:/Users/Asus/Desktop/yyy/yyy/ScheduleWriter.cpp || cmake_object_order_depends_target_yyy
   DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
   DEP_FILE = CMakeFiles\yyy.dir\ScheduleWriter.cpp.obj.d
-  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always
+  FLAGS = -DQT_QML_DEBUG -g -std=gnu++20 -fdiagnostics-color=always
   INCLUDES = -IC:/Users/Asus/Desktop/yyy/yyy/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug/yyy_autogen/include -isystem C:/Qt/6.9.3/mingw_64/include/QtCore -isystem C:/Qt/6.9.3/mingw_64/include -isystem C:/Qt/6.9.3/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.9.3/mingw_64/include/QtWidgets -isystem C:/Qt/6.9.3/mingw_64/include/QtGui
   OBJECT_DIR = CMakeFiles\yyy.dir
   OBJECT_FILE_DIR = CMakeFiles\yyy.dir
@@ -172,7 +172,7 @@ build CMakeFiles/yyy.dir/ScheduleWriter.cpp.obj: CXX_COMPILER__yyy_unscanned_Deb
 build CMakeFiles/yyy.dir/ArrivalTimeService.cpp.obj: CXX_COMPILER__yyy_unscanned_Debug C$:/Users/Asus/Desktop/yyy/yyy/ArrivalTimeService.cpp || cmake_object_order_depends_target_yyy
   DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
   DEP_FILE = CMakeFiles\yyy.dir\ArrivalTimeService.cpp.obj.d
-  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always
+  FLAGS = -DQT_QML_DEBUG -g -std=gnu++20 -fdiagnostics-color=always
   INCLUDES = -IC:/Users/Asus/Desktop/yyy/yyy/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug/yyy_autogen/include -isystem C:/Qt/6.9.3/mingw_64/include/QtCore -isystem C:/Qt/6.9.3/mingw_64/include -isystem C:/Qt/6.9.3/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.9.3/mingw_64/include/QtWidgets -isystem C:/Qt/6.9.3/mingw_64/include/QtGui
   OBJECT_DIR = CMakeFiles\yyy.dir
   OBJECT_FILE_DIR = CMakeFiles\yyy.dir
@@ -180,7 +180,7 @@ build CMakeFiles/yyy.dir/ArrivalTimeService.cpp.obj: CXX_COMPILER__yyy_unscanned
 build CMakeFiles/yyy.dir/DayOfWeekService.cpp.obj: CXX_COMPILER__yyy_unscanned_Debug C$:/Users/Asus/Desktop/yyy/yyy/DayOfWeekService.cpp || cmake_object_order_depends_target_yyy
   DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
   DEP_FILE = CMakeFiles\yyy.dir\DayOfWeekService.cpp.obj.d
-  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always
+  FLAGS = -DQT_QML_DEBUG -g -std=gnu++20 -fdiagnostics-color=always
   INCLUDES = -IC:/Users/Asus/Desktop/yyy/yyy/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug/yyy_autogen/include -isystem C:/Qt/6.9.3/mingw_64/include/QtCore -isystem C:/Qt/6.9.3/mingw_64/include -isystem C:/Qt/6.9.3/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.9.3/mingw_64/include/QtWidgets -isystem C:/Qt/6.9.3/mingw_64/include/QtGui
   OBJECT_DIR = CMakeFiles\yyy.dir
   OBJECT_FILE_DIR = CMakeFiles\yyy.dir
@@ -188,7 +188,7 @@ build CMakeFiles/yyy.dir/DayOfWeekService.cpp.obj: CXX_COMPILER__yyy_unscanned_D
 build CMakeFiles/yyy.dir/ValidationService.cpp.obj: CXX_COMPILER__yyy_unscanned_Debug C$:/Users/Asus/Desktop/yyy/yyy/ValidationService.cpp || cmake_object_order_depends_target_yyy
   DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
   DEP_FILE = CMakeFiles\yyy.dir\ValidationService.cpp.obj.d
-  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always
+  FLAGS = -DQT_QML_DEBUG -g -std=gnu++20 -fdiagnostics-color=always
   INCLUDES = -IC:/Users/Asus/Desktop/yyy/yyy/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug/yyy_autogen/include -isystem C:/Qt/6.9.3/mingw_64/include/QtCore -isystem C:/Qt/6.9.3/mingw_64/include -isystem C:/Qt/6.9.3/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.9.3/mingw_64/include/QtWidgets -isystem C:/Qt/6.9.3/mingw_64/include/QtGui
   OBJECT_DIR = CMakeFiles\yyy.dir
   OBJECT_FILE_DIR = CMakeFiles\yyy.dir
@@ -196,7 +196,7 @@ build CMakeFiles/yyy.dir/ValidationService.cpp.obj: CXX_COMPILER__yyy_unscanned_
 build CMakeFiles/yyy.dir/SearchService.cpp.obj: CXX_COMPILER__yyy_unscanned_Debug C$:/Users/Asus/Desktop/yyy/yyy/SearchService.cpp || cmake_object_order_depends_target_yyy
   DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
   DEP_FILE = CMakeFiles\yyy.dir\SearchService.cpp.obj.d
-  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always
+  FLAGS = -DQT_QML_DEBUG -g -std=gnu++20 -fdiagnostics-color=always
   INCLUDES = -IC:/Users/Asus/Desktop/yyy/yyy/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug/yyy_autogen/include -isystem C:/Qt/6.9.3/mingw_64/include/QtCore -isystem C:/Qt/6.9.3/mingw_64/include -isystem C:/Qt/6.9.3/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.9.3/mingw_64/include/QtWidgets -isystem C:/Qt/6.9.3/mingw_64/include/QtGui
   OBJECT_DIR = CMakeFiles\yyy.dir
   OBJECT_FILE_DIR = CMakeFiles\yyy.dir
@@ -204,7 +204,7 @@ build CMakeFiles/yyy.dir/SearchService.cpp.obj: CXX_COMPILER__yyy_unscanned_Debu
 build CMakeFiles/yyy.dir/CoordinateService.cpp.obj: CXX_COMPILER__yyy_unscanned_Debug C$:/Users/Asus/Desktop/yyy/yyy/CoordinateService.cpp || cmake_object_order_depends_target_yyy
   DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
   DEP_FILE = CMakeFiles\yyy.dir\CoordinateService.cpp.obj.d
-  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always
+  FLAGS = -DQT_QML_DEBUG -g -std=gnu++20 -fdiagnostics-color=always
   INCLUDES = -IC:/Users/Asus/Desktop/yyy/yyy/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug/yyy_autogen/include -isystem C:/Qt/6.9.3/mingw_64/include/QtCore -isystem C:/Qt/6.9.3/mingw_64/include -isystem C:/Qt/6.9.3/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.9.3/mingw_64/include/QtWidgets -isystem C:/Qt/6.9.3/mingw_64/include/QtGui
   OBJECT_DIR = CMakeFiles\yyy.dir
   OBJECT_FILE_DIR = CMakeFiles\yyy.dir
@@ -212,7 +212,7 @@ build CMakeFiles/yyy.dir/CoordinateService.cpp.obj: CXX_COMPILER__yyy_unscanned_
 build CMakeFiles/yyy.dir/StatisticsService.cpp.obj: CXX_COMPILER__yyy_unscanned_Debug C$:/Users/Asus/Desktop/yyy/yyy/StatisticsService.cpp || cmake_object_order_depends_target_yyy
   DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
   DEP_FILE = CMakeFiles\yyy.dir\StatisticsService.cpp.obj.d
-  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always
+  FLAGS = -DQT_QML_DEBUG -g -std=gnu++20 -fdiagnostics-color=always
   INCLUDES = -IC:/Users/Asus/Desktop/yyy/yyy/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug/yyy_autogen/include -isystem C:/Qt/6.9.3/mingw_64/include/QtCore -isystem C:/Qt/6.9.3/mingw_64/include -isystem C:/Qt/6.9.3/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.9.3/mingw_64/include/QtWidgets -isystem C:/Qt/6.9.3/mingw_64/include/QtGui
   OBJECT_DIR = CMakeFiles\yyy.dir
   OBJECT_FILE_DIR = CMakeFiles\yyy.dir
@@ -220,7 +220,7 @@ build CMakeFiles/yyy.dir/StatisticsService.cpp.obj: CXX_COMPILER__yyy_unscanned_
 build CMakeFiles/yyy.dir/NotificationService.cpp.obj: CXX_COMPILER__yyy_unscanned_Debug C$:/Users/Asus/Desktop/yyy/yyy/NotificationService.cpp || cmake_object_order_depends_target_yyy
   DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
   DEP_FILE = CMakeFiles\yyy.dir\NotificationService.cpp.obj.d
-  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always
+  FLAGS = -DQT_QML_DEBUG -g -std=gnu++20 -fdiagnostics-color=always
   INCLUDES = -IC:/Users/Asus/Desktop/yyy/yyy/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug/yyy_autogen/include -isystem C:/Qt/6.9.3/mingw_64/include/QtCore -isystem C:/Qt/6.9.3/mingw_64/include -isystem C:/Qt/6.9.3/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.9.3/mingw_64/include/QtWidgets -isystem C:/Qt/6.9.3/mingw_64/include/QtGui
   OBJECT_DIR = CMakeFiles\yyy.dir
   OBJECT_FILE_DIR = CMakeFiles\yyy.dir
@@ -228,7 +228,7 @@ build CMakeFiles/yyy.dir/NotificationService.cpp.obj: CXX_COMPILER__yyy_unscanne
 build CMakeFiles/yyy.dir/yyy_autogen/EWIEGA46WW/qrc_resources.cpp.obj: CXX_COMPILER__yyy_unscanned_Debug C$:/Users/Asus/Desktop/yyy/yyy/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug/yyy_autogen/EWIEGA46WW/qrc_resources.cpp || cmake_object_order_depends_target_yyy
   DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
   DEP_FILE = CMakeFiles\yyy.dir\yyy_autogen\EWIEGA46WW\qrc_resources.cpp.obj.d
-  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always
+  FLAGS = -DQT_QML_DEBUG -g -std=gnu++20 -fdiagnostics-color=always
   INCLUDES = -IC:/Users/Asus/Desktop/yyy/yyy/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug/yyy_autogen/include -isystem C:/Qt/6.9.3/mingw_64/include/QtCore -isystem C:/Qt/6.9.3/mingw_64/include -isystem C:/Qt/6.9.3/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.9.3/mingw_64/include/QtWidgets -isystem C:/Qt/6.9.3/mingw_64/include/QtGui
   OBJECT_DIR = CMakeFiles\yyy.dir
   OBJECT_FILE_DIR = CMakeFiles\yyy.dir\yyy_autogen\EWIEGA46WW

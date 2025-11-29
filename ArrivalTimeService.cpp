@@ -1,5 +1,6 @@
 #include "ArrivalTimeService.h"
 #include <QString>
+#include <algorithm>
 
 TimeTransport ArrivalTimeService::calculateArrivalTime(const Route& route, int stopIndex, const TimeTransport& startTime)
 {
@@ -10,7 +11,8 @@ TimeTransport ArrivalTimeService::calculateArrivalTime(const Route& route, int s
     auto travelTimes = route.getTravelTimes();
     TimeTransport currentTime = startTime;
 
-    for (int i = 0; i < stopIndex && i < travelTimes.size(); ++i) {
+    const auto maxIndex = std::min(stopIndex, static_cast<int>(travelTimes.size()));
+    for (int i = 0; i < maxIndex; ++i) {
         currentTime = currentTime.addMinutes(travelTimes[i]);
     }
 
@@ -22,6 +24,7 @@ QVector<TimeTransport> ArrivalTimeService::calculateAllArrivalTimes(const Route&
     QVector<TimeTransport> arrivalTimes;
     auto stops = route.getStops();
 
+    arrivalTimes.reserve(stops.size());
     for (int i = 0; i < stops.size(); ++i) {
         arrivalTimes.append(calculateArrivalTime(route, i, startTime));
     }
@@ -36,7 +39,8 @@ int ArrivalTimeService::calculateTravelTimeToStop(const Route& route, int stopIn
     auto travelTimes = route.getTravelTimes();
     int totalTime = 0;
 
-    for (int i = 0; i < stopIndex && i < travelTimes.size(); ++i) {
+    const auto maxIndex = std::min(stopIndex, static_cast<int>(travelTimes.size()));
+    for (int i = 0; i < maxIndex; ++i) {
         totalTime += travelTimes[i];
     }
 

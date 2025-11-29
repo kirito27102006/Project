@@ -282,7 +282,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always"
+					"fragment" : "-DQT_QML_DEBUG -g -std=gnu++20 -fdiagnostics-color=always"
 				}
 			],
 			"defines" : 
@@ -372,7 +372,7 @@
 					13,
 					13
 				],
-				"standard" : "17"
+				"standard" : "20"
 			},
 			"sourceIndexes" : 
 			[
@@ -405,11 +405,11 @@
 	"dependencies" : 
 	[
 		{
-			"id" : "yyy_autogen_timestamp_deps::@6890427a1f51a3e7e1df"
-		},
-		{
 			"backtrace" : 0,
 			"id" : "yyy_autogen::@6890427a1f51a3e7e1df"
+		},
+		{
+			"id" : "yyy_autogen_timestamp_deps::@6890427a1f51a3e7e1df"
 		}
 	],
 	"id" : "yyy::@6890427a1f51a3e7e1df",
