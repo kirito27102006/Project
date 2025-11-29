@@ -10,17 +10,13 @@ void MainWindow::setupUI() {
     setWindowTitle("Расписание городского транспорта");
     setMinimumSize(900, 600);
 
-    QWidget* centralWidget = new QWidget(this);
+    auto* centralWidget = new QWidget(this);
     setCentralWidget(centralWidget);
 
-    QVBoxLayout* mainLayout = new QVBoxLayout(centralWidget);
+    auto* mainLayout = new QVBoxLayout(centralWidget);
 
     // Кнопки управления
-    QHBoxLayout* buttonLayout = new QHBoxLayout();
-
-    statisticsButton = new QPushButton("Статистика");
-    connect(statisticsButton, &QPushButton::clicked, this, &MainWindow::showStatistics);
-    buttonLayout->addWidget(statisticsButton);
+    auto* buttonLayout = new QHBoxLayout();
 
     addButton = new QPushButton("Добавить маршрут");
     connect(addButton, &QPushButton::clicked, this, &MainWindow::addRoute);
@@ -33,6 +29,11 @@ void MainWindow::setupUI() {
     refreshButton = new QPushButton("Обновить");
     connect(refreshButton, &QPushButton::clicked, this, &MainWindow::refreshTable);
     buttonLayout->addWidget(refreshButton);
+
+    // Добавляем кнопку статистики
+    statisticsButton = new QPushButton("Статистика");
+    connect(statisticsButton, &QPushButton::clicked, this, &MainWindow::showStatistics);
+    buttonLayout->addWidget(statisticsButton);
 
     buttonLayout->addStretch();
     mainLayout->addLayout(buttonLayout);
@@ -47,7 +48,7 @@ void MainWindow::showRouteDetails(int routeNumber) {
 
     for (const auto& scheduleItem : allSchedules) {
         if (scheduleItem.getRoute().getRouteNumber() == routeNumber) {
-            RouteDetailsDialog* dialog = new RouteDetailsDialog(schedule, scheduleItem, this);
+            auto* dialog = new RouteDetailsDialog(schedule, scheduleItem, this);
             dialog->setAttribute(Qt::WA_DeleteOnClose);
             connect(dialog, &RouteDetailsDialog::finished, this, &MainWindow::refreshTable);
             dialog->exec();
@@ -57,35 +58,6 @@ void MainWindow::showRouteDetails(int routeNumber) {
 
     QMessageBox::information(this, "Маршрут не найден",
                              QString("Маршрут №%1 не найден.").arg(routeNumber));
-}
-
-void MainWindow::showStatistics() {
-    auto routeStats = schedule->getRouteStatistics();
-    auto stopStats = schedule->getStopStatistics();
-
-    QString statsText;
-    statsText += QString("=== СТАТИСТИКА СИСТЕМЫ ===\n\n");
-    statsText += QString("Маршруты:\n");
-    statsText += QString("  Всего маршрутов: %1\n").arg(routeStats.totalRoutes);
-    statsText += QString("  Автобусы: %1\n").arg(routeStats.busCount);
-    statsText += QString("  Троллейбусы: %1\n").arg(routeStats.trolleybusCount);
-    statsText += QString("  Трамваи: %1\n").arg(routeStats.tramCount);
-    statsText += QString("  Среднее количество остановок на маршрут: %1\n").arg(routeStats.averageStopsPerRoute);
-
-    statsText += QString("\nОстановки:\n");
-    statsText += QString("  Всего остановок: %1\n").arg(stopStats.totalStops);
-    statsText += QString("  Активных остановок: %1\n").arg(stopStats.activeStops);
-
-    if (!stopStats.mostPopularStops.isEmpty()) {
-        statsText += QString("\nСамые популярные остановки:\n");
-        // ИСПРАВЛЕНА ОШИБКА - приведение типов
-        int count = std::min(3, static_cast<int>(stopStats.mostPopularStops.size()));
-        for (int i = 0; i < count; ++i) {
-            statsText += QString("  %1. %2\n").arg(i + 1).arg(stopStats.mostPopularStops[i]->getName());
-        }
-    }
-
-    QMessageBox::information(this, "Статистика системы", statsText);
 }
 
 void MainWindow::setupTable() {
@@ -119,16 +91,16 @@ void MainWindow::populateTable() {
     auto allSchedules = schedule->getAllSchedules();
 
     // Сортируем маршруты по номеру в порядке возрастания
-    QVector<Schedule> sortedSchedules = allSchedules;
+    auto sortedSchedules = allSchedules;
     std::sort(sortedSchedules.begin(), sortedSchedules.end(),
               [](const Schedule& a, const Schedule& b) {
                   return a.getRoute().getRouteNumber() < b.getRoute().getRouteNumber();
               });
 
-    for (int i = 0; i < sortedSchedules.size(); ++i) {
+    for (auto i = 0; i < sortedSchedules.size(); ++i) {
         const auto& sched = sortedSchedules[i];
         const auto& route = sched.getRoute();
-        int routeNumber = route.getRouteNumber();
+        auto routeNumber = route.getRouteNumber();
 
         routesTable->insertRow(i);
         routesTable->setItem(i, 0, new QTableWidgetItem(QString::number(routeNumber)));
@@ -139,21 +111,21 @@ void MainWindow::populateTable() {
         routesTable->setItem(i, 5, new QTableWidgetItem(route.getDays().join(", ")));
 
         // Центрируем текст в ячейках
-        for (int col = 0; col < 6; ++col) {
-            QTableWidgetItem* item = routesTable->item(i, col);
+        for (auto col = 0; col < 6; ++col) {
+            auto* item = routesTable->item(i, col);
             if (item) {
                 item->setTextAlignment(Qt::AlignCenter);
             }
         }
 
         // Создаем контейнер для кнопок
-        QWidget* buttonsWidget = new QWidget();
-        QHBoxLayout* buttonsLayout = new QHBoxLayout(buttonsWidget);
+        auto* buttonsWidget = new QWidget();
+        auto* buttonsLayout = new QHBoxLayout(buttonsWidget);
         buttonsLayout->setContentsMargins(2, 2, 2, 2);
         buttonsLayout->setSpacing(2);
 
         // Кнопка "Показать маршрут"
-        QToolButton* showRouteButton = new QToolButton();
+        auto* showRouteButton = new QToolButton();
         showRouteButton->setIcon(QIcon::fromTheme("edit-find", QIcon(":/icons/route.png")));
         showRouteButton->setText("Маршрут");
         showRouteButton->setToolTip("Показать полный маршрут с остановками");
@@ -166,7 +138,7 @@ void MainWindow::populateTable() {
         });
 
         // Кнопка удаления
-        QToolButton* deleteButton = new QToolButton();
+        auto* deleteButton = new QToolButton();
         deleteButton->setIcon(QIcon::fromTheme("edit-delete", QIcon(":/icons/delete.png")));
         deleteButton->setText("Удалить");
         deleteButton->setToolTip("Удалить маршрут");
@@ -203,10 +175,9 @@ void MainWindow::addRoute() {
 }
 
 void MainWindow::removeRoute(int routeNumber) {
-    QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(this, "Подтверждение",
-                                  "Вы уверены, что хотите удалить маршрут №" + QString::number(routeNumber) + "?",
-                                  QMessageBox::Yes | QMessageBox::No);
+    auto reply = QMessageBox::question(this, "Подтверждение",
+                                       "Вы уверены, что хотите удалить маршрут №" + QString::number(routeNumber) + "?",
+                                       QMessageBox::Yes | QMessageBox::No);
 
     if (reply == QMessageBox::Yes) {
         schedule->removeRoute(routeNumber);
@@ -221,4 +192,32 @@ void MainWindow::openFindTransportDialog() {
 
 void MainWindow::refreshTable() {
     populateTable();
+}
+
+void MainWindow::showStatistics() {
+    auto routeStats = schedule->getRouteStatistics();
+    auto stopStats = schedule->getStopStatistics();
+
+    auto statsText = QString();
+    statsText += QString("=== СТАТИСТИКА СИСТЕМЫ ===\n\n");
+    statsText += QString("Маршруты:\n");
+    statsText += QString("  Всего маршрутов: %1\n").arg(routeStats.totalRoutes);
+    statsText += QString("  Автобусы: %1\n").arg(routeStats.busCount);
+    statsText += QString("  Троллейбусы: %1\n").arg(routeStats.trolleybusCount);
+    statsText += QString("  Трамваи: %1\n").arg(routeStats.tramCount);
+    statsText += QString("  Среднее количество остановок на маршрут: %1\n").arg(routeStats.averageStopsPerRoute);
+
+    statsText += QString("\nОстановки:\n");
+    statsText += QString("  Всего остановок: %1\n").arg(stopStats.totalStops);
+    statsText += QString("  Активных остановок: %1\n").arg(stopStats.activeStops);
+
+    if (!stopStats.mostPopularStops.isEmpty()) {
+        statsText += QString("\nСамые популярные остановки:\n");
+        auto count = std::min(3, static_cast<int>(stopStats.mostPopularStops.size()));
+        for (auto i = 0; i < count; ++i) {
+            statsText += QString("  %1. %2\n").arg(i + 1).arg(stopStats.mostPopularStops[i]->getName());
+        }
+    }
+
+    QMessageBox::information(this, "Статистика системы", statsText);
 }

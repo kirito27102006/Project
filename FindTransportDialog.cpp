@@ -12,9 +12,9 @@ FindTransportDialog::FindTransportDialog(TransportSchedule* schedule, QWidget *p
 }
 
 void FindTransportDialog::setupUI() {
-    QVBoxLayout* mainLayout = new QVBoxLayout(this);
+    auto* mainLayout = new QVBoxLayout(this);
 
-    QHBoxLayout* findLayout = new QHBoxLayout;
+    auto* findLayout = new QHBoxLayout;
     findLayout->addWidget(new QLabel("Остановка:"));
 
     findStopCombo = new QComboBox;
@@ -33,8 +33,8 @@ void FindTransportDialog::setupUI() {
 
     tabWidget = new QTabWidget;
 
-    QWidget* nearestTab = new QWidget;
-    QVBoxLayout* nearestLayout = new QVBoxLayout(nearestTab);
+    auto* nearestTab = new QWidget;
+    auto* nearestLayout = new QVBoxLayout(nearestTab);
 
     nextTransportTable = new QTableWidget;
     nextTransportTable->setColumnCount(5);
@@ -50,8 +50,8 @@ void FindTransportDialog::setupUI() {
     nearestLayout->addWidget(nextTransportTable);
     tabWidget->addTab(nearestTab, "Ближайший транспорт");
 
-    QWidget* allRoutesTab = new QWidget;
-    QVBoxLayout* allRoutesLayout = new QVBoxLayout(allRoutesTab);
+    auto* allRoutesTab = new QWidget;
+    auto* allRoutesLayout = new QVBoxLayout(allRoutesTab);
 
     allRoutesTable = new QTableWidget;
     allRoutesTable->setColumnCount(6);
@@ -90,7 +90,7 @@ void FindTransportDialog::updateStopsCombo() {
 }
 
 void FindTransportDialog::findNextTransport() {
-    QString stopName = findStopCombo->currentText();
+    auto stopName = findStopCombo->currentText();
     if (stopName.isEmpty()) {
         QMessageBox::warning(this, "Ошибка", "Выберите остановку");
         return;
@@ -99,8 +99,8 @@ void FindTransportDialog::findNextTransport() {
     auto nextSchedules = schedule->findNextTransport(stopName);
     nextTransportTable->setRowCount(nextSchedules.size());
 
-    TimeTransport currentTime = schedule->getCurrentTime();
-    QString currentDay = schedule->getCurrentDayOfWeek();
+    auto currentTime = schedule->getCurrentTime();
+    auto currentDay = schedule->getCurrentDayOfWeek();
 
     if (nextSchedules.isEmpty()) {
         QMessageBox::information(this, "Результат поиска",
@@ -113,7 +113,7 @@ void FindTransportDialog::findNextTransport() {
         return;
     }
 
-    for (int i = 0; i < nextSchedules.size(); ++i) {
+    for (auto i = 0; i < nextSchedules.size(); ++i) {
         const auto& sched = nextSchedules[i];
         const auto& route = sched.getRoute();
 
@@ -124,9 +124,20 @@ void FindTransportDialog::findNextTransport() {
             continue;
         }
 
-        // Используем ArrivalTimeService для форматирования времени ожидания
-        int waitMinutes = ArrivalTimeService::calculateWaitTime(currentTime, arrivalTime);
-        QString waitTime = ArrivalTimeService::formatWaitTime(waitMinutes);
+        auto currentTimeMinutes = currentTime.toMinutes();
+        auto arrivalTimeMinutes = arrivalTime.toMinutes();
+
+        auto waitMinutes = arrivalTimeMinutes - currentTimeMinutes;
+        if (waitMinutes < 0) {
+            waitMinutes += 24 * 60;
+        }
+
+        QString waitTime;
+        if (waitMinutes >= 60) {
+            waitTime = QString("%1 ч %2 мин").arg(waitMinutes / 60).arg(waitMinutes % 60);
+        } else {
+            waitTime = QString("%1 мин").arg(waitMinutes);
+        }
 
         nextTransportTable->setItem(i, 0, new QTableWidgetItem(QString::number(route.getRouteNumber())));
         nextTransportTable->setItem(i, 1, new QTableWidgetItem(route.getTransport().getType().getName()));
@@ -134,8 +145,8 @@ void FindTransportDialog::findNextTransport() {
         nextTransportTable->setItem(i, 3, new QTableWidgetItem(waitTime));
         nextTransportTable->setItem(i, 4, new QTableWidgetItem(route.getEndStop()->getName()));
 
-        for (int col = 0; col < 5; ++col) {
-            QTableWidgetItem* item = nextTransportTable->item(i, col);
+        for (auto col = 0; col < 5; ++col) {
+            auto* item = nextTransportTable->item(i, col);
             if (item) {
                 item->setTextAlignment(Qt::AlignCenter);
             }
@@ -149,7 +160,7 @@ void FindTransportDialog::findNextTransport() {
 }
 
 void FindTransportDialog::showAllRoutesForStop() {
-    QString stopName = findStopCombo->currentText();
+    auto stopName = findStopCombo->currentText();
     if (stopName.isEmpty()) {
         QMessageBox::warning(this, "Ошибка", "Выберите остановку");
         return;
@@ -160,8 +171,24 @@ void FindTransportDialog::showAllRoutesForStop() {
 }
 
 void FindTransportDialog::populateAllRoutesTable(const QString& stopName) {
-    // Используем SearchService для поиска всех маршрутов через остановку
-    auto routesThroughStop = SearchService::findSchedulesByStop(schedule->getAllSchedules(), stopName);
+    auto allSchedules = schedule->getAllSchedules();
+    QVector<Schedule> routesThroughStop;
+
+    for (const auto& scheduleItem : allSchedules) {
+        const auto& route = scheduleItem.getRoute();
+        auto passesThroughStop = false;
+
+        for (const auto& routeStop : route.getStops()) {
+            if (routeStop.stop->getName().compare(stopName, Qt::CaseInsensitive) == 0) {
+                passesThroughStop = true;
+                break;
+            }
+        }
+
+        if (passesThroughStop) {
+            routesThroughStop.push_back(scheduleItem);
+        }
+    }
 
     allRoutesTable->setRowCount(routesThroughStop.size());
 
@@ -172,7 +199,7 @@ void FindTransportDialog::populateAllRoutesTable(const QString& stopName) {
         return;
     }
 
-    for (int i = 0; i < routesThroughStop.size(); ++i) {
+    for (auto i = 0; i < routesThroughStop.size(); ++i) {
         const auto& sched = routesThroughStop[i];
         const auto& route = sched.getRoute();
 
@@ -183,8 +210,8 @@ void FindTransportDialog::populateAllRoutesTable(const QString& stopName) {
         allRoutesTable->setItem(i, 4, new QTableWidgetItem(sched.getStartTime().toString()));
         allRoutesTable->setItem(i, 5, new QTableWidgetItem(route.getDays().join(", ")));
 
-        for (int col = 0; col < 6; ++col) {
-            QTableWidgetItem* item = allRoutesTable->item(i, col);
+        for (auto col = 0; col < 6; ++col) {
+            auto* item = allRoutesTable->item(i, col);
             if (item) {
                 item->setTextAlignment(Qt::AlignCenter);
             }

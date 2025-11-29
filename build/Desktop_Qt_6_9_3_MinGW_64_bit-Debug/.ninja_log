@@ -40,3 +40,13 @@
 266	3982	7861352860576635	CMakeFiles/yyy.dir/TransportSchedule.cpp.obj	2e840ff8dd71cc00
 262	4611	7861352860536758	CMakeFiles/yyy.dir/mainwindow.cpp.obj	cb2a816fa117d5de
 4611	7152	7861352904026878	yyy.exe	ccda2769495ecab5
+19	453	7861388306228528	yyy_autogen/timestamp	da441e8c0ec39a6f
+19	453	7861388306228528	yyy_autogen/mocs_compilation.cpp	da441e8c0ec39a6f
+19	453	7861388306228528	C:/Users/Asus/Desktop/yyy/yyy/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug/yyy_autogen/timestamp	da441e8c0ec39a6f
+19	453	7861388306228528	C:/Users/Asus/Desktop/yyy/yyy/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug/yyy_autogen/mocs_compilation.cpp	da441e8c0ec39a6f
+522	5633	7861388311258217	CMakeFiles/yyy.dir/TransportSchedule.cpp.obj	2e840ff8dd71cc00
+540	6080	7861388311435599	CMakeFiles/yyy.dir/AddRouteDialog.cpp.obj	db0b9a6c5134f415
+527	6452	7861388311308799	CMakeFiles/yyy.dir/RouteDetailsDialog.cpp.obj	75cf24fb9f2dd4d6
+534	6534	7861388311370266	CMakeFiles/yyy.dir/FindTransportDialog.cpp.obj	c76482ad0c29763a
+455	6644	7861388310578706	CMakeFiles/yyy.dir/mainwindow.cpp.obj	cb2a816fa117d5de
+6644	9356	7861388372472567	yyy.exe	ccda2769495ecab5

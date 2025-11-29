@@ -190,8 +190,7 @@ void TransportSchedule::saveToFile()
     }
 }
 
-void TransportSchedule::loadFromFile()
-{
+void TransportSchedule::loadFromFile() {
     if (!scheduleReader) {
         qDebug() << "ScheduleReader is not initialized";
         return;
@@ -282,8 +281,7 @@ QVector<QSharedPointer<Stop>> TransportSchedule::getActiveStops() const
     return activeStops;
 }
 
-void TransportSchedule::updateActiveStops() const
-{
+void TransportSchedule::updateActiveStops() const {
     QSet<QString> usedStopNames;
 
     // Собираем все остановки, которые используются в активных маршрутах
@@ -299,7 +297,7 @@ void TransportSchedule::updateActiveStops() const
     QSet<QString> addedNames;
 
     for (const auto& stop : allStops) {
-        QString stopNameLower = stop->getName().toLower();
+        auto stopNameLower = stop->getName().toLower();
         if (usedStopNames.contains(stopNameLower) && !addedNames.contains(stopNameLower)) {
             activeStops.push_back(stop);
             addedNames.insert(stopNameLower);
