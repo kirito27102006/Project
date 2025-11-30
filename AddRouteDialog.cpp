@@ -229,7 +229,7 @@ QVector<QSharedPointer<Stop>> AddRouteDialog::getIntermediateStops() const {
 
 QVector<int> AddRouteDialog::parseTravelTimes() const {
     QVector<int> travelTimes;
-    auto timeStrings = travelTimesEdit->text().split(",");
+    const QStringList timeStrings = travelTimesEdit->text().split(",");
     for (const auto& timeStr : timeStrings) {
         bool ok;
         auto time = timeStr.trimmed().toInt(&ok);

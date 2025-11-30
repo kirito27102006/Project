@@ -6,7 +6,7 @@
 
 class TransportType {
 public:
-    enum Type { BUS, TROLLEYBUS, TRAM };
+    enum class Type { BUS, TROLLEYBUS, TRAM };
 
     explicit TransportType(Type type);
     TransportType(const QString& typeName);

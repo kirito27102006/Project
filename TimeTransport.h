@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QDataStream>
+#include <compare>
 
 class TimeTransport {
 public:
@@ -11,11 +12,8 @@ public:
 
     TimeTransport(int h = 0, int m = 0);
     QString toString() const;
-    bool operator<(const TimeTransport& other) const;
-    bool operator>(const TimeTransport& other) const;
+    auto operator<=>(const TimeTransport& other) const = default;
     bool operator==(const TimeTransport& other) const;
-    bool operator<=(const TimeTransport& other) const;
-    bool operator>=(const TimeTransport& other) const;
 
     TimeTransport addMinutes(int minutes) const;
     int toMinutes() const;

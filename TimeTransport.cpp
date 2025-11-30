@@ -17,30 +17,8 @@ QString TimeTransport::toString() const {
         .arg(minutes, 2, 10, QLatin1Char('0'));
 }
 
-bool TimeTransport::operator<(const TimeTransport& other) const {
-    if (hours == other.hours) {
-        return minutes < other.minutes;
-    }
-    return hours < other.hours;
-}
-
-bool TimeTransport::operator>(const TimeTransport& other) const {
-    if (hours == other.hours) {
-        return minutes > other.minutes;
-    }
-    return hours > other.hours;
-}
-
 bool TimeTransport::operator==(const TimeTransport& other) const {
     return hours == other.hours && minutes == other.minutes;
-}
-
-bool TimeTransport::operator<=(const TimeTransport& other) const {
-    return *this < other || *this == other;
-}
-
-bool TimeTransport::operator>=(const TimeTransport& other) const {
-    return *this > other || *this == other;
 }
 
 TimeTransport TimeTransport::addMinutes(int minutes) const {

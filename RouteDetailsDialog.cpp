@@ -21,10 +21,10 @@ void RouteDetailsDialog::setupUI(const Route& route, const TimeTransport& startT
     infoLabel = new QLabel(
         QString("<b>%1 №%2</b><br>"
                 "Начало: %3 | Дни: %4")
-            .arg(route.getTransport().getType().getName())
-            .arg(route.getRouteNumber())
-            .arg(startTime.toString())
-            .arg(route.getDays().join(", ")));
+            .arg(route.getTransport().getType().getName(),
+                 QString::number(route.getRouteNumber()),
+                 startTime.toString(),
+                 route.getDays().join(", ")));
     mainLayout->addWidget(infoLabel);
 
     // Панель редактирования (скрыта по умолчанию)
@@ -180,7 +180,7 @@ void RouteDetailsDialog::setEditingFlagsForRow(int row, int totalStops) {
     }
 }
 
-bool RouteDetailsDialog::shouldBeEditable(int col, int row, int totalStops) {
+bool RouteDetailsDialog::shouldBeEditable(int col, int row, int totalStops) const {
     return (col == 1 && row > 0 && row < totalStops - 1) || (col == 3 && row > 0);
 }
 
@@ -387,7 +387,7 @@ bool RouteDetailsDialog::validateRouteData(const QVector<QSharedPointer<Stop>>& 
 }
 
 QStringList RouteDetailsDialog::parseDays() {
-    auto days = daysCombo->currentText().split(",", Qt::SkipEmptyParts);
+    QStringList days = daysCombo->currentText().split(",", Qt::SkipEmptyParts);
     for (auto& day : days) {
         day = day.trimmed();
     }

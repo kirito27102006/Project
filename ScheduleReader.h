@@ -33,14 +33,12 @@ public:
 
     class TimeFormatException : public FileFormatException {
     public:
-        explicit TimeFormatException(const QString& message)
-            : FileFormatException(message) {}
+        using FileFormatException::FileFormatException;
     };
 
     class RouteDataException : public FileFormatException {
     public:
-        explicit RouteDataException(const QString& message)
-            : FileFormatException(message) {}
+        using FileFormatException::FileFormatException;
     };
 
     ReadResult readFromFile(const QString& filename,

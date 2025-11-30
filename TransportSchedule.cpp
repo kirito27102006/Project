@@ -11,6 +11,7 @@
 #include <QDateTime>
 #include <QException>
 #include <algorithm>
+#include <ranges>
 #include <QDebug>
 #include <climits>
 
@@ -32,15 +33,13 @@ void TransportSchedule::addRoute(const Transport& transport, QSharedPointer<Stop
                                  const QVector<int>& travelTimes, const QStringList& days, const TimeTransport& startTime)
 {
     // Валидация данных с использованием ValidationService
-    auto validationResult = ValidationService::validateRouteData(
-        transport.getId(),
-        QVector<QSharedPointer<Stop>>() << startStop << intermediateStops << endStop,
-        travelTimes,
-        days
-        );
-
-    if (!validationResult.isValid) {
-        throw std::runtime_error(validationResult.errorMessage.toStdString());
+    if (auto validationResult = ValidationService::validateRouteData(
+            transport.getId(),
+            QVector<QSharedPointer<Stop>>() << startStop << intermediateStops << endStop,
+            travelTimes,
+            days
+            ); !validationResult.isValid) {
+        throw std::invalid_argument(validationResult.errorMessage.toStdString());
     }
 
     // Создаем маршрут
@@ -151,6 +150,9 @@ QVector<Schedule> TransportSchedule::findNextTransport(const QString& stopName) 
             } else {
                 qDebug() << "Маршрут" << route.getRouteNumber() << "исключен: время ожидания" << waitMinutes << "мин";
             }
+        } catch (const std::out_of_range& e) {
+            qDebug() << "Остановка не найдена в маршруте" << route.getRouteNumber() << ":" << e.what();
+            continue;
         } catch (const std::exception& e) {
             qDebug() << "Ошибка получения времени прибытия для маршрута"
                      << route.getRouteNumber() << ":" << e.what();
@@ -159,20 +161,22 @@ QVector<Schedule> TransportSchedule::findNextTransport(const QString& stopName) 
     }
 
     // Сортируем по времени ожидания (от меньшего к большему)
-    std::sort(result.begin(), result.end(),
-              [stopName, currentTime](const Schedule& a, const Schedule& b) {
-                  try {
-                      TimeTransport timeA = a.getRoute().getArrivalTimeAtStop(stopName);
-                      TimeTransport timeB = b.getRoute().getArrivalTimeAtStop(stopName);
+    std::ranges::sort(result,
+                      [stopName, currentTime](const Schedule& a, const Schedule& b) {
+                          try {
+                              TimeTransport timeA = a.getRoute().getArrivalTimeAtStop(stopName);
+                              TimeTransport timeB = b.getRoute().getArrivalTimeAtStop(stopName);
 
-                      int waitA = ArrivalTimeService::calculateWaitTime(currentTime, timeA);
-                      int waitB = ArrivalTimeService::calculateWaitTime(currentTime, timeB);
+                              int waitA = ArrivalTimeService::calculateWaitTime(currentTime, timeA);
+                              int waitB = ArrivalTimeService::calculateWaitTime(currentTime, timeB);
 
-                      return waitA < waitB;
-                  } catch (...) {
-                      return false;
-                  }
-              });
+                              return waitA < waitB;
+                          } catch (const std::out_of_range&) {
+                              return false;
+                          } catch (const std::exception&) {
+                              return false;
+                          }
+                      });
 
     qDebug() << "Всего найдено маршрутов:" << result.size();
     return result;
@@ -250,9 +254,8 @@ void TransportSchedule::updateRoute(int oldRouteNumber, const Route& newRoute, c
 QSharedPointer<Stop> TransportSchedule::findOrCreateStop(const QString& name, const QString& coordinate)
 {
     // Валидация данных остановки
-    auto validationResult = ValidationService::validateStopData(name, coordinate);
-    if (!validationResult.isValid) {
-        throw std::runtime_error(validationResult.errorMessage.toStdString());
+    if (auto validationResult = ValidationService::validateStopData(name, coordinate); !validationResult.isValid) {
+        throw std::invalid_argument(validationResult.errorMessage.toStdString());
     }
 
     // Ищем остановку по имени (без учета регистра)

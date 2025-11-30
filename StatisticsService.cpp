@@ -1,5 +1,6 @@
 #include "StatisticsService.h"
 #include <algorithm>
+#include <ranges>
 #include <QMap>
 #include <climits>
 
@@ -76,10 +77,10 @@ StatisticsService::StopStats StatisticsService::calculateStopStatistics(const QV
         sortedStops.append(qMakePair(it.key(), it.value()));
     }
 
-    std::sort(sortedStops.begin(), sortedStops.end(),
-              [](const QPair<QString, int>& a, const QPair<QString, int>& b) {
-                  return a.second > b.second;
-              });
+    std::ranges::sort(sortedStops,
+                      [](const QPair<QString, int>& a, const QPair<QString, int>& b) {
+                          return a.second > b.second;
+                      });
 
     // Берем топ-10 остановок - ИСПРАВЛЕНА ОШИБКА
     int count = std::min(10, static_cast<int>(sortedStops.size()));

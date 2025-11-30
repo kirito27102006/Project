@@ -28,8 +28,7 @@ ValidationService::ValidationResult ValidationService::validateRouteData(int rou
         }
     }
 
-    ValidationResult daysValidation = validateDays(days);
-    if (!daysValidation.isValid) {
+    if (auto daysValidation = validateDays(days); !daysValidation.isValid) {
         return daysValidation;
     }
 

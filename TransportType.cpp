@@ -4,16 +4,16 @@ TransportType::TransportType(Type type) : type(type) {}
 
 TransportType::TransportType(const QString& typeName) {
     if (typeName == "автобус" || typeName == "bus") {
-        type = BUS;
+        type = Type::BUS;
     }
     else if (typeName == "троллейбус" || typeName == "trolleybus") {
-        type = TROLLEYBUS;
+        type = Type::TROLLEYBUS;
     }
     else if (typeName == "трамвай" || typeName == "tram") {
-        type = TRAM;
+        type = Type::TRAM;
     }
     else {
-        type = BUS;
+        type = Type::BUS;
     }
 }
 
@@ -25,18 +25,18 @@ TransportType::Type TransportType::getType() const {
 
 QString TransportType::getName() const {
     switch (type) {
-    case BUS: return "автобус";
-    case TROLLEYBUS: return "троллейбус";
-    case TRAM: return "трамвай";
+    case Type::BUS: return "автобус";
+    case Type::TROLLEYBUS: return "троллейбус";
+    case Type::TRAM: return "трамвай";
     default: return "автобус";
     }
 }
 
 QString TransportType::getShortName() const {
     switch (type) {
-    case BUS: return "А";
-    case TROLLEYBUS: return "Тб";
-    case TRAM: return "Тм";
+    case Type::BUS: return "А";
+    case Type::TROLLEYBUS: return "Тб";
+    case Type::TRAM: return "Тм";
     default: return "А";
     }
 }

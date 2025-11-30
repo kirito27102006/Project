@@ -1,5 +1,6 @@
 #include "MainWindow.h"
 #include <QIcon>
+#include <ranges>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), schedule(new TransportSchedule("transport_schedule.dat", this)) {
@@ -92,10 +93,10 @@ void MainWindow::populateTable() {
 
     // Сортируем маршруты по номеру в порядке возрастания
     auto sortedSchedules = allSchedules;
-    std::sort(sortedSchedules.begin(), sortedSchedules.end(),
-              [](const Schedule& a, const Schedule& b) {
-                  return a.getRoute().getRouteNumber() < b.getRoute().getRouteNumber();
-              });
+    std::ranges::sort(sortedSchedules,
+                      [](const Schedule& a, const Schedule& b) {
+                          return a.getRoute().getRouteNumber() < b.getRoute().getRouteNumber();
+                      });
 
     for (auto i = 0; i < sortedSchedules.size(); ++i) {
         const auto& sched = sortedSchedules[i];

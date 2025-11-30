@@ -138,7 +138,8 @@ Schedule ScheduleReader::readSingleSchedule(QTextStream& in,
         throw TimeFormatException("Invalid time format in schedule");
     }
 
-    bool ok1, ok2;
+    bool ok1;
+    bool ok2;
     int startHour = timeParts[0].toInt(&ok1);
     int startMinute = timeParts[1].toInt(&ok2);
 
