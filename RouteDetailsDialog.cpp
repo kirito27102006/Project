@@ -10,7 +10,9 @@ RouteDetailsDialog::RouteDetailsDialog(TransportSchedule* transportSchedule, con
     : QDialog(parent), transportSchedule(transportSchedule), currentSchedule(schedule),
     originalRoute(schedule.getRoute()) {
     setupUI(schedule.getRoute(), schedule.getStartTime());
-    setWindowTitle(QString("Маршрут %1 №%2").arg(schedule.getRoute().getTransport().getType().getName()).arg(schedule.getRoute().getRouteNumber()));
+    setWindowTitle(QString("Маршрут %1 №%2")
+                   .arg(schedule.getRoute().getTransport().getType().getName(),
+                        QString::number(schedule.getRoute().getRouteNumber())));
     setMinimumSize(800, 600);
 }
 
@@ -146,7 +148,7 @@ void RouteDetailsDialog::populateStopRow(int row, const RouteStop& stop, int tot
     stopsTable->setItem(row, 3, travelItem);
 }
 
-QString RouteDetailsDialog::formatStopName(const QString& name, int index, int totalStops) {
+QString RouteDetailsDialog::formatStopName(const QString& name, int index, int totalStops) const {
     if (index == 0) {
         return "▶ " + name + " (начало)";
     }
@@ -184,7 +186,7 @@ bool RouteDetailsDialog::shouldBeEditable(int col, int row, int totalStops) cons
     return (col == 1 && row > 0 && row < totalStops - 1) || (col == 3 && row > 0);
 }
 
-void RouteDetailsDialog::removeFormattingSymbol(QTableWidgetItem* item) {
+void RouteDetailsDialog::removeFormattingSymbol(QTableWidgetItem* item) const {
     auto text = item->text();
     if (text.startsWith("● ")) {
         item->setText(text.mid(2));
@@ -332,7 +334,7 @@ TimeTransport RouteDetailsDialog::calculateArrivalTime(int stopIndex) {
     return previousTime.addMinutes(travelTime);
 }
 
-QString RouteDetailsDialog::extractStopNameFromTable(int row) {
+QString RouteDetailsDialog::extractStopNameFromTable(int row) const {
     auto stopName = stopsTable->item(row, 1)->text();
 
     // Убираем символы оформления если они есть
@@ -386,7 +388,7 @@ bool RouteDetailsDialog::validateRouteData(const QVector<QSharedPointer<Stop>>& 
     return true;
 }
 
-QStringList RouteDetailsDialog::parseDays() {
+QStringList RouteDetailsDialog::parseDays() const {
     QStringList days = daysCombo->currentText().split(",", Qt::SkipEmptyParts);
     for (auto& day : days) {
         day = day.trimmed();

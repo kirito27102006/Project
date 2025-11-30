@@ -9,8 +9,8 @@ public:
 
     QString getName() const;
     QString getCoordinate() const;
-    void setName(const QString& name);
-    void setCoordinate(const QString& coordinate);
+    void setName(const QString& newName);
+    void setCoordinate(const QString& newCoordinate);
 
     bool operator==(const Stop& other) const;
 

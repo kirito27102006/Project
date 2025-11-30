@@ -68,7 +68,9 @@ int ArrivalTimeService::calculateWaitTime(const TimeTransport& currentTime, cons
 QString ArrivalTimeService::formatWaitTime(int waitMinutes)
 {
     if (waitMinutes >= 60) {
-        return QString("%1 ч %2 мин").arg(waitMinutes / 60).arg(waitMinutes % 60);
+        return QString("%1 ч %2 мин")
+               .arg(waitMinutes / 60)
+               .arg(waitMinutes % 60);
     } else {
         return QString("%1 мин").arg(waitMinutes);
     }

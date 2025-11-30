@@ -77,8 +77,8 @@ QStringList Route::getDays() const {
     return days;
 }
 
-void Route::setDays(const QStringList& days) {
-    this->days = days;
+void Route::setDays(const QStringList& newDays) {
+    days = newDays;
 }
 
 QVector<int> Route::getTravelTimes() const {

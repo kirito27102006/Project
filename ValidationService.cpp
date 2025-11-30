@@ -1,6 +1,7 @@
 #include "ValidationService.h"
 #include "DayOfWeekService.h"
 #include <QRegularExpression>
+#include <ranges>
 
 ValidationService::ValidationResult ValidationService::validateRouteData(int routeNumber,
                                                                          const QVector<QSharedPointer<Stop>>& stops,
@@ -18,7 +19,8 @@ ValidationService::ValidationResult ValidationService::validateRouteData(int rou
     if (travelTimes.size() != stops.size() - 1) {
         return ValidationResult(false,
                                 QString("Количество временных интервалов (%1) должно соответствовать количеству перегонов (%2)")
-                                    .arg(travelTimes.size()).arg(stops.size() - 1));
+                                    .arg(travelTimes.size())
+                                    .arg(stops.size() - 1));
     }
 
     for (int i = 0; i < travelTimes.size(); ++i) {
@@ -69,7 +71,9 @@ ValidationService::ValidationResult ValidationService::validateTravelTimes(const
 {
     if (travelTimes.size() != expectedCount) {
         return ValidationResult(false,
-                                QString("Ожидается %1 временных интервалов, получено %2").arg(expectedCount).arg(travelTimes.size()));
+                                QString("Ожидается %1 временных интервалов, получено %2")
+                                    .arg(expectedCount)
+                                    .arg(travelTimes.size()));
     }
 
     for (int time : travelTimes) {
@@ -83,18 +87,15 @@ ValidationService::ValidationResult ValidationService::validateTravelTimes(const
 
 bool ValidationService::isRouteNumberUnique(int routeNumber, const QVector<Route>& existingRoutes)
 {
-    for (const auto& route : existingRoutes) {
-        if (route.getRouteNumber() == routeNumber) {
-            return false;
-        }
-    }
-    return true;
+    return !std::ranges::any_of(existingRoutes,
+                                 [routeNumber](const Route& route) {
+                                     return route.getRouteNumber() == routeNumber;
+                                 });
 }
 
 ValidationService::ValidationResult ValidationService::validateTransportType(const QString& transportType)
 {
-    QStringList validTypes = {"автобус", "троллейбус", "трамвай"};
-    if (!validTypes.contains(transportType.toLower())) {
+    if (const QStringList validTypes = {"автобус", "троллейбус", "трамвай"}; !validTypes.contains(transportType.toLower())) {
         return ValidationResult(false, "Неверный тип транспорта. Допустимые значения: автобус, троллейбус, трамвай");
     }
 
@@ -111,7 +112,9 @@ ValidationService::ValidationResult ValidationService::validateDays(const QStrin
     for (const QString& day : days) {
         if (!validDays.contains(day.toLower())) {
             return ValidationResult(false,
-                                    QString("Неверный день недели: '%1'. Допустимые значения: %2").arg(day).arg(validDays.join(", ")));
+                                    QString("Неверный день недели: '%1'. Допустимые значения: %2")
+                                        .arg(day)
+                                        .arg(validDays.join(", ")));
         }
     }
 

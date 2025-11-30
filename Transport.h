@@ -6,7 +6,7 @@
 
 class Transport {
 public:
-    Transport(const TransportType& type, int id);
+    Transport(const TransportType& transportType, int transportId);
 
     TransportType getType() const;
     int getId() const;

@@ -11,12 +11,12 @@ QString Stop::getCoordinate() const {
     return coordinate;
 }
 
-void Stop::setName(const QString& name) {
-    this->name = name;
+void Stop::setName(const QString& newName) {
+    name = newName;
 }
 
-void Stop::setCoordinate(const QString& coordinate) {
-    this->coordinate = coordinate;
+void Stop::setCoordinate(const QString& newCoordinate) {
+    coordinate = newCoordinate;
 }
 
 bool Stop::operator==(const Stop& other) const {

@@ -73,7 +73,8 @@ StatisticsService::StopStats StatisticsService::calculateStopStatistics(const QV
 
     // Находим самые популярные остановки
     QVector<QPair<QString, int>> sortedStops;
-    for (auto it = usageCount.begin(); it != usageCount.end(); ++it) {
+    sortedStops.reserve(usageCount.size());
+    for (auto it = usageCount.constBegin(); it != usageCount.constEnd(); ++it) {
         sortedStops.append(qMakePair(it.key(), it.value()));
     }
 

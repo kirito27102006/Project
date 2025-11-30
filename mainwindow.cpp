@@ -98,22 +98,22 @@ void MainWindow::populateTable() {
                           return a.getRoute().getRouteNumber() < b.getRoute().getRouteNumber();
                       });
 
-    for (auto i = 0; i < sortedSchedules.size(); ++i) {
-        const auto& sched = sortedSchedules[i];
+    int row = 0;
+    for (const auto& sched : sortedSchedules) {
         const auto& route = sched.getRoute();
         auto routeNumber = route.getRouteNumber();
 
-        routesTable->insertRow(i);
-        routesTable->setItem(i, 0, new QTableWidgetItem(QString::number(routeNumber)));
-        routesTable->setItem(i, 1, new QTableWidgetItem(route.getTransport().getType().getName()));
-        routesTable->setItem(i, 2, new QTableWidgetItem(route.getStartStop()->getName()));
-        routesTable->setItem(i, 3, new QTableWidgetItem(route.getEndStop()->getName()));
-        routesTable->setItem(i, 4, new QTableWidgetItem(sched.getStartTime().toString()));
-        routesTable->setItem(i, 5, new QTableWidgetItem(route.getDays().join(", ")));
+        routesTable->insertRow(row);
+        routesTable->setItem(row, 0, new QTableWidgetItem(QString::number(routeNumber)));
+        routesTable->setItem(row, 1, new QTableWidgetItem(route.getTransport().getType().getName()));
+        routesTable->setItem(row, 2, new QTableWidgetItem(route.getStartStop()->getName()));
+        routesTable->setItem(row, 3, new QTableWidgetItem(route.getEndStop()->getName()));
+        routesTable->setItem(row, 4, new QTableWidgetItem(sched.getStartTime().toString()));
+        routesTable->setItem(row, 5, new QTableWidgetItem(route.getDays().join(", ")));
 
         // Центрируем текст в ячейках
         for (auto col = 0; col < 6; ++col) {
-            auto* item = routesTable->item(i, col);
+            auto* item = routesTable->item(row, col);
             if (item) {
                 item->setTextAlignment(Qt::AlignCenter);
             }
@@ -155,7 +155,8 @@ void MainWindow::populateTable() {
         buttonsLayout->addWidget(deleteButton);
         buttonsLayout->setAlignment(Qt::AlignCenter);
 
-        routesTable->setCellWidget(i, 6, buttonsWidget);
+        routesTable->setCellWidget(row, 6, buttonsWidget);
+        ++row;
     }
 
     // Настраиваем ширину колонок
@@ -216,7 +217,9 @@ void MainWindow::showStatistics() {
         statsText += QString("\nСамые популярные остановки:\n");
         auto count = std::min(3, static_cast<int>(stopStats.mostPopularStops.size()));
         for (auto i = 0; i < count; ++i) {
-            statsText += QString("  %1. %2\n").arg(i + 1).arg(stopStats.mostPopularStops[i]->getName());
+            statsText += QString("  %1. %2\n")
+                         .arg(i + 1)
+                         .arg(stopStats.mostPopularStops[i]->getName());
         }
     }
 

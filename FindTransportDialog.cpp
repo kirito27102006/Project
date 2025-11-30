@@ -141,7 +141,9 @@ void FindTransportDialog::findNextTransport() {
 
         QString waitTime;
         if (waitMinutes >= 60) {
-            waitTime = QString("%1 ч %2 мин").arg(waitMinutes / 60).arg(waitMinutes % 60);
+            waitTime = QString("%1 ч %2 мин")
+                       .arg(waitMinutes / 60)
+                       .arg(waitMinutes % 60);
         } else {
             waitTime = QString("%1 мин").arg(waitMinutes);
         }

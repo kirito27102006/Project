@@ -185,7 +185,8 @@ bool AddRouteDialog::validateInput() {
         QMessageBox::warning(this, "Ошибка",
                              QString("Количество временных интервалов (%1) должно соответствовать количеству перегонов (%2)\n\n"
                                      "Пример: для маршрута с 3 остановками нужно 2 временных интервала")
-                                 .arg(travelTimes.size()).arg(totalStops - 1));
+                                 .arg(travelTimes.size())
+                                 .arg(totalStops - 1));
         return false;
     }
 

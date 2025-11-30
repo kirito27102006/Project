@@ -1,6 +1,6 @@
 #include "Transport.h"
 
-Transport::Transport(const TransportType& type, int id) : type(type), id(id) {}
+Transport::Transport(const TransportType& transportType, int transportId) : type(transportType), id(transportId) {}
 
 // УДАЛЕНО: Лишний конструктор копирования TransportType
 
