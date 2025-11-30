@@ -54,8 +54,10 @@ void TransportSchedule::addRoute(const Transport& transport, QSharedPointer<Stop
     allStops.push_back(endStop);
 
     // Добавляем остановки в маршрут
-    for (int i = 1; i < allStops.size() - 1; ++i) {
-        route.addStop(allStops[i], travelTimes[i - 1]);
+    const int intermediateStopCount = allStops.size() >= 2 ? static_cast<int>(allStops.size()) - 2 : 0;
+    for (int i = 0; i < intermediateStopCount; ++i) {
+        const int stopIndex = i + 1;
+        route.addStop(allStops[stopIndex], travelTimes[i]);
     }
 
     // Добавляем время до конечной остановки

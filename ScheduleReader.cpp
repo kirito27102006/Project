@@ -205,9 +205,11 @@ Schedule ScheduleReader::readSingleSchedule(QTextStream& in,
     route.setDays(days);
 
     // Add intermediate stops
-    for (int j = 1; j < routeStops.size() - 1; ++j) {
-        int travelTime = (j - 1 < travelTimes.size()) ? travelTimes[j - 1] : 5; // default 5 minutes
-        route.addStop(routeStops[j], travelTime);
+    const int intermediateStopCount = routeStops.size() >= 2 ? static_cast<int>(routeStops.size()) - 2 : 0;
+    for (int j = 0; j < intermediateStopCount; ++j) {
+        const int stopIndex = j + 1;
+        int travelTime = (j < travelTimes.size()) ? travelTimes[j] : 5; // default 5 minutes
+        route.addStop(routeStops[stopIndex], travelTime);
     }
 
     // Add final travel time

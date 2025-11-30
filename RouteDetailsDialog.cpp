@@ -387,8 +387,10 @@ void RouteDetailsDialog::saveRoute() {
         Route newRoute(originalTransport, stops[0], stops[stops.size() - 1]);
 
         // Добавляем промежуточные остановки
-        for (auto i = 1; i < stops.size() - 1; ++i) {
-            newRoute.addStop(stops[i], travelTimes[i - 1]);
+        const int intermediateStopCount = stops.size() >= 2 ? static_cast<int>(stops.size()) - 2 : 0;
+        for (int i = 0; i < intermediateStopCount; ++i) {
+            const int stopIndex = i + 1;
+            newRoute.addStop(stops[stopIndex], travelTimes[i]);
         }
 
         // Добавляем время до конечной остановки
@@ -424,14 +426,14 @@ void RouteDetailsDialog::saveRoute() {
     } catch (const std::invalid_argument& e) {
         QMessageBox::critical(this, "Ошибка ввода данных",
                               QString("Ошибка при сохранении маршрута: %1").arg(e.what()));
-    } catch (const std::runtime_error& e) {
-        QMessageBox::critical(this, "Ошибка выполнения",
-                              QString("Ошибка при сохранении маршрута: %1").arg(e.what()));
     } catch (const std::out_of_range& e) {
         QMessageBox::critical(this, "Ошибка диапазона",
                               QString("Ошибка при сохранении маршрута: %1").arg(e.what()));
     } catch (const std::logic_error& e) {
         QMessageBox::critical(this, "Логическая ошибка",
+                              QString("Ошибка при сохранении маршрута: %1").arg(e.what()));
+    } catch (const std::runtime_error& e) {
+        QMessageBox::critical(this, "Ошибка выполнения",
                               QString("Ошибка при сохранении маршрута: %1").arg(e.what()));
     } catch (const std::exception& e) {
         QMessageBox::critical(this, "Неизвестная ошибка",
