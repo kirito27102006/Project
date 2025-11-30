@@ -53,3 +53,11 @@
 21295	26080	7862038181773946	CMakeFiles/yyy.dir/ValidationService.cpp.obj	8a9b897fbe1f1430
 21991	26216	7862038188728495	CMakeFiles/yyy.dir/StatisticsService.cpp.obj	28a0998658f2ad7e
 26216	28529	7862038230974547	yyy.exe	ccda2769495ecab5
+16	1013	7862050634347729	yyy_autogen/timestamp	da441e8c0ec39a6f
+16	1013	7862050634347729	yyy_autogen/mocs_compilation.cpp	da441e8c0ec39a6f
+16	1013	7862050634347729	C:/Users/Asus/Desktop/yyy/yyy/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug/yyy_autogen/timestamp	da441e8c0ec39a6f
+16	1013	7862050634347729	C:/Users/Asus/Desktop/yyy/yyy/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug/yyy_autogen/mocs_compilation.cpp	da441e8c0ec39a6f
+1108	5284	7862050636015586	CMakeFiles/yyy.dir/NotificationService.cpp.obj	a926f7f86e2f186
+1015	6701	7862050635079024	CMakeFiles/yyy.dir/yyy_autogen/mocs_compilation.cpp.obj	f333715f60a049db
+1099	6785	7862050635923220	CMakeFiles/yyy.dir/FindTransportDialog.cpp.obj	31e855d60dc9596c
+6785	9363	7862050692779369	yyy.exe	ccda2769495ecab5

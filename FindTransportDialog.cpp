@@ -116,8 +116,8 @@ void FindTransportDialog::findNextTransport() {
     }
 
     // Исправлено: безопасный цикл с правильной обработкой исключений
-    for (size_t i = 0; i < nextSchedules.size(); ++i) {
-        const auto& sched = nextSchedules[i];
+    int row = 0;
+    for (const auto& sched : nextSchedules) {
         const auto& route = sched.getRoute();
 
         TimeTransport arrivalTime;
@@ -126,7 +126,7 @@ void FindTransportDialog::findNextTransport() {
         } catch (const std::out_of_range& e) {
             qDebug() << "Остановка не найдена в маршруте:" << e.what();
             continue;
-        } catch (const std::runtime_error& e) {
+        } catch (const std::exception& e) {
             qDebug() << "Ошибка получения времени прибытия:" << e.what();
             continue;
         }
@@ -146,18 +146,19 @@ void FindTransportDialog::findNextTransport() {
             waitTime = QString("%1 мин").arg(waitMinutes);
         }
 
-        nextTransportTable->setItem(i, 0, new QTableWidgetItem(QString::number(route.getRouteNumber())));
-        nextTransportTable->setItem(i, 1, new QTableWidgetItem(route.getTransport().getType().getName()));
-        nextTransportTable->setItem(i, 2, new QTableWidgetItem(arrivalTime.toString()));
-        nextTransportTable->setItem(i, 3, new QTableWidgetItem(waitTime));
-        nextTransportTable->setItem(i, 4, new QTableWidgetItem(route.getEndStop()->getName()));
+        nextTransportTable->setItem(row, 0, new QTableWidgetItem(QString::number(route.getRouteNumber())));
+        nextTransportTable->setItem(row, 1, new QTableWidgetItem(route.getTransport().getType().getName()));
+        nextTransportTable->setItem(row, 2, new QTableWidgetItem(arrivalTime.toString()));
+        nextTransportTable->setItem(row, 3, new QTableWidgetItem(waitTime));
+        nextTransportTable->setItem(row, 4, new QTableWidgetItem(route.getEndStop()->getName()));
 
         for (auto col = 0; col < 5; ++col) {
-            auto* item = nextTransportTable->item(i, col);
+            auto* item = nextTransportTable->item(row, col);
             if (item) {
                 item->setTextAlignment(Qt::AlignCenter);
             }
         }
+        ++row;
     }
 
     nextTransportTable->resizeColumnsToContents();

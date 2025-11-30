@@ -25,7 +25,7 @@ signals:
     void questionAnswered(bool answer);
 
 private:
-    bool lastAnswer;
+    bool lastAnswer = false;
 };
 
 #endif // NOTIFICATIONSERVICE_H

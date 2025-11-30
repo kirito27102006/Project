@@ -1,7 +1,7 @@
 #include "NotificationService.h"
 
 NotificationService::NotificationService(QObject* parent)
-    : QObject(parent), lastAnswer(false)
+    : QObject(parent)
 {
 }
 
