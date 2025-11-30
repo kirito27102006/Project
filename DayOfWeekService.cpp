@@ -2,14 +2,7 @@
 #include <QMap>
 #include <algorithm>
 
-// Определение констант
-constexpr const char* DayOfWeekService::MONDAY;
-constexpr const char* DayOfWeekService::TUESDAY;
-constexpr const char* DayOfWeekService::WEDNESDAY;
-constexpr const char* DayOfWeekService::THURSDAY;
-constexpr const char* DayOfWeekService::FRIDAY;
-constexpr const char* DayOfWeekService::SATURDAY;
-constexpr const char* DayOfWeekService::SUNDAY;
+// УДАЛЕНЫ неиспользуемые определения констант
 
 QString DayOfWeekService::getCurrentDay()
 {
@@ -19,7 +12,7 @@ QString DayOfWeekService::getCurrentDay()
 
 QStringList DayOfWeekService::getAllDays()
 {
-    return { MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY };
+    return {"пн", "вт", "ср", "чт", "пт", "сб", "вс"};
 }
 
 QStringList DayOfWeekService::parseDaysString(const QString& daysString)
@@ -67,19 +60,19 @@ QString DayOfWeekService::translateDay(const QString& day)
     auto lowerDay = day.toLower();
 
     if (lowerDay == "понедельник" || lowerDay == "понед" || lowerDay == "mon" || lowerDay == "monday")
-        return MONDAY;
+        return "пн";
     else if (lowerDay == "вторник" || lowerDay == "втор" || lowerDay == "tue" || lowerDay == "tuesday")
-        return TUESDAY;
+        return "вт";
     else if (lowerDay == "среда" || lowerDay == "сред" || lowerDay == "wed" || lowerDay == "wednesday")
-        return WEDNESDAY;
+        return "ср";
     else if (lowerDay == "четверг" || lowerDay == "четв" || lowerDay == "thu" || lowerDay == "thursday")
-        return THURSDAY;
+        return "чт";
     else if (lowerDay == "пятница" || lowerDay == "пятн" || lowerDay == "fri" || lowerDay == "friday")
-        return FRIDAY;
+        return "пт";
     else if (lowerDay == "суббота" || lowerDay == "субб" || lowerDay == "sat" || lowerDay == "saturday")
-        return SATURDAY;
+        return "сб";
     else if (lowerDay == "воскресенье" || lowerDay == "воскр" || lowerDay == "sun" || lowerDay == "sunday")
-        return SUNDAY;
+        return "вс";
     else
         return day.left(2).toLower();
 }
@@ -87,13 +80,13 @@ QString DayOfWeekService::translateDay(const QString& day)
 QString DayOfWeekService::getDayName(int dayOfWeek)
 {
     switch(dayOfWeek) {
-    case 1: return MONDAY;
-    case 2: return TUESDAY;
-    case 3: return WEDNESDAY;
-    case 4: return THURSDAY;
-    case 5: return FRIDAY;
-    case 6: return SATURDAY;
-    case 7: return SUNDAY;
-    default: return MONDAY;
+    case 1: return "пн";
+    case 2: return "вт";
+    case 3: return "ср";
+    case 4: return "чт";
+    case 5: return "пт";
+    case 6: return "сб";
+    case 7: return "вс";
+    default: return "пн";
     }
 }

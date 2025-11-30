@@ -25,14 +25,12 @@ private:
     Type type;
 };
 
-// Константы для типов транспорта
-constexpr const char* TRANSPORT_BUS_NAME = "автобус";
-constexpr const char* TRANSPORT_TROLLEYBUS_NAME = "троллейбус";
-constexpr const char* TRANSPORT_TRAM_NAME = "трамвай";
-
-// Константы для коротких имен
-constexpr const char* TRANSPORT_BUS_SHORT = "А";
-constexpr const char* TRANSPORT_TROLLEYBUS_SHORT = "Тб";
-constexpr const char* TRANSPORT_TRAM_SHORT = "Тм";
+// УДАЛЕНЫ неиспользуемые константы - они нигде не используются
+// constexpr const char* TRANSPORT_BUS_NAME = "автобус";
+// constexpr const char* TRANSPORT_TROLLEYBUS_NAME = "троллейбус";
+// constexpr const char* TRANSPORT_TRAM_NAME = "трамвай";
+// constexpr const char* TRANSPORT_BUS_SHORT = "А";
+// constexpr const char* TRANSPORT_TROLLEYBUS_SHORT = "Тб";
+// constexpr const char* TRANSPORT_TRAM_SHORT = "Тм";
 
 #endif

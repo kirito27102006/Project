@@ -23,8 +23,6 @@ TransportSchedule::TransportSchedule(const QString& file, QObject* parent)
     loadFromFile();
 }
 
-// Деструктор использует = default в заголовочном файле
-
 void TransportSchedule::addRoute(const Transport& transport, QSharedPointer<Stop> startStop,
                                  QSharedPointer<Stop> endStop, const QVector<QSharedPointer<Stop>>& intermediateStops,
                                  const QVector<int>& travelTimes, const QStringList& days, const TimeTransport& startTime)
@@ -199,7 +197,7 @@ void TransportSchedule::loadFromFile() {
         return;
     }
 
-    // Используем лямбду с правильной сигнатурой
+    // Используем лямбду с правильной сигнатураой
     auto stopCreator = [this](const QString& name, const QString& coordinate) {
         return findOrCreateStop(name, coordinate);
     };
@@ -339,7 +337,7 @@ QString TransportSchedule::getCurrentDayOfWeek() const
     return DayOfWeekService::getCurrentDay();
 }
 
-// Новые методы с использованием сервисов
+// ВОССТАНОВЛЕНЫ методы статистики - они используются в mainwindow.cpp
 StatisticsService::RouteStats TransportSchedule::getRouteStatistics() const
 {
     return StatisticsService::calculateRouteStatistics(schedules);

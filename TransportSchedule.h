@@ -59,7 +59,7 @@ public:
     QSharedPointer<Stop> findOrCreateStop(const QString& name, const QString& coordinate = "");
     QVector<QSharedPointer<Stop>> getActiveStops() const;
 
-    // Новые методы с использованием сервисов
+    // ВОССТАНОВЛЕНЫ методы статистики - они используются в mainwindow.cpp
     StatisticsService::RouteStats getRouteStatistics() const;
     StatisticsService::StopStats getStopStatistics() const;
     QMap<QString, int> getDailyScheduleCount() const;

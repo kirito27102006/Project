@@ -19,11 +19,14 @@ private:
     QString coordinate;
 };
 
+// УДАЛЕН неиспользуемый класс EndStop - он нигде не используется
+/*
 class EndStop : public Stop {
 public:
     explicit EndStop(const QString& name = "", const QString& coordinate = "");
 
     bool isTerminal() const;
 };
+*/
 
 #endif
