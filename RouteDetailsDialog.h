@@ -18,7 +18,7 @@ class RouteDetailsDialog : public QDialog {
     Q_OBJECT
 
 public:
-    RouteDetailsDialog(TransportSchedule* transportSchedule, const Schedule& schedule, QWidget *parent = nullptr);
+    explicit RouteDetailsDialog(TransportSchedule* transportSchedule, const Schedule& schedule, QWidget *parent = nullptr);
 
 private slots:
     void editRoute();

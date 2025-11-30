@@ -31,8 +31,8 @@ private:
     ScheduleWriter* scheduleWriter;
 
 public:
-    TransportSchedule(const QString& file, QObject* parent = nullptr);
-    ~TransportSchedule() override;
+    explicit TransportSchedule(const QString& file, QObject* parent = nullptr);
+    ~TransportSchedule() override = default;
 
     void addRoute(const Transport& transport, QSharedPointer<Stop> startStop,
                   QSharedPointer<Stop> endStop, const QVector<QSharedPointer<Stop>>& intermediateStops,

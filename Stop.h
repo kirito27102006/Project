@@ -5,7 +5,7 @@
 
 class Stop {
 public:
-    Stop(const QString& name = "", const QString& coordinate = "");
+    explicit Stop(const QString& name = "", const QString& coordinate = "");
 
     QString getName() const;
     QString getCoordinate() const;
@@ -14,14 +14,14 @@ public:
 
     bool operator==(const Stop& other) const;
 
-protected:
+private:
     QString name;
     QString coordinate;
 };
 
 class EndStop : public Stop {
 public:
-    EndStop(const QString& name = "", const QString& coordinate = "");
+    explicit EndStop(const QString& name = "", const QString& coordinate = "");
 
     bool isTerminal() const;
 };

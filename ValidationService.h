@@ -14,7 +14,7 @@ public:
         bool isValid;
         QString errorMessage;
 
-        ValidationResult(bool valid = true, const QString& message = "")
+        explicit ValidationResult(bool valid = true, const QString& message = "")
             : isValid(valid), errorMessage(message) {}
     };
 

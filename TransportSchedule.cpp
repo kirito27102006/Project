@@ -23,10 +23,7 @@ TransportSchedule::TransportSchedule(const QString& file, QObject* parent)
     loadFromFile();
 }
 
-TransportSchedule::~TransportSchedule()
-{
-    // QObject автоматически удалит дочерние объекты
-}
+// Деструктор использует = default в заголовочном файле
 
 void TransportSchedule::addRoute(const Transport& transport, QSharedPointer<Stop> startStop,
                                  QSharedPointer<Stop> endStop, const QVector<QSharedPointer<Stop>>& intermediateStops,

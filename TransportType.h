@@ -9,7 +9,7 @@ public:
     enum class Type { BUS, TROLLEYBUS, TRAM };
 
     explicit TransportType(Type type);
-    TransportType(const QString& typeName);
+    explicit TransportType(const QString& typeName);
     TransportType(const TransportType& other) = default; // Используем default implementation
 
     Type getType() const;

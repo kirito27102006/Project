@@ -13,13 +13,13 @@ public:
     QSharedPointer<Stop> stop;
     TimeTransport arrivalTime;
 
-    RouteStop(QSharedPointer<Stop> stop, const TimeTransport& time);
+    explicit RouteStop(QSharedPointer<Stop> stop, const TimeTransport& time);
     QString getName() const;
 };
 
 class Route {
 public:
-    Route(const Transport& transport, QSharedPointer<Stop> start, QSharedPointer<Stop> end);
+    explicit Route(const Transport& transport, QSharedPointer<Stop> start, QSharedPointer<Stop> end);
 
     void addStop(QSharedPointer<Stop> stop, int travelTimeFromPrevious);
     void addFinalTravelTime(int travelTime);

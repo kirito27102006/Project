@@ -6,7 +6,7 @@
 
 class Schedule {
 public:
-    Schedule(const Route& route, const TimeTransport& startTime);
+    explicit Schedule(const Route& route, const TimeTransport& startTime);
 
     Route getRoute() const;
     TimeTransport getStartTime() const;

@@ -10,7 +10,7 @@ public:
     int hours;
     int minutes;
 
-    TimeTransport(int h = 0, int m = 0);
+    explicit TimeTransport(int h = 0, int m = 0);
     QString toString() const;
     auto operator<=>(const TimeTransport& other) const = default;
     bool operator==(const TimeTransport& other) const;
