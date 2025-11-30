@@ -1,6 +1,7 @@
 C:/Users/Asus/Desktop/yyy/yyy/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug/yyy_autogen/EWIEGA46WW/moc_ScheduleReader.cpp: C:/Users/Asus/Desktop/yyy/yyy/ScheduleReader.h \
   C:/Users/Asus/Desktop/yyy/yyy/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug/yyy_autogen/moc_predefs.h \
   C:/Qt/6.9.3/mingw_64/include/QtCore/QDataStream \
+  C:/Qt/6.9.3/mingw_64/include/QtCore/QDebug \
   C:/Qt/6.9.3/mingw_64/include/QtCore/QFile \
   C:/Qt/6.9.3/mingw_64/include/QtCore/QObject \
   C:/Qt/6.9.3/mingw_64/include/QtCore/QSharedPointer \
@@ -37,8 +38,10 @@ C:/Users/Asus/Desktop/yyy/yyy/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug/yyy_auto
   C:/Qt/6.9.3/mingw_64/include/QtCore/qcontainerfwd.h \
   C:/Qt/6.9.3/mingw_64/include/QtCore/qcontainerinfo.h \
   C:/Qt/6.9.3/mingw_64/include/QtCore/qcontainertools_impl.h \
+  C:/Qt/6.9.3/mingw_64/include/QtCore/qcontiguouscache.h \
   C:/Qt/6.9.3/mingw_64/include/QtCore/qdarwinhelpers.h \
   C:/Qt/6.9.3/mingw_64/include/QtCore/qdatastream.h \
+  C:/Qt/6.9.3/mingw_64/include/QtCore/qdebug.h \
   C:/Qt/6.9.3/mingw_64/include/QtCore/qexceptionhandling.h \
   C:/Qt/6.9.3/mingw_64/include/QtCore/qfile.h \
   C:/Qt/6.9.3/mingw_64/include/QtCore/qfiledevice.h \
@@ -50,6 +53,7 @@ C:/Users/Asus/Desktop/yyy/yyy/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug/yyy_auto
   C:/Qt/6.9.3/mingw_64/include/QtCore/qgenericatomic.h \
   C:/Qt/6.9.3/mingw_64/include/QtCore/qglobal.h \
   C:/Qt/6.9.3/mingw_64/include/QtCore/qglobalstatic.h \
+  C:/Qt/6.9.3/mingw_64/include/QtCore/qhash.h \
   C:/Qt/6.9.3/mingw_64/include/QtCore/qhashfunctions.h \
   C:/Qt/6.9.3/mingw_64/include/QtCore/qiodevice.h \
   C:/Qt/6.9.3/mingw_64/include/QtCore/qiodevicebase.h \
@@ -59,6 +63,7 @@ C:/Users/Asus/Desktop/yyy/yyy/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug/yyy_auto
   C:/Qt/6.9.3/mingw_64/include/QtCore/qlist.h \
   C:/Qt/6.9.3/mingw_64/include/QtCore/qlogging.h \
   C:/Qt/6.9.3/mingw_64/include/QtCore/qmalloc.h \
+  C:/Qt/6.9.3/mingw_64/include/QtCore/qmap.h \
   C:/Qt/6.9.3/mingw_64/include/QtCore/qmath.h \
   C:/Qt/6.9.3/mingw_64/include/QtCore/qmetacontainer.h \
   C:/Qt/6.9.3/mingw_64/include/QtCore/qmetatype.h \
@@ -75,7 +80,9 @@ C:/Users/Asus/Desktop/yyy/yyy/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug/yyy_auto
   C:/Qt/6.9.3/mingw_64/include/QtCore/qrefcount.h \
   C:/Qt/6.9.3/mingw_64/include/QtCore/qscopedpointer.h \
   C:/Qt/6.9.3/mingw_64/include/QtCore/qscopeguard.h \
+  C:/Qt/6.9.3/mingw_64/include/QtCore/qset.h \
   C:/Qt/6.9.3/mingw_64/include/QtCore/qshareddata.h \
+  C:/Qt/6.9.3/mingw_64/include/QtCore/qshareddata_impl.h \
   C:/Qt/6.9.3/mingw_64/include/QtCore/qsharedpointer.h \
   C:/Qt/6.9.3/mingw_64/include/QtCore/qsharedpointer_impl.h \
   C:/Qt/6.9.3/mingw_64/include/QtCore/qspan.h \
@@ -117,6 +124,7 @@ C:/Users/Asus/Desktop/yyy/yyy/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug/yyy_auto
   C:/Qt/6.9.3/mingw_64/include/QtCore/qtypeinfo.h \
   C:/Qt/6.9.3/mingw_64/include/QtCore/qtypes.h \
   C:/Qt/6.9.3/mingw_64/include/QtCore/qutf8stringview.h \
+  C:/Qt/6.9.3/mingw_64/include/QtCore/qvarlengtharray.h \
   C:/Qt/6.9.3/mingw_64/include/QtCore/qvector.h \
   C:/Qt/6.9.3/mingw_64/include/QtCore/qversiontagging.h \
   C:/Qt/6.9.3/mingw_64/include/QtCore/qxptype_traits.h \
@@ -178,7 +186,9 @@ C:/Users/Asus/Desktop/yyy/yyy/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug/yyy_auto
   C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/max_size_type.h \
   C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/memory_resource.h \
   C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/memoryfwd.h \
+  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/mofunc_impl.h \
   C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/move.h \
+  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/move_only_function.h \
   C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/nested_exception.h \
   C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/new_allocator.h \
   C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/node_handle.h \
@@ -218,10 +228,12 @@ C:/Users/Asus/Desktop/yyy/yyy/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug/yyy_auto
   C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_list.h \
   C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_map.h \
   C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_multimap.h \
+  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_multiset.h \
   C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_numeric.h \
   C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_pair.h \
   C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_raw_storage_iter.h \
   C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_relops.h \
+  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_set.h \
   C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_tempbuf.h \
   C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_tree.h \
   C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_uninitialized.h \
@@ -234,6 +246,7 @@ C:/Users/Asus/Desktop/yyy/yyy/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug/yyy_auto
   C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/uniform_int_dist.h \
   C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/unique_ptr.h \
   C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/unordered_map.h \
+  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/unordered_set.h \
   C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/uses_allocator.h \
   C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/uses_allocator_args.h \
   C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/utility.h \
@@ -243,6 +256,7 @@ C:/Users/Asus/Desktop/yyy/yyy/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug/yyy_auto
   C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/cerrno \
   C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/charconv \
   C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/chrono \
+  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/climits \
   C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/clocale \
   C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/cmath \
   C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/codecvt \
@@ -291,9 +305,11 @@ C:/Users/Asus/Desktop/yyy/yyy/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug/yyy_auto
   C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/pstl/glue_numeric_defs.h \
   C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/pstl/pstl_config.h \
   C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/ratio \
+  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/set \
   C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/span \
   C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/sstream \
   C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/stdexcept \
+  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/stdfloat \
   C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/stdlib.h \
   C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/streambuf \
   C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/string \
@@ -315,6 +331,7 @@ C:/Users/Asus/Desktop/yyy/yyy/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug/yyy_auto
   C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/type_traits \
   C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/typeinfo \
   C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/unordered_map \
+  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/unordered_set \
   C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/utility \
   C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/variant \
   C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/vector \

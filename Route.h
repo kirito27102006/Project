@@ -4,9 +4,29 @@
 #include <QVector>
 #include <QString>
 #include <QSharedPointer>
+#include <stdexcept>
 #include "Transport.h"
 #include "Stop.h"
 #include "TimeTransport.h"
+
+// Исключения для маршрутов
+class RouteException : public std::runtime_error {
+public:
+    explicit RouteException(const QString& message)
+        : std::runtime_error(message.toStdString()) {}
+};
+
+class StopNotFoundException : public RouteException {
+public:
+    explicit StopNotFoundException(const QString& stopName)
+        : RouteException(QString("Остановка '%1' не найдена в маршруте").arg(stopName)) {}
+};
+
+class InvalidRouteConfigurationException : public RouteException {
+public:
+    explicit InvalidRouteConfigurationException(const QString& message)
+        : RouteException(QString("Неверная конфигурация маршрута: %1").arg(message)) {}
+};
 
 class RouteStop {
 public:

@@ -1,6 +1,4 @@
 #include "Route.h"
-#include <QException>
-#include <stdexcept>
 #include <QDebug>
 
 RouteStop::RouteStop(QSharedPointer<Stop> stop, const TimeTransport& time)
@@ -16,6 +14,10 @@ Route::Route(const Transport& transport, QSharedPointer<Stop> start, QSharedPoin
 }
 
 void Route::addStop(QSharedPointer<Stop> stop, int travelTimeFromPrevious) {
+    if (!stop) {
+        throw InvalidRouteConfigurationException("Попытка добавить пустую остановку");
+    }
+
     stops.push_back(RouteStop(stop, TimeTransport(0, 0)));
     travelTimes.push_back(travelTimeFromPrevious);
 }
@@ -26,7 +28,9 @@ void Route::addFinalTravelTime(int travelTime) {
 }
 
 void Route::calculateArrivalTimes(const TimeTransport& startTime) {
-    if (stops.empty() || travelTimes.empty()) return;
+    if (stops.empty() || travelTimes.empty()) {
+        throw InvalidRouteConfigurationException("Недостаточно данных для расчета времени прибытия");
+    }
 
     // Начальная остановка - время отправления
     stops[0].arrivalTime = startTime;
@@ -54,7 +58,7 @@ TimeTransport Route::getArrivalTimeAtStop(const QString& stopName) const {
             return routeStop.arrivalTime;
         }
     }
-    throw std::out_of_range(QString("Остановка '%1' не найдена в маршруте").arg(stopName).toStdString());
+    throw StopNotFoundException(stopName);
 }
 
 QVector<RouteStop> Route::getStops() const {

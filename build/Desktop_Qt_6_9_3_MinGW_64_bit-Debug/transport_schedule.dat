@@ -1,4 +1,4 @@
-STOPS:7
+STOPS:9
 цветотрон
 1
 газоаппарат
@@ -13,7 +13,11 @@ STOPS:7
 10
 суворова
 11
-SCHEDULES:1
+zzz
+
+eeee
+
+SCHEDULES:2
 ROUTE_START
 автобус
 1
@@ -32,4 +36,16 @@ TRAVEL_TIMES:4
 4
 5
 6
+ROUTE_END
+ROUTE_START
+автобус
+100
+6 0
+DAYS:1
+сб
+ROUTE_STOPS:2
+zzz
+eeee
+TRAVEL_TIMES:1
+4
 ROUTE_END

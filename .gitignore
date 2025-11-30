@@ -1,3 +1,76 @@
-*.png
-.qtcreator/
+# Qt
+*.pro.user
+*.pro.user.*
+*.autosave
 
+# Build directories
+build-*/
+*/build-*
+*.build
+*.build-Debug
+*.build-Release
+
+# Executables
+*.exe
+*.dll
+*.so
+*.app
+
+# Qt Creator
+*.cmake
+CMakeLists.txt.user*
+*.cbp
+*.creator
+*.config
+*.files
+*.includes
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Distribution / packaging
+*.egg
+*.egg-info
+dist/
+build/
+
+# Logs and databases
+*.log
+*.sql
+*.sqlite
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+install_manifest.txt
+Makefile
+
+# Project specific
+flights.json
+*.json.corrupted

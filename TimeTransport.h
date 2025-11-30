@@ -21,13 +21,26 @@ public:
     explicit TimeTransport(int h = 0, int m = 0);
     QString toString() const;
     auto operator<=>(const TimeTransport& other) const = default;
-    bool operator==(const TimeTransport& other) const;
 
     TimeTransport addMinutes(int minutes) const;
     int toMinutes() const;
 
-    friend QDataStream& operator<<(QDataStream& out, const TimeTransport& time);
-    friend QDataStream& operator>>(QDataStream& in, TimeTransport& time);
+    friend QDataStream& operator<<(QDataStream& out, const TimeTransport& time) {
+        out << time.hours << time.minutes;
+        return out;
+    }
+
+    friend QDataStream& operator>>(QDataStream& in, TimeTransport& time) {
+        in >> time.hours >> time.minutes;
+        if (time.minutes >= TimeTransport::MINUTES_PER_HOUR) {
+            time.hours += time.minutes / TimeTransport::MINUTES_PER_HOUR;
+            time.minutes = time.minutes % TimeTransport::MINUTES_PER_HOUR;
+        }
+        if (time.hours >= TimeTransport::HOURS_PER_DAY) {
+            time.hours = time.hours % TimeTransport::HOURS_PER_DAY;
+        }
+        return in;
+    }
 };
 
 #endif

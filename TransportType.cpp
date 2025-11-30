@@ -43,11 +43,7 @@ QString TransportType::getShortName() const {
 }
 
 int TransportType::getId() const {
-    return static_cast<int>(type);
-}
-
-bool TransportType::operator==(const TransportType& other) const {
-    return type == other.type;
+    return std::to_underlying(type);
 }
 
 QStringList TransportType::getAllTypeNames() {

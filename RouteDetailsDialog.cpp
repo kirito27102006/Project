@@ -11,8 +11,8 @@ RouteDetailsDialog::RouteDetailsDialog(TransportSchedule* transportSchedule, con
     originalRoute(schedule.getRoute()) {
     setupUI(schedule.getRoute(), schedule.getStartTime());
     setWindowTitle(QString("Маршрут %1 №%2")
-                   .arg(schedule.getRoute().getTransport().getType().getName(),
-                        QString::number(schedule.getRoute().getRouteNumber())));
+                       .arg(schedule.getRoute().getTransport().getType().getName(),
+                            QString::number(schedule.getRoute().getRouteNumber())));
     setMinimumSize(800, 600);
 }
 
@@ -158,13 +158,13 @@ QString RouteDetailsDialog::formatStopName(const QString& name, int index, int t
     return "● " + name;
 }
 
-void RouteDetailsDialog::setEditingFlagsForRow(int row, int totalStops) {
+void RouteDetailsDialog::setEditingFlagsForRow(int row, int totalStops)const {
     for (auto col = 0; col < 4; ++col) {
         auto* item = stopsTable->item(row, col);
         if (!item) continue;
 
         item->setTextAlignment(Qt::AlignCenter);
-        
+
         if (!isEditing) {
             item->setFlags(item->flags() & ~Qt::ItemIsEditable);
             continue;
@@ -425,10 +425,24 @@ void RouteDetailsDialog::createAndSaveRoute(const QVector<QSharedPointer<Stop>>&
     // Обновляем маршрут в расписании
     transportSchedule->removeRoute(originalRoute.getRouteNumber());
 
-    // Добавляем обновленный маршрут
-    transportSchedule->addRoute(originalTransport, collectedStops[0], collectedStops[collectedStops.size() - 1],
-                                collectedStops.mid(1, collectedStops.size() - 2), collectedTravelTimes,
-                                days, startTime);
+    // Создаем промежуточные остановки (исключая первую и последнюю)
+    QVector<QSharedPointer<Stop>> intermediateStops;
+    if (collectedStops.size() > 2) {
+        intermediateStops = collectedStops.mid(1, collectedStops.size() - 2);
+    }
+
+    // Используем RouteParams для добавления маршрута
+    TransportSchedule::RouteParams params(
+        originalTransport,
+        collectedStops[0],
+        collectedStops[collectedStops.size() - 1],
+        intermediateStops,
+        collectedTravelTimes,
+        days,
+        startTime
+        );
+
+    transportSchedule->addRoute(params);
 
     // Обновляем текущее расписание
     currentSchedule = newSchedule;
@@ -458,21 +472,16 @@ void RouteDetailsDialog::saveRoute() {
         QMessageBox::information(this, "Успех", "Маршрут успешно сохранен");
         cancelEdit();
 
+    } catch (const InvalidRouteDataException& e) {
+        QMessageBox::critical(this, "Ошибка данных маршрута", e.what());
+    } catch (const RouteNotFoundException& e) {
+        QMessageBox::critical(this, "Маршрут не найден", e.what());
+    } catch (const TransportScheduleException& e) {
+        QMessageBox::critical(this, "Ошибка расписания", e.what());
     } catch (const std::invalid_argument& e) {
-        QMessageBox::critical(this, "Ошибка ввода данных",
-                              QString("Ошибка при сохранении маршрута: %1").arg(e.what()));
+        QMessageBox::critical(this, "Ошибка аргументов", e.what());
     } catch (const std::out_of_range& e) {
-        QMessageBox::critical(this, "Ошибка диапазона",
-                              QString("Ошибка при сохранении маршрута: %1").arg(e.what()));
-    } catch (const std::logic_error& e) {
-        QMessageBox::critical(this, "Логическая ошибка",
-                              QString("Ошибка при сохранении маршрута: %1").arg(e.what()));
-    } catch (const std::runtime_error& e) {
-        QMessageBox::critical(this, "Ошибка выполнения",
-                              QString("Ошибка при сохранении маршрута: %1").arg(e.what()));
-    } catch (const std::exception& e) {
-        QMessageBox::critical(this, "Неизвестная ошибка",
-                              QString("Ошибка при сохранении маршрута: %1").arg(e.what()));
+        QMessageBox::critical(this, "Ошибка диапазона", e.what());
     }
 }
 

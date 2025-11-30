@@ -94,6 +94,8 @@
 #define __ATOMIC_SEQ_CST 5
 #define _UNICODE 1
 #define __INT_LEAST64_MAX__ 0x7fffffffffffffffLL
+#define __STDCPP_FLOAT32_T__ 1
+#define __STDCPP_BFLOAT16_T__ 1
 #define __FLT32X_MANT_DIG__ 53
 #define __GCC_ATOMIC_CHAR16_T_LOCK_FREE 2
 #define __cpp_aligned_new 201606L
@@ -109,6 +111,7 @@
 #define __GXX_WEAK__ 1
 #define __SHRT_WIDTH__ 16
 #define __FLT32_IS_IEC_60559__ 1
+#define __cpp_size_t_suffix 202011L
 #define __LDBL_MIN__ 3.36210314311209350626267781732175260e-4932L
 #define __DBL_IS_IEC_60559__ 1
 #define __DEC32_MAX__ 9.999999E96DF
@@ -145,6 +148,7 @@
 #define __SIZE_TYPE__ long long unsigned int
 #define __FLT64_MAX_10_EXP__ 308
 #define __BFLT16_IS_IEC_60559__ 0
+#define __STDCPP_FLOAT128_T__ 1
 #define __FLT16_MAX_10_EXP__ 4
 #define __cpp_delegating_constructors 200604L
 #define __DBL_MAX__ double(1.79769313486231570814527423731704357e+308L)
@@ -168,7 +172,7 @@
 #define QT_WIDGETS_LIB 1
 #define __SEG_GS 1
 #define __BFLT16_EPSILON__ 7.81250000000000000000000000000000000e-3BF16
-#define __cplusplus 202002L
+#define __cplusplus 202100L
 #define __cpp_ref_qualifiers 200710L
 #define __DEC32_MIN__ 1E-95DF
 #define __DEPRECATED 1
@@ -183,6 +187,7 @@
 #define __WIN32__ 1
 #define __PTRDIFF_MAX__ 0x7fffffffffffffffLL
 #define __amd64 1
+#define __STDCPP_FLOAT64_T__ 1
 #define __tune_core2__ 1
 #define __ATOMIC_HLE_ACQUIRE 65536
 #define __GNUG__ 13
@@ -229,10 +234,13 @@
 #define __FLT_MANT_DIG__ 24
 #define __LDBL_DECIMAL_DIG__ 21
 #define __VERSION__ "13.1.0"
+#define __cpp_multidimensional_subscript 202211L
 #define __UINT64_C(c) c ## ULL
 #define __cpp_unicode_characters 201411L
+#define __cpp_implicit_move 202207L
 #define _WIN32 1
 #define __SEH__ 1
+#define __cpp_if_consteval 202106L
 #define __INT_LEAST32_MAX__ 0x7fffffff
 #define __GCC_ATOMIC_INT_LOCK_FREE 2
 #define __FLT128_MAX_EXP__ 16384
@@ -242,6 +250,7 @@
 #define SIZEOF_DPTR (sizeof(void*))
 #define __FLT32X_MIN_EXP__ (-1021)
 #define __cpp_aggregate_paren_init 201902L
+#define __cpp_static_call_operator 202207L
 #define __cpp_aggregate_bases 201603L
 #define __BFLT16_MIN__ 1.17549435082228750796873653722224568e-38BF16
 #define __FLT128_HAS_DENORM__ 1
@@ -270,12 +279,13 @@
 #define __BFLT16_HAS_QUIET_NAN__ 1
 #define __FLT_RADIX__ 2
 #define __INT_LEAST16_TYPE__ short int
+#define __cpp_named_character_escapes 202207L
 #define __LDBL_EPSILON__ 1.08420217248550443400745280086994171e-19L
 #define __UINTMAX_C(c) c ## ULL
 #define __FLT16_DIG__ 3
 #define __FLT32X_MIN__ 2.22507385850720138309023271733240406e-308F32x
 #define __SIG_ATOMIC_MAX__ 0x7fffffff
-#define __cpp_constexpr 202002L
+#define __cpp_constexpr 202211L
 #define __GCC_ATOMIC_WCHAR_T_LOCK_FREE 2
 #define __USER_LABEL_PREFIX__ 
 #define __SIZEOF_PTRDIFF_T__ 8
@@ -351,6 +361,7 @@
 #define __UINT16_TYPE__ short unsigned int
 #define __WCHAR_TYPE__ short unsigned int
 #define __pic__ 1
+#define __STDCPP_FLOAT16_T__ 1
 #define __UINTPTR_MAX__ 0xffffffffffffffffULL
 #define __INT_FAST64_WIDTH__ 64
 #define __cpp_nontype_template_parameter_class 201806L

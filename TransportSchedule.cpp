@@ -9,81 +9,99 @@
 #include <QFile>
 #include <QTextStream>
 #include <QDateTime>
-#include <QException>
 #include <algorithm>
 #include <ranges>
 #include <QDebug>
 #include <climits>
 
 TransportSchedule::TransportSchedule(const QString& file, QObject* parent)
-    : QObject(parent), filename(file), stopsDirty(true),
+    : QObject(parent), filename(file),
     scheduleReader(new ScheduleReader(this)),
     scheduleWriter(new ScheduleWriter(this))
 {
     loadFromFile();
 }
 
-void TransportSchedule::addRoute(const Transport& transport, QSharedPointer<Stop> startStop,
-                                 QSharedPointer<Stop> endStop, const QVector<QSharedPointer<Stop>>& intermediateStops,
-                                 const QVector<int>& travelTimes, const QStringList& days, const TimeTransport& startTime)
+void TransportSchedule::addRoute(const RouteParams& params)
 {
-    // Валидация данных с использованием ValidationService
-    if (auto validationResult = ValidationService::validateRouteData(
-            transport.getId(),
-            QVector<QSharedPointer<Stop>>() << startStop << intermediateStops << endStop,
-            travelTimes,
-            days
-            ); !validationResult.isValid) {
-        throw std::invalid_argument(validationResult.errorMessage.toStdString());
-    }
-
-    // Создаем маршрут
-    Route route(transport, startStop, endStop);
-    route.setDays(days);
-
-    // Добавляем промежуточные остановки
-    QVector<QSharedPointer<Stop>> allStops;
-    allStops.push_back(startStop);
-    allStops.append(intermediateStops);
-    allStops.push_back(endStop);
-
-    // Добавляем остановки в маршрут
-    const int intermediateStopCount = allStops.size() >= 2 ? static_cast<int>(allStops.size()) - 2 : 0;
-    for (int i = 0; i < intermediateStopCount; ++i) {
-        const int stopIndex = i + 1;
-        route.addStop(allStops[stopIndex], travelTimes[i]);
-    }
-
-    // Добавляем время до конечной остановки
-    route.addFinalTravelTime(travelTimes.last());
-
-    // Рассчитываем время прибытия с использованием ArrivalTimeService
-    route.calculateArrivalTimes(startTime);
+    // Создаем маршрут из параметров
+    Route route = createRouteFromParams(params);
 
     // Создаем расписание и добавляем его
-    Schedule schedule(route, startTime);
+    Schedule schedule(route, params.startTime);
     schedules.push_back(schedule);
 
     stopsDirty = true;
     saveToFile();
 
-    qDebug() << "Добавлен маршрут №" << transport.getId() << "с" << allStops.size() << "остановками";
+    qDebug() << "Добавлен маршрут №" << params.transport.getId() << "с"
+             << (params.intermediateStops.size() + 2) << "остановками";
 }
 
 void TransportSchedule::removeRoute(int routeNumber)
 {
-    auto it = std::remove_if(schedules.begin(), schedules.end(),
-                             [routeNumber](const Schedule& s) {
-                                 return s.getRoute().getRouteNumber() == routeNumber;
-                             });
-
-    if (it != schedules.end()) {
-        schedules.erase(it, schedules.end());
+    auto [it, end] = std::ranges::remove_if(schedules,
+                                            [routeNumber](const Schedule& s) {
+                                                return s.getRoute().getRouteNumber() == routeNumber;
+                                            });
+    if (it != end) {
+        schedules.erase(it, end);
         stopsDirty = true;
         saveToFile();
+    } else {
+        throw RouteNotFoundException(routeNumber);
     }
 }
 
+void TransportSchedule::updateRoute(int oldRouteNumber, const RouteParams& params)
+{
+    // Удаляем старый маршрут
+    removeRoute(oldRouteNumber);
+
+    // Добавляем обновленный маршрут
+    addRoute(params);
+
+    qDebug() << "Маршрут №" << oldRouteNumber << "обновлен на №" << params.transport.getId();
+}
+
+// Вспомогательный метод для создания маршрута из параметров
+Route TransportSchedule::createRouteFromParams(const RouteParams& params) const
+{
+    // Валидация данных с использованием ValidationService
+    QVector<QSharedPointer<Stop>> allRouteStops;
+    allRouteStops.reserve(params.intermediateStops.size() + 2);
+    allRouteStops << params.startStop << params.intermediateStops << params.endStop;
+
+    if (auto validationResult = ValidationService::validateRouteData(
+            params.transport.getId(),
+            allRouteStops,
+            params.travelTimes,
+            params.days
+            ); !validationResult.isValid) {
+        throw InvalidRouteDataException(validationResult.errorMessage);
+    }
+
+    // Создаем маршрут
+    Route route(params.transport, params.startStop, params.endStop);
+    route.setDays(params.days);
+
+    // Добавляем промежуточные остановки
+    const int intermediateStopCount = allRouteStops.size() >= 2 ? static_cast<int>(allRouteStops.size()) - 2 : 0;
+    for (int i = 0; i < intermediateStopCount; ++i) {
+        const int stopIndex = i + 1;
+        route.addStop(allRouteStops[stopIndex], params.travelTimes[i]);
+    }
+
+    // Добавляем время до конечной остановки
+    route.addFinalTravelTime(params.travelTimes.last());
+
+    // Рассчитываем время прибытия с использованием ArrivalTimeService
+    route.calculateArrivalTimes(params.startTime);
+
+    return route;
+}
+
+// Остальные методы без изменений
 QVector<Schedule> TransportSchedule::getSchedulesForDay(const QString& day) const
 {
     return SearchService::findSchedulesByDay(schedules, day);
@@ -145,12 +163,8 @@ QVector<Schedule> TransportSchedule::findNextTransport(const QString& stopName) 
             } else {
                 qDebug() << "Маршрут" << route.getRouteNumber() << "исключен: время ожидания" << waitMinutes << "мин";
             }
-        } catch (const std::out_of_range& e) {
+        } catch (const StopNotFoundException& e) {
             qDebug() << "Остановка не найдена в маршруте" << route.getRouteNumber() << ":" << e.what();
-            continue;
-        } catch (const std::exception& e) {
-            qDebug() << "Ошибка получения времени прибытия для маршрута"
-                     << route.getRouteNumber() << ":" << e.what();
             continue;
         }
     }
@@ -166,9 +180,7 @@ QVector<Schedule> TransportSchedule::findNextTransport(const QString& stopName) 
                               int waitB = ArrivalTimeService::calculateWaitTime(currentTime, timeB);
 
                               return waitA < waitB;
-                          } catch (const std::out_of_range&) {
-                              return false;
-                          } catch (const std::exception&) {
+                          } catch (const StopNotFoundException&) {
                               return false;
                           }
                       });
@@ -177,15 +189,14 @@ QVector<Schedule> TransportSchedule::findNextTransport(const QString& stopName) 
     return result;
 }
 
-void TransportSchedule::saveToFile()
+void TransportSchedule::saveToFile() const
 {
     if (!scheduleWriter) {
-        qDebug() << "ScheduleWriter is not initialized";
-        return;
+        throw TransportScheduleException("ScheduleWriter не инициализирован");
     }
 
     if (!scheduleWriter->writeToFile(filename, schedules, allStops)) {
-        qDebug() << "Failed to save schedule to file:" << filename;
+        throw FileOperationException(QString("Не удалось сохранить расписание в файл: %1").arg(filename));
     } else {
         qDebug() << "Schedule successfully saved to:" << filename;
     }
@@ -193,11 +204,10 @@ void TransportSchedule::saveToFile()
 
 void TransportSchedule::loadFromFile() {
     if (!scheduleReader) {
-        qDebug() << "ScheduleReader is not initialized";
-        return;
+        throw TransportScheduleException("ScheduleReader не инициализирован");
     }
 
-    // Используем лямбду с правильной сигнатураой
+    // Используем лямбду с правильной сигнатурой
     auto stopCreator = [this](const QString& name, const QString& coordinate) {
         return findOrCreateStop(name, coordinate);
     };
@@ -210,25 +220,8 @@ void TransportSchedule::loadFromFile() {
         stopsDirty = true;
         qDebug() << "Successfully loaded" << schedules.size() << "schedules and" << allStops.size() << "stops from" << filename;
     } else {
-        qDebug() << "Failed to load schedule from file:" << result.errorMessage;
-        schedules.clear();
-        allStops.clear();
+        throw FileOperationException(QString("Не удалось загрузить расписание из файла: %1").arg(result.errorMessage));
     }
-}
-
-void TransportSchedule::updateRoute(int oldRouteNumber, const Transport& transport,
-                                    QSharedPointer<Stop> startStop, QSharedPointer<Stop> endStop,
-                                    const QVector<QSharedPointer<Stop>>& intermediateStops,
-                                    const QVector<int>& travelTimes, const QStringList& days,
-                                    const TimeTransport& startTime)
-{
-    // Удаляем старый маршрут
-    removeRoute(oldRouteNumber);
-
-    // Добавляем обновленный маршрут
-    addRoute(transport, startStop, endStop, intermediateStops, travelTimes, days, startTime);
-
-    qDebug() << "Маршрут №" << oldRouteNumber << "обновлен";
 }
 
 void TransportSchedule::updateRoute(int oldRouteNumber, const Route& newRoute, const TimeTransport& startTime)
@@ -250,7 +243,7 @@ QSharedPointer<Stop> TransportSchedule::findOrCreateStop(const QString& name, co
 {
     // Валидация данных остановки
     if (auto validationResult = ValidationService::validateStopData(name, coordinate); !validationResult.isValid) {
-        throw std::invalid_argument(validationResult.errorMessage.toStdString());
+        throw InvalidRouteDataException(validationResult.errorMessage);
     }
 
     // Ищем остановку по имени (без учета регистра)
@@ -337,7 +330,6 @@ QString TransportSchedule::getCurrentDayOfWeek() const
     return DayOfWeekService::getCurrentDay();
 }
 
-// ВОССТАНОВЛЕНЫ методы статистики - они используются в mainwindow.cpp
 StatisticsService::RouteStats TransportSchedule::getRouteStatistics() const
 {
     return StatisticsService::calculateRouteStatistics(schedules);

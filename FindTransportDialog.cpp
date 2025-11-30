@@ -71,6 +71,16 @@ void FindTransportDialog::setupUI() {
     mainLayout->addWidget(tabWidget);
 }
 
+// Новый метод для вычисления времени прибытия
+std::optional<TimeTransport> FindTransportDialog::calculateArrivalTime(const Route& route, const QString& stopName) {
+    try {
+        return route.getArrivalTimeAtStop(stopName);
+    } catch (const StopNotFoundException& e) {
+        qDebug() << "Остановка не найдена в маршруте:" << e.what();
+        return std::nullopt;
+    }
+}
+
 void FindTransportDialog::updateStopsCombo() {
     findStopCombo->clear();
 
@@ -98,75 +108,77 @@ void FindTransportDialog::findNextTransport() {
         return;
     }
 
-    auto nextSchedules = schedule->findNextTransport(stopName);
-    nextTransportTable->setRowCount(nextSchedules.size());
+    try {
+        auto nextSchedules = schedule->findNextTransport(stopName);
+        nextTransportTable->setRowCount(nextSchedules.size());
 
-    auto currentTime = schedule->getCurrentTime();
-    auto currentDay = schedule->getCurrentDayOfWeek();
+        auto currentTime = schedule->getCurrentTime();
+        auto currentDay = schedule->getCurrentDayOfWeek();
 
-    if (nextSchedules.isEmpty()) {
-        QMessageBox::information(this, "Результат поиска",
-                                 QString("На остановке \"%1\" нет транспорта в ближайшее время.\n\n"
-                                         "Текущее время: %2\n"
-                                         "Текущий день: %3")
-                                     .arg(stopName)
-                                     .arg(currentTime.toString())
-                                     .arg(currentDay));
-        return;
-    }
-
-    // Исправлено: безопасный цикл с правильной обработкой исключений
-    int row = 0;
-    for (const auto& sched : nextSchedules) {
-        const auto& route = sched.getRoute();
-
-        TimeTransport arrivalTime;
-        try {
-            arrivalTime = route.getArrivalTimeAtStop(stopName);
-        } catch (const std::out_of_range& e) {
-            qDebug() << "Остановка не найдена в маршруте:" << e.what();
-            continue;
-        } catch (const std::exception& e) {
-            qDebug() << "Ошибка получения времени прибытия:" << e.what();
-            continue;
+        if (nextSchedules.isEmpty()) {
+            QMessageBox::information(this, "Результат поиска",
+                                     QString("На остановке \"%1\" нет транспорта в ближайшее время.\n\n"
+                                             "Текущее время: %2\n"
+                                             "Текущий день: %3")
+                                         .arg(stopName)
+                                         .arg(currentTime.toString())
+                                         .arg(currentDay));
+            return;
         }
 
-        auto currentTimeMinutes = currentTime.toMinutes();
-        auto arrivalTimeMinutes = arrivalTime.toMinutes();
+        // Исправлено: безопасный цикл с использованием нового метода
+        int row = 0;
+        for (const auto& sched : nextSchedules) {
+            const auto& route = sched.getRoute();
 
-        auto waitMinutes = arrivalTimeMinutes - currentTimeMinutes;
-        if (waitMinutes < 0) {
-            waitMinutes += 24 * 60;
-        }
-
-        QString waitTime;
-        if (waitMinutes >= 60) {
-            waitTime = QString("%1 ч %2 мин")
-                       .arg(waitMinutes / 60)
-                       .arg(waitMinutes % 60);
-        } else {
-            waitTime = QString("%1 мин").arg(waitMinutes);
-        }
-
-        nextTransportTable->setItem(row, 0, new QTableWidgetItem(QString::number(route.getRouteNumber())));
-        nextTransportTable->setItem(row, 1, new QTableWidgetItem(route.getTransport().getType().getName()));
-        nextTransportTable->setItem(row, 2, new QTableWidgetItem(arrivalTime.toString()));
-        nextTransportTable->setItem(row, 3, new QTableWidgetItem(waitTime));
-        nextTransportTable->setItem(row, 4, new QTableWidgetItem(route.getEndStop()->getName()));
-
-        for (auto col = 0; col < 5; ++col) {
-            auto* item = nextTransportTable->item(row, col);
-            if (item) {
-                item->setTextAlignment(Qt::AlignCenter);
+            auto arrivalTimeOpt = calculateArrivalTime(route, stopName);
+            if (!arrivalTimeOpt.has_value()) {
+                continue; // Пропускаем маршруты с ошибками
             }
+
+            auto arrivalTime = arrivalTimeOpt.value();
+            auto currentTimeMinutes = currentTime.toMinutes();
+            auto arrivalTimeMinutes = arrivalTime.toMinutes();
+
+            auto waitMinutes = arrivalTimeMinutes - currentTimeMinutes;
+            if (waitMinutes < 0) {
+                waitMinutes += 24 * 60;
+            }
+
+            QString waitTime;
+            if (waitMinutes >= 60) {
+                waitTime = QString("%1 ч %2 мин")
+                               .arg(waitMinutes / 60)
+                               .arg(waitMinutes % 60);
+            } else {
+                waitTime = QString("%1 мин").arg(waitMinutes);
+            }
+
+            nextTransportTable->setItem(row, 0, new QTableWidgetItem(QString::number(route.getRouteNumber())));
+            nextTransportTable->setItem(row, 1, new QTableWidgetItem(route.getTransport().getType().getName()));
+            nextTransportTable->setItem(row, 2, new QTableWidgetItem(arrivalTime.toString()));
+            nextTransportTable->setItem(row, 3, new QTableWidgetItem(waitTime));
+            nextTransportTable->setItem(row, 4, new QTableWidgetItem(route.getEndStop()->getName()));
+
+            for (auto col = 0; col < 5; ++col) {
+                auto* item = nextTransportTable->item(row, col);
+                if (item) {
+                    item->setTextAlignment(Qt::AlignCenter);
+                }
+            }
+            ++row;
         }
-        ++row;
+
+        nextTransportTable->resizeColumnsToContents();
+        nextTransportTable->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
+
+        tabWidget->setCurrentIndex(0);
+
+    } catch (const StopNotFoundException& e) {
+        QMessageBox::warning(this, "Остановка не найдена", e.what());
+    } catch (const TransportScheduleException& e) {
+        QMessageBox::critical(this, "Ошибка расписания", e.what());
     }
-
-    nextTransportTable->resizeColumnsToContents();
-    nextTransportTable->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
-
-    tabWidget->setCurrentIndex(0);
 }
 
 void FindTransportDialog::showAllRoutesForStop() {

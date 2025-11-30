@@ -140,21 +140,14 @@ void AddRouteDialog::accept() {
         createAndAddRoute();
         QDialog::accept();
 
+    } catch (const InvalidRouteDataException& e) {
+        QMessageBox::critical(this, "Ошибка данных маршрута", e.what());
+    } catch (const TransportScheduleException& e) {
+        QMessageBox::critical(this, "Ошибка расписания", e.what());
     } catch (const std::invalid_argument& e) {
-        QMessageBox::critical(this, "Ошибка ввода данных",
-                              QString("Ошибка при добавлении маршрута: %1").arg(e.what()));
+        QMessageBox::critical(this, "Ошибка аргументов", e.what());
     } catch (const std::out_of_range& e) {
-        QMessageBox::critical(this, "Ошибка диапазона",
-                              QString("Ошибка при добавлении маршрута: %1").arg(e.what()));
-    } catch (const std::logic_error& e) {
-        QMessageBox::critical(this, "Логическая ошибка",
-                              QString("Ошибка при добавлении маршрута: %1").arg(e.what()));
-    } catch (const std::runtime_error& e) {
-        QMessageBox::critical(this, "Ошибка выполнения",
-                              QString("Ошибка при добавлении маршрута: %1").arg(e.what()));
-    } catch (const std::exception& e) {
-        QMessageBox::critical(this, "Неизвестная ошибка",
-                              QString("Ошибка при добавлении маршрута: %1").arg(e.what()));
+        QMessageBox::critical(this, "Ошибка диапазона", e.what());
     }
 }
 
@@ -212,8 +205,17 @@ void AddRouteDialog::createAndAddRoute() {
     // Create start time
     TimeTransport startTime(startHourSpin->value(), startMinuteSpin->value());
 
-    schedule->addRoute(transport, startStop, endStop, intermediateStops,
-                       travelTimes, days, startTime);
+    TransportSchedule::RouteParams params(
+        transport,
+        startStop,
+        endStop,
+        intermediateStops,
+        travelTimes,
+        days,
+        startTime
+        );
+
+    schedule->addRoute(params);
 }
 
 QVector<QSharedPointer<Stop>> AddRouteDialog::getIntermediateStops() const {

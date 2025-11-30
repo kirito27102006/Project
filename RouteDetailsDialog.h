@@ -33,7 +33,7 @@ private:
     void populateStopsTable();
     void populateStopRow(int row, const RouteStop& stop, int totalStops, const QVector<int>& travelTimes);
     QString formatStopName(const QString& name, int index, int totalStops) const;
-    void setEditingFlagsForRow(int row, int totalStops);
+    void setEditingFlagsForRow(int row, int totalStops)const;
     bool shouldBeEditable(int col, int row, int totalStops) const;
     void removeFormattingSymbol(QTableWidgetItem* item) const;
     QString extractStopNameFromTable(int row) const;

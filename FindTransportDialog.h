@@ -28,6 +28,8 @@ private:
     void updateStopsCombo();
     void populateAllRoutesTable(const QString& stopName);
 
+    std::optional<TimeTransport> calculateArrivalTime(const Route& route, const QString& stopName);
+
     TransportSchedule* schedule;
     QComboBox* findStopCombo;
     QTableWidget* nextTransportTable;

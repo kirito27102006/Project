@@ -127,8 +127,7 @@ bool ValidationService::isRouteNumberUnique(int routeNumber, const QVector<Route
 
 ValidationService::ValidationResult ValidationService::validateTransportType(const QString& transportType)
 {
-    const QStringList validTypes = {"автобус", "троллейбус", "трамвай"};
-    if (!validTypes.contains(transportType.toLower())) {
+    if (const QStringList validTypes = {"автобус", "троллейбус", "трамвай"};!validTypes.contains(transportType.toLower())) {
         return ValidationResult(false, "Неверный тип транспорта. Допустимые значения: автобус, троллейбус, трамвай");
     }
 

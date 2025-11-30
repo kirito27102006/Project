@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QStringList>
+#include <utility>
 
 class TransportType {
 public:
@@ -17,20 +18,12 @@ public:
     QString getShortName() const;
     int getId() const;
 
-    bool operator==(const TransportType& other) const;
+    bool operator==(const TransportType& other) const = default;
 
     static QStringList getAllTypeNames();
 
 private:
     Type type;
 };
-
-// УДАЛЕНЫ неиспользуемые константы - они нигде не используются
-// constexpr const char* TRANSPORT_BUS_NAME = "автобус";
-// constexpr const char* TRANSPORT_TROLLEYBUS_NAME = "троллейбус";
-// constexpr const char* TRANSPORT_TRAM_NAME = "трамвай";
-// constexpr const char* TRANSPORT_BUS_SHORT = "А";
-// constexpr const char* TRANSPORT_TROLLEYBUS_SHORT = "Тб";
-// constexpr const char* TRANSPORT_TRAM_SHORT = "Тм";
 
 #endif

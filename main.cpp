@@ -1,7 +1,7 @@
 #include <QApplication>
 #include <QLocale>
 #include <QTranslator>
-#include "MainWindow.h"
+#include "mainwindow.h"
 
 int main(int argc, char *argv[])
 {
@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
     for (const QString &locale : uiLanguages) {
         const QString baseName = "TransportSchedule_" + QLocale(locale).name();
         if (translator.load(":/i18n/" + baseName)) {
-            app.installTranslator(&translator);
+            QApplication::installTranslator(&translator);
             break;
         }
     }
@@ -20,5 +20,5 @@ int main(int argc, char *argv[])
     MainWindow window;
     window.show();
 
-    return app.exec();
+    return QApplication::exec();
 }

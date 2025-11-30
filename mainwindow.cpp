@@ -1,4 +1,4 @@
-#include "MainWindow.h"
+#include "mainwindow.h"
 #include <QIcon>
 #include <ranges>
 
@@ -45,20 +45,26 @@ void MainWindow::setupUI() {
 }
 
 void MainWindow::showRouteDetails(int routeNumber) {
-    auto allSchedules = schedule->getAllSchedules();
+    try {
+        auto allSchedules = schedule->getAllSchedules();
 
-    for (const auto& scheduleItem : allSchedules) {
-        if (scheduleItem.getRoute().getRouteNumber() == routeNumber) {
-            auto* dialog = new RouteDetailsDialog(schedule, scheduleItem, this);
-            dialog->setAttribute(Qt::WA_DeleteOnClose);
-            connect(dialog, &RouteDetailsDialog::finished, this, &MainWindow::refreshTable);
-            dialog->exec();
-            return;
+        for (const auto& scheduleItem : allSchedules) {
+            if (scheduleItem.getRoute().getRouteNumber() == routeNumber) {
+                auto* dialog = new RouteDetailsDialog(schedule, scheduleItem, this);
+                dialog->setAttribute(Qt::WA_DeleteOnClose);
+                connect(dialog, &RouteDetailsDialog::finished, this, &MainWindow::refreshTable);
+                dialog->exec();
+                return;
+            }
         }
-    }
 
-    QMessageBox::information(this, "Маршрут не найден",
-                             QString("Маршрут №%1 не найден.").arg(routeNumber));
+        throw RouteNotFoundException(routeNumber);
+
+    } catch (const RouteNotFoundException& e) {
+        QMessageBox::information(this, "Маршрут не найден", e.what());
+    } catch (const TransportScheduleException& e) {
+        QMessageBox::critical(this, "Ошибка расписания", e.what());
+    }
 }
 
 void MainWindow::setupTable() {
@@ -182,8 +188,14 @@ void MainWindow::removeRoute(int routeNumber) {
                                        QMessageBox::Yes | QMessageBox::No);
 
     if (reply == QMessageBox::Yes) {
-        schedule->removeRoute(routeNumber);
-        refreshTable();
+        try {
+            schedule->removeRoute(routeNumber);
+            refreshTable();
+        } catch (const RouteNotFoundException& e) {
+            QMessageBox::warning(this, "Маршрут не найден", e.what());
+        } catch (const TransportScheduleException& e) {
+            QMessageBox::critical(this, "Ошибка удаления", e.what());
+        }
     }
 }
 
@@ -197,31 +209,36 @@ void MainWindow::refreshTable() {
 }
 
 void MainWindow::showStatistics() {
-    auto routeStats = schedule->getRouteStatistics();
-    auto stopStats = schedule->getStopStatistics();
+    try {
+        auto routeStats = schedule->getRouteStatistics();
+        auto stopStats = schedule->getStopStatistics();
 
-    auto statsText = QString();
-    statsText += QString("=== СТАТИСТИКА СИСТЕМЫ ===\n\n");
-    statsText += QString("Маршруты:\n");
-    statsText += QString("  Всего маршрутов: %1\n").arg(routeStats.totalRoutes);
-    statsText += QString("  Автобусы: %1\n").arg(routeStats.busCount);
-    statsText += QString("  Троллейбусы: %1\n").arg(routeStats.trolleybusCount);
-    statsText += QString("  Трамваи: %1\n").arg(routeStats.tramCount);
-    statsText += QString("  Среднее количество остановок на маршрут: %1\n").arg(routeStats.averageStopsPerRoute);
+        auto statsText = QString();
+        statsText += QString("=== СТАТИСТИКА СИСТЕМЫ ===\n\n");
+        statsText += QString("Маршруты:\n");
+        statsText += QString("  Всего маршрутов: %1\n").arg(routeStats.totalRoutes);
+        statsText += QString("  Автобусы: %1\n").arg(routeStats.busCount);
+        statsText += QString("  Троллейбусы: %1\n").arg(routeStats.trolleybusCount);
+        statsText += QString("  Трамваи: %1\n").arg(routeStats.tramCount);
+        statsText += QString("  Среднее количество остановок на маршрут: %1\n").arg(routeStats.averageStopsPerRoute);
 
-    statsText += QString("\nОстановки:\n");
-    statsText += QString("  Всего остановок: %1\n").arg(stopStats.totalStops);
-    statsText += QString("  Активных остановок: %1\n").arg(stopStats.activeStops);
+        statsText += QString("\nОстановки:\n");
+        statsText += QString("  Всего остановок: %1\n").arg(stopStats.totalStops);
+        statsText += QString("  Активных остановок: %1\n").arg(stopStats.activeStops);
 
-    if (!stopStats.mostPopularStops.isEmpty()) {
-        statsText += QString("\nСамые популярные остановки:\n");
-        auto count = std::min(3, static_cast<int>(stopStats.mostPopularStops.size()));
-        for (auto i = 0; i < count; ++i) {
-            statsText += QString("  %1. %2\n")
-                         .arg(i + 1)
-                         .arg(stopStats.mostPopularStops[i]->getName());
+        if (!stopStats.mostPopularStops.isEmpty()) {
+            statsText += QString("\nСамые популярные остановки:\n");
+            auto count = std::min(3, static_cast<int>(stopStats.mostPopularStops.size()));
+            for (auto i = 0; i < count; ++i) {
+                statsText += QString("  %1. %2\n")
+                .arg(i + 1)
+                    .arg(stopStats.mostPopularStops[i]->getName());
+            }
         }
-    }
 
-    QMessageBox::information(this, "Статистика системы", statsText);
+        QMessageBox::information(this, "Статистика системы", statsText);
+
+    } catch (const TransportScheduleException& e) {
+        QMessageBox::critical(this, "Ошибка статистики", e.what());
+    }
 }
