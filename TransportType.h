@@ -10,7 +10,7 @@ public:
 
     TransportType(Type type);
     TransportType(const QString& typeName);
-    TransportType(const TransportType& other); // ДОБАВЛЯЕМ КОНСТРУКТОР КОПИРОВАНИЯ
+    TransportType(const TransportType& other) = default; // Используем default implementation
 
     Type getType() const;
     QString getName() const;

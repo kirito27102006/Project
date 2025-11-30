@@ -76,10 +76,11 @@ void FindTransportDialog::updateStopsCombo() {
 
     auto activeStops = schedule->getActiveStops();
 
-    std::sort(activeStops.begin(), activeStops.end(),
-              [](const QSharedPointer<Stop>& a, const QSharedPointer<Stop>& b) {
-                  return a->getName() < b->getName();
-              });
+    // Исправлено: использование std::ranges::sort
+    std::ranges::sort(activeStops,
+                      [](const QSharedPointer<Stop>& a, const QSharedPointer<Stop>& b) {
+                          return a->getName() < b->getName();
+                      });
 
     for (const auto& stop : activeStops) {
         findStopCombo->addItem(stop->getName());
@@ -114,13 +115,17 @@ void FindTransportDialog::findNextTransport() {
         return;
     }
 
-    for (auto i = 0; i < nextSchedules.size(); ++i) {
+    // Исправлено: безопасный цикл с правильной обработкой исключений
+    for (size_t i = 0; i < nextSchedules.size(); ++i) {
         const auto& sched = nextSchedules[i];
         const auto& route = sched.getRoute();
 
         TimeTransport arrivalTime;
         try {
             arrivalTime = route.getArrivalTimeAtStop(stopName);
+        } catch (const std::out_of_range& e) {
+            qDebug() << "Остановка не найдена в маршруте:" << e.what();
+            continue;
         } catch (const std::runtime_error& e) {
             qDebug() << "Ошибка получения времени прибытия:" << e.what();
             continue;
@@ -201,23 +206,25 @@ void FindTransportDialog::populateAllRoutesTable(const QString& stopName) {
         return;
     }
 
-    for (auto i = 0; i < routesThroughStop.size(); ++i) {
-        const auto& sched = routesThroughStop[i];
+    // Исправлено: безопасный цикл с range-based for
+    auto row = 0;
+    for (const auto& sched : routesThroughStop) {
         const auto& route = sched.getRoute();
 
-        allRoutesTable->setItem(i, 0, new QTableWidgetItem(QString::number(route.getRouteNumber())));
-        allRoutesTable->setItem(i, 1, new QTableWidgetItem(route.getTransport().getType().getName()));
-        allRoutesTable->setItem(i, 2, new QTableWidgetItem(route.getStartStop()->getName()));
-        allRoutesTable->setItem(i, 3, new QTableWidgetItem(route.getEndStop()->getName()));
-        allRoutesTable->setItem(i, 4, new QTableWidgetItem(sched.getStartTime().toString()));
-        allRoutesTable->setItem(i, 5, new QTableWidgetItem(route.getDays().join(", ")));
+        allRoutesTable->setItem(row, 0, new QTableWidgetItem(QString::number(route.getRouteNumber())));
+        allRoutesTable->setItem(row, 1, new QTableWidgetItem(route.getTransport().getType().getName()));
+        allRoutesTable->setItem(row, 2, new QTableWidgetItem(route.getStartStop()->getName()));
+        allRoutesTable->setItem(row, 3, new QTableWidgetItem(route.getEndStop()->getName()));
+        allRoutesTable->setItem(row, 4, new QTableWidgetItem(sched.getStartTime().toString()));
+        allRoutesTable->setItem(row, 5, new QTableWidgetItem(route.getDays().join(", ")));
 
         for (auto col = 0; col < 6; ++col) {
-            auto* item = allRoutesTable->item(i, col);
+            auto* item = allRoutesTable->item(row, col);
             if (item) {
                 item->setTextAlignment(Qt::AlignCenter);
             }
         }
+        row++;
     }
 
     allRoutesTable->resizeColumnsToContents();

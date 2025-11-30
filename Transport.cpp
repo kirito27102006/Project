@@ -2,7 +2,7 @@
 
 Transport::Transport(const TransportType& type, int id) : type(type), id(id) {}
 
-TransportType::TransportType(const TransportType& other) : type(other.type) {}
+// УДАЛЕНО: Лишний конструктор копирования TransportType
 
 TransportType Transport::getType() const {
     return type;

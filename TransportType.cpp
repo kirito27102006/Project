@@ -17,6 +17,8 @@ TransportType::TransportType(const QString& typeName) {
     }
 }
 
+// УДАЛЕНО: Конструктор копирования, так как используется default implementation
+
 TransportType::Type TransportType::getType() const {
     return type;
 }

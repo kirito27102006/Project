@@ -17,7 +17,7 @@ class FindTransportDialog : public QDialog {
     Q_OBJECT
 
 public:
-    FindTransportDialog(TransportSchedule* schedule, QWidget *parent = nullptr);
+    explicit FindTransportDialog(TransportSchedule* schedule, QWidget *parent = nullptr);
 
 private slots:
     void findNextTransport();

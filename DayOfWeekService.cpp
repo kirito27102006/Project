@@ -43,13 +43,14 @@ bool DayOfWeekService::isRouteActiveToday(const QStringList& routeDays)
 
 bool DayOfWeekService::isDayInList(const QString& day, const QStringList& daysList)
 {
+    // Исправлено: tolower -> toLower и использование std::ranges::find_if
     QString normalizedDay = translateDay(day.toLower());
 
-    // Используем стандартный алгоритм с лямбдой
-    auto it = std::find_if(daysList.begin(), daysList.end(),
-                           [&normalizedDay](const QString& routeDay) {
-                               return routeDay.toLower() == normalizedDay;
-                           });
+    // Используем стандартный алгоритм с лямбдой (C++20 ranges version)
+    auto it = std::ranges::find_if(daysList,
+                                   [&normalizedDay](const QString& routeDay) {
+                                       return routeDay.toLower() == normalizedDay;
+                                   });
 
     return it != daysList.end();
 }
