@@ -8,7 +8,7 @@
 
 RouteDetailsDialog::RouteDetailsDialog(TransportSchedule* transportSchedule, const Schedule& schedule, QWidget *parent)
     : QDialog(parent), transportSchedule(transportSchedule), currentSchedule(schedule),
-    originalRoute(schedule.getRoute()), isEditing(false) {
+    originalRoute(schedule.getRoute()) {
     setupUI(schedule.getRoute(), schedule.getStartTime());
     setWindowTitle(QString("Маршрут %1 №%2").arg(schedule.getRoute().getTransport().getType().getName()).arg(schedule.getRoute().getRouteNumber()));
     setMinimumSize(800, 600);
@@ -111,70 +111,84 @@ void RouteDetailsDialog::setupUI(const Route& route, const TimeTransport& startT
 
 void RouteDetailsDialog::populateStopsTable() {
     const auto& route = currentSchedule.getRoute();
-    auto stops = route.getStops();
-    auto travelTimes = route.getTravelTimes();
+    const auto stops = route.getStops();
+    const auto travelTimes = route.getTravelTimes();
 
     stopsTable->setRowCount(stops.size());
 
-    for (auto i = 0; i < stops.size(); ++i) {
-        const auto& stop = stops[i];
-
-        // Номер остановки
-        auto* numberItem = new QTableWidgetItem(QString::number(i + 1));
-        stopsTable->setItem(i, 0, numberItem);
-
-        // Название остановки
-        auto stopName = stop.getName();
-        if (i == 0) {
-            stopName = "▶ " + stopName + " (начало)";
-        } else if (i == stops.size() - 1) {
-            stopName = "⏹ " + stopName + " (конец)";
-        } else {
-            stopName = "● " + stopName;
-        }
-        auto* nameItem = new QTableWidgetItem(stopName);
-        stopsTable->setItem(i, 1, nameItem);
-
-        // Время прибытия
-        auto* arrivalItem = new QTableWidgetItem(stop.arrivalTime.toString());
-        stopsTable->setItem(i, 2, arrivalItem);
-
-        // Время движения
-        QTableWidgetItem* travelItem;
-        if (i > 0 && i - 1 < travelTimes.size()) {
-            travelItem = new QTableWidgetItem(QString::number(travelTimes[i - 1]));
-        } else {
-            travelItem = new QTableWidgetItem("0");
-        }
-        stopsTable->setItem(i, 3, travelItem);
-
-        // Устанавливаем флаги редактирования
-        for (auto col = 0; col < 4; ++col) {
-            auto* item = stopsTable->item(i, col);
-            if (item) {
-                item->setTextAlignment(Qt::AlignCenter);
-                if (!isEditing) {
-                    item->setFlags(item->flags() & ~Qt::ItemIsEditable);
-                } else {
-                    // В режиме редактирования разрешаем редактировать только названия промежуточных остановок и время движения
-                    if (col == 1 && i > 0 && i < stops.size() - 1) {
-                        item->setFlags(item->flags() | Qt::ItemIsEditable);
-                        // Убираем символы ● для редактирования
-                        auto text = item->text();
-                        if (text.startsWith("● ")) {
-                            item->setText(text.mid(2));
-                        }
-                    } else if (col == 3 && i > 0) {
-                        item->setFlags(item->flags() | Qt::ItemIsEditable);
-                    } else {
-                        item->setFlags(item->flags() & ~Qt::ItemIsEditable);
-                    }
-                }
-            }
-        }
+    int row = 0;
+    for (const auto& stop : stops) {
+        populateStopRow(row, stop, stops.size(), travelTimes);
+        setEditingFlagsForRow(row, stops.size());
+        ++row;
     }
 
     stopsTable->resizeColumnsToContents();
+}
+
+void RouteDetailsDialog::populateStopRow(int row, const RouteStop& stop, int totalStops, const QVector<int>& travelTimes) {
+    // Номер остановки
+    auto* numberItem = new QTableWidgetItem(QString::number(row + 1));
+    stopsTable->setItem(row, 0, numberItem);
+
+    // Название остановки
+    QString stopName = formatStopName(stop.getName(), row, totalStops);
+    auto* nameItem = new QTableWidgetItem(stopName);
+    stopsTable->setItem(row, 1, nameItem);
+
+    // Время прибытия
+    auto* arrivalItem = new QTableWidgetItem(stop.arrivalTime.toString());
+    stopsTable->setItem(row, 2, arrivalItem);
+
+    // Время движения
+    const int travelTime = (row > 0 && row - 1 < travelTimes.size()) ? travelTimes[row - 1] : 0;
+    auto* travelItem = new QTableWidgetItem(QString::number(travelTime));
+    stopsTable->setItem(row, 3, travelItem);
+}
+
+QString RouteDetailsDialog::formatStopName(const QString& name, int index, int totalStops) {
+    if (index == 0) {
+        return "▶ " + name + " (начало)";
+    }
+    if (index == totalStops - 1) {
+        return "⏹ " + name + " (конец)";
+    }
+    return "● " + name;
+}
+
+void RouteDetailsDialog::setEditingFlagsForRow(int row, int totalStops) {
+    for (auto col = 0; col < 4; ++col) {
+        auto* item = stopsTable->item(row, col);
+        if (!item) continue;
+
+        item->setTextAlignment(Qt::AlignCenter);
+        
+        if (!isEditing) {
+            item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+            continue;
+        }
+
+        // В режиме редактирования
+        if (shouldBeEditable(col, row, totalStops)) {
+            item->setFlags(item->flags() | Qt::ItemIsEditable);
+            if (col == 1 && row > 0 && row < totalStops - 1) {
+                removeFormattingSymbol(item);
+            }
+        } else {
+            item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+        }
+    }
+}
+
+bool RouteDetailsDialog::shouldBeEditable(int col, int row, int totalStops) {
+    return (col == 1 && row > 0 && row < totalStops - 1) || (col == 3 && row > 0);
+}
+
+void RouteDetailsDialog::removeFormattingSymbol(QTableWidgetItem* item) {
+    auto text = item->text();
+    if (text.startsWith("● ")) {
+        item->setText(text.mid(2));
+    }
 }
 
 void RouteDetailsDialog::editRoute() {
@@ -268,10 +282,12 @@ void RouteDetailsDialog::removeStop() {
         return;
     }
 
-    auto reply = QMessageBox::question(this, "Подтверждение",
-                                       "Вы уверены, что хотите удалить эту остановку?",
-                                       QMessageBox::Yes | QMessageBox::No);
-    if (reply == QMessageBox::No) return;
+    if (auto reply = QMessageBox::question(this, "Подтверждение",
+                                           "Вы уверены, что хотите удалить эту остановку?",
+                                           QMessageBox::Yes | QMessageBox::No);
+        reply == QMessageBox::No) {
+        return;
+    }
 
     stopsTable->removeRow(currentRow);
 
@@ -309,117 +325,134 @@ TimeTransport RouteDetailsDialog::calculateArrivalTime(int stopIndex) {
 
     // Получаем время движения от предыдущей остановки
     auto travelTime = 0;
-    auto* travelItem = stopsTable->item(stopIndex, 3);
-    if (travelItem) {
+    if (const auto* travelItem = stopsTable->item(stopIndex, 3); travelItem) {
         travelTime = travelItem->text().toInt();
     }
 
     return previousTime.addMinutes(travelTime);
 }
 
+QString RouteDetailsDialog::extractStopNameFromTable(int row) {
+    auto stopName = stopsTable->item(row, 1)->text();
+
+    // Убираем символы оформления если они есть
+    if (stopName.startsWith("▶ ") || stopName.startsWith("● ") || stopName.startsWith("⏹ ")) {
+        if (auto spaceIndex = stopName.indexOf(" "); spaceIndex != -1) {
+            stopName = stopName.mid(spaceIndex + 1);
+        }
+    }
+
+    // Убираем текст в скобках
+    if (auto bracketIndex = stopName.indexOf(" ("); bracketIndex != -1) {
+        stopName = stopName.left(bracketIndex);
+    }
+
+    return stopName.trimmed();
+}
+
+bool RouteDetailsDialog::collectStopsAndTravelTimes(QVector<QSharedPointer<Stop>>& collectedStops, QVector<int>& collectedTravelTimes) {
+    for (auto row = 0; row < stopsTable->rowCount(); ++row) {
+        const QString stopName = extractStopNameFromTable(row);
+        auto stop = transportSchedule->findOrCreateStop(stopName);
+        collectedStops.append(stop);
+
+        // Время движения (для всех кроме первой строки)
+        if (row > 0) {
+            bool ok;
+            auto travelTime = stopsTable->item(row, 3)->text().toInt(&ok);
+            if (ok && travelTime > 0) {
+                collectedTravelTimes.append(travelTime);
+            } else {
+                QMessageBox::warning(this, "Ошибка",
+                                     QString("Некорректное время движения для строки %1").arg(row + 1));
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+bool RouteDetailsDialog::validateRouteData(const QVector<QSharedPointer<Stop>>& collectedStops, const QVector<int>& collectedTravelTimes) {
+    if (collectedStops.size() < 2) {
+        QMessageBox::warning(this, "Ошибка", "Маршрут должен содержать хотя бы 2 остановки");
+        return false;
+    }
+
+    if (collectedTravelTimes.size() != collectedStops.size() - 1) {
+        QMessageBox::warning(this, "Ошибка",
+                             "Количество времен движения должно быть на 1 меньше количества остановок");
+        return false;
+    }
+    return true;
+}
+
+QStringList RouteDetailsDialog::parseDays() {
+    auto days = daysCombo->currentText().split(",", Qt::SkipEmptyParts);
+    for (auto& day : days) {
+        day = day.trimmed();
+    }
+    return days;
+}
+
+void RouteDetailsDialog::createAndSaveRoute(const QVector<QSharedPointer<Stop>>& collectedStops, const QVector<int>& collectedTravelTimes, const QStringList& days) {
+    const auto& originalTransport = originalRoute.getTransport();
+    Route newRoute(originalTransport, collectedStops[0], collectedStops[collectedStops.size() - 1]);
+
+    // Добавляем промежуточные остановки
+    const int intermediateStopCount = collectedStops.size() >= 2 ? static_cast<int>(collectedStops.size()) - 2 : 0;
+    for (int i = 0; i < intermediateStopCount; ++i) {
+        const int stopIndex = i + 1;
+        newRoute.addStop(collectedStops[stopIndex], collectedTravelTimes[i]);
+    }
+
+    // Добавляем время до конечной остановки
+    newRoute.addFinalTravelTime(collectedTravelTimes[collectedTravelTimes.size() - 1]);
+
+    // Сохраняем дни работы
+    newRoute.setDays(days);
+
+    // Создаем время начала
+    TimeTransport startTime(startHourSpin->value(), startMinuteSpin->value());
+
+    // Рассчитываем время прибытия
+    newRoute.calculateArrivalTimes(startTime);
+
+    // Создаем новое расписание
+    Schedule newSchedule(newRoute, startTime);
+
+    // Обновляем маршрут в расписании
+    transportSchedule->removeRoute(originalRoute.getRouteNumber());
+
+    // Добавляем обновленный маршрут
+    transportSchedule->addRoute(originalTransport, collectedStops[0], collectedStops[collectedStops.size() - 1],
+                                collectedStops.mid(1, collectedStops.size() - 2), collectedTravelTimes,
+                                days, startTime);
+
+    // Обновляем текущее расписание
+    currentSchedule = newSchedule;
+    originalRoute = newRoute;
+}
+
 void RouteDetailsDialog::saveRoute() {
     try {
-        // Собираем данные из таблицы
-        QVector<QSharedPointer<Stop>> stops;
-        QVector<int> travelTimes;
+        QVector<QSharedPointer<Stop>> collectedStops;
+        QVector<int> collectedTravelTimes;
 
-        for (auto row = 0; row < stopsTable->rowCount(); ++row) {
-            auto stopName = stopsTable->item(row, 1)->text();
-
-            // Убираем символы оформления если они есть
-            if (stopName.startsWith("▶ ") || stopName.startsWith("● ") || stopName.startsWith("⏹ ")) {
-                auto spaceIndex = stopName.indexOf(" ");
-                if (spaceIndex != -1) {
-                    stopName = stopName.mid(spaceIndex + 1);
-                }
-            }
-
-            // Убираем текст в скобках
-            auto bracketIndex = stopName.indexOf(" (");
-            if (bracketIndex != -1) {
-                stopName = stopName.left(bracketIndex);
-            }
-
-            // Создаем или находим остановку
-            auto stop = transportSchedule->findOrCreateStop(stopName.trimmed());
-            stops.append(stop);
-
-            // Время движения (для всех кроме первой строки)
-            if (row > 0) {
-                bool ok;
-                auto travelTime = stopsTable->item(row, 3)->text().toInt(&ok);
-                if (ok && travelTime > 0) {
-                    travelTimes.append(travelTime);
-                } else {
-                    QMessageBox::warning(this, "Ошибка",
-                                         QString("Некорректное время движения для строки %1").arg(row + 1));
-                    return;
-                }
-            }
-        }
-
-        // Проверяем, что есть хотя бы 2 остановки
-        if (stops.size() < 2) {
-            QMessageBox::warning(this, "Ошибка", "Маршрут должен содержать хотя бы 2 остановки");
+        if (!collectStopsAndTravelTimes(collectedStops, collectedTravelTimes)) {
             return;
         }
 
-        // Проверяем соответствие количества остановок и времен движения
-        if (travelTimes.size() != stops.size() - 1) {
-            QMessageBox::warning(this, "Ошибка",
-                                 "Количество времен движения должно быть на 1 меньше количества остановок");
+        if (!validateRouteData(collectedStops, collectedTravelTimes)) {
             return;
         }
 
-        // Парсим дни работы
-        auto days = daysCombo->currentText().split(",", Qt::SkipEmptyParts);
-        for (auto& day : days) {
-            day = day.trimmed();
-        }
-
+        QStringList days = parseDays();
         if (days.isEmpty()) {
             QMessageBox::warning(this, "Ошибка", "Укажите дни работы маршрута");
             return;
         }
 
-        // Создаем новый маршрут
-        const auto& originalTransport = originalRoute.getTransport();
-        Route newRoute(originalTransport, stops[0], stops[stops.size() - 1]);
-
-        // Добавляем промежуточные остановки
-        const int intermediateStopCount = stops.size() >= 2 ? static_cast<int>(stops.size()) - 2 : 0;
-        for (int i = 0; i < intermediateStopCount; ++i) {
-            const int stopIndex = i + 1;
-            newRoute.addStop(stops[stopIndex], travelTimes[i]);
-        }
-
-        // Добавляем время до конечной остановки
-        newRoute.addFinalTravelTime(travelTimes[travelTimes.size() - 1]);
-
-        // Сохраняем дни работы
-        newRoute.setDays(days);
-
-        // Создаем время начала
-        TimeTransport startTime(startHourSpin->value(), startMinuteSpin->value());
-
-        // Рассчитываем время прибытия
-        newRoute.calculateArrivalTimes(startTime);
-
-        // Создаем новое расписание
-        Schedule newSchedule(newRoute, startTime);
-
-        // Обновляем маршрут в расписании
-        transportSchedule->removeRoute(originalRoute.getRouteNumber());
-
-        // Добавляем обновленный маршрут
-        transportSchedule->addRoute(originalTransport, stops[0], stops[stops.size() - 1],
-                                    stops.mid(1, stops.size() - 2), travelTimes,
-                                    days, startTime);
-
-        // Обновляем текущее расписание
-        currentSchedule = newSchedule;
-        originalRoute = newRoute;
-
+        createAndSaveRoute(collectedStops, collectedTravelTimes, days);
         QMessageBox::information(this, "Успех", "Маршрут успешно сохранен");
         cancelEdit();
 

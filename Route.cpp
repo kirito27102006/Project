@@ -43,8 +43,8 @@ void Route::calculateArrivalTimes(const TimeTransport& startTime) {
 
     // Отладочный вывод
     qDebug() << "Маршрут №" << getRouteNumber() << "расписание остановок:";
-    for (int i = 0; i < stops.size(); i++) {
-        qDebug() << "  " << stops[i].getName() << "->" << stops[i].arrivalTime.toString();
+    for (const auto& stop : stops) {
+        qDebug() << "  " << stop.getName() << "->" << stop.arrivalTime.toString();
     }
 }
 
@@ -54,7 +54,7 @@ TimeTransport Route::getArrivalTimeAtStop(const QString& stopName) const {
             return routeStop.arrivalTime;
         }
     }
-    throw std::runtime_error(QString("Остановка '%1' не найдена в маршруте").arg(stopName).toStdString());
+    throw std::out_of_range(QString("Остановка '%1' не найдена в маршруте").arg(stopName).toStdString());
 }
 
 QVector<RouteStop> Route::getStops() const {

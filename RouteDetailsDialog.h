@@ -31,6 +31,16 @@ private slots:
 private:
     void setupUI(const Route& route, const TimeTransport& startTime);
     void populateStopsTable();
+    void populateStopRow(int row, const RouteStop& stop, int totalStops, const QVector<int>& travelTimes);
+    QString formatStopName(const QString& name, int index, int totalStops);
+    void setEditingFlagsForRow(int row, int totalStops);
+    bool shouldBeEditable(int col, int row, int totalStops);
+    void removeFormattingSymbol(QTableWidgetItem* item);
+    QString extractStopNameFromTable(int row);
+    bool collectStopsAndTravelTimes(QVector<QSharedPointer<Stop>>& collectedStops, QVector<int>& collectedTravelTimes);
+    bool validateRouteData(const QVector<QSharedPointer<Stop>>& collectedStops, const QVector<int>& collectedTravelTimes);
+    QStringList parseDays();
+    void createAndSaveRoute(const QVector<QSharedPointer<Stop>>& collectedStops, const QVector<int>& collectedTravelTimes, const QStringList& days);
     void calculateArrivalTimes();
     TimeTransport calculateArrivalTime(int stopIndex);
 
@@ -51,7 +61,7 @@ private:
     QSpinBox* startMinuteSpin;
     QComboBox* daysCombo;
 
-    bool isEditing;
+    bool isEditing = false;
 };
 
 #endif
