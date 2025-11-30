@@ -2,6 +2,11 @@
 #include <QString>
 #include <algorithm>
 
+// Определение констант
+constexpr int ArrivalTimeService::MINUTES_IN_HOUR;
+constexpr int ArrivalTimeService::HOURS_IN_DAY;
+constexpr int ArrivalTimeService::MINUTES_IN_DAY;
+
 TimeTransport ArrivalTimeService::calculateArrivalTime(const Route& route, int stopIndex, const TimeTransport& startTime)
 {
     if (stopIndex == 0) {
@@ -59,7 +64,7 @@ int ArrivalTimeService::calculateWaitTime(const TimeTransport& currentTime, cons
     int waitMinutes = arrivalMinutes - currentMinutes;
 
     if (waitMinutes < 0) {
-        waitMinutes += 24 * 60;
+        waitMinutes += MINUTES_IN_DAY;
     }
 
     return waitMinutes;
@@ -67,10 +72,10 @@ int ArrivalTimeService::calculateWaitTime(const TimeTransport& currentTime, cons
 
 QString ArrivalTimeService::formatWaitTime(int waitMinutes)
 {
-    if (waitMinutes >= 60) {
+    if (waitMinutes >= MINUTES_IN_HOUR) {
         return QString("%1 ч %2 мин")
-               .arg(waitMinutes / 60)
-               .arg(waitMinutes % 60);
+            .arg(waitMinutes / MINUTES_IN_HOUR)
+            .arg(waitMinutes % MINUTES_IN_HOUR);
     } else {
         return QString("%1 мин").arg(waitMinutes);
     }

@@ -1,6 +1,15 @@
 #include "CoordinateService.h"
 #include <QRegularExpression>
 
+// Определение констант
+constexpr double CoordinateService::EARTH_RADIUS_METERS;
+constexpr double CoordinateService::MAX_DISTANCE_CLOSE;
+constexpr double CoordinateService::MIN_LATITUDE;
+constexpr double CoordinateService::MAX_LATITUDE;
+constexpr double CoordinateService::MIN_LONGITUDE;
+constexpr double CoordinateService::MAX_LONGITUDE;
+constexpr double CoordinateService::DEGREES_TO_RADIANS;
+
 CoordinateService::Coordinate CoordinateService::parseCoordinate(const QString& coordinateString)
 {
     if (coordinateString.isEmpty()) {
@@ -26,7 +35,7 @@ CoordinateService::Coordinate CoordinateService::parseCoordinate(const QString& 
     }
 
     // Проверка допустимых диапазонов координат
-    if (lat < -90 || lat > 90 || lon < -180 || lon > 180) {
+    if (lat < MIN_LATITUDE || lat > MAX_LATITUDE || lon < MIN_LONGITUDE || lon > MAX_LONGITUDE) {
         return Coordinate(0, 0, false);
     }
 
@@ -53,12 +62,12 @@ double CoordinateService::calculateDistance(const Coordinate& coord1, const Coor
     }
 
     // Формула гаверсинусов для расчета расстояния на сфере
-    const double R = 6371000; // Радиус Земли в метрах
+    const double R = EARTH_RADIUS_METERS;
 
-    double lat1 = coord1.latitude * M_PI / 180;
-    double lon1 = coord1.longitude * M_PI / 180;
-    double lat2 = coord2.latitude * M_PI / 180;
-    double lon2 = coord2.longitude * M_PI / 180;
+    double lat1 = coord1.latitude * DEGREES_TO_RADIANS;
+    double lon1 = coord1.longitude * DEGREES_TO_RADIANS;
+    double lat2 = coord2.latitude * DEGREES_TO_RADIANS;
+    double lon2 = coord2.longitude * DEGREES_TO_RADIANS;
 
     double dlat = lat2 - lat1;
     double dlon = lon2 - lon1;

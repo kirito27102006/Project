@@ -1,13 +1,21 @@
 #include "TimeTransport.h"
 #include <QString>
 
+// Определение констант
+constexpr int TimeTransport::MIN_HOURS;
+constexpr int TimeTransport::MAX_HOURS;
+constexpr int TimeTransport::MIN_MINUTES;
+constexpr int TimeTransport::MAX_MINUTES;
+constexpr int TimeTransport::MINUTES_PER_HOUR;
+constexpr int TimeTransport::HOURS_PER_DAY;
+
 TimeTransport::TimeTransport(int h, int m) : hours(h), minutes(m) {
-    if (minutes >= 60) {
-        hours += minutes / 60;
-        minutes = minutes % 60;
+    if (minutes >= MINUTES_PER_HOUR) {
+        hours += minutes / MINUTES_PER_HOUR;
+        minutes = minutes % MINUTES_PER_HOUR;
     }
-    if (hours >= 24) {
-        hours = hours % 24;
+    if (hours >= HOURS_PER_DAY) {
+        hours = hours % HOURS_PER_DAY;
     }
 }
 
@@ -23,11 +31,11 @@ bool TimeTransport::operator==(const TimeTransport& other) const {
 
 TimeTransport TimeTransport::addMinutes(int minutes) const {
     int totalMinutes = toMinutes() + minutes;
-    return TimeTransport(totalMinutes / 60, totalMinutes % 60);
+    return TimeTransport(totalMinutes / MINUTES_PER_HOUR, totalMinutes % MINUTES_PER_HOUR);
 }
 
 int TimeTransport::toMinutes() const {
-    return hours * 60 + minutes;
+    return hours * MINUTES_PER_HOUR + minutes;
 }
 
 QDataStream& operator<<(QDataStream& out, const TimeTransport& time) {
@@ -37,12 +45,12 @@ QDataStream& operator<<(QDataStream& out, const TimeTransport& time) {
 
 QDataStream& operator>>(QDataStream& in, TimeTransport& time) {
     in >> time.hours >> time.minutes;
-    if (time.minutes >= 60) {
-        time.hours += time.minutes / 60;
-        time.minutes = time.minutes % 60;
+    if (time.minutes >= TimeTransport::MINUTES_PER_HOUR) {
+        time.hours += time.minutes / TimeTransport::MINUTES_PER_HOUR;
+        time.minutes = time.minutes % TimeTransport::MINUTES_PER_HOUR;
     }
-    if (time.hours >= 24) {
-        time.hours = time.hours % 24;
+    if (time.hours >= TimeTransport::HOURS_PER_DAY) {
+        time.hours = time.hours % TimeTransport::HOURS_PER_DAY;
     }
     return in;
 }

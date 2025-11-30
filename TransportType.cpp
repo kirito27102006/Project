@@ -4,21 +4,19 @@ TransportType::TransportType(Type type) : type(type) {}
 
 TransportType::TransportType(const QString& typeName) {
     using enum Type;
-    if (typeName == "автобус" || typeName == "bus") {
+    if (typeName == TRANSPORT_BUS_NAME || typeName == "bus") {
         type = BUS;
     }
-    else if (typeName == "троллейбус" || typeName == "trolleybus") {
+    else if (typeName == TRANSPORT_TROLLEYBUS_NAME || typeName == "trolleybus") {
         type = TROLLEYBUS;
     }
-    else if (typeName == "трамвай" || typeName == "tram") {
+    else if (typeName == TRANSPORT_TRAM_NAME || typeName == "tram") {
         type = TRAM;
     }
     else {
         type = BUS;
     }
 }
-
-// УДАЛЕНО: Конструктор копирования, так как используется default implementation
 
 TransportType::Type TransportType::getType() const {
     return type;
@@ -27,20 +25,20 @@ TransportType::Type TransportType::getType() const {
 QString TransportType::getName() const {
     using enum Type;
     switch (type) {
-    case BUS: return "автобус";
-    case TROLLEYBUS: return "троллейбус";
-    case TRAM: return "трамвай";
-    default: return "автобус";
+    case BUS: return TRANSPORT_BUS_NAME;
+    case TROLLEYBUS: return TRANSPORT_TROLLEYBUS_NAME;
+    case TRAM: return TRANSPORT_TRAM_NAME;
+    default: return TRANSPORT_BUS_NAME;
     }
 }
 
 QString TransportType::getShortName() const {
     using enum Type;
     switch (type) {
-    case BUS: return "А";
-    case TROLLEYBUS: return "Тб";
-    case TRAM: return "Тм";
-    default: return "А";
+    case BUS: return TRANSPORT_BUS_SHORT;
+    case TROLLEYBUS: return TRANSPORT_TROLLEYBUS_SHORT;
+    case TRAM: return TRANSPORT_TRAM_SHORT;
+    default: return TRANSPORT_BUS_SHORT;
     }
 }
 
@@ -53,5 +51,5 @@ bool TransportType::operator==(const TransportType& other) const {
 }
 
 QStringList TransportType::getAllTypeNames() {
-    return { "автобус", "троллейбус", "трамвай" };
+    return { TRANSPORT_BUS_NAME, TRANSPORT_TROLLEYBUS_NAME, TRANSPORT_TRAM_NAME };
 }

@@ -10,6 +10,14 @@
 class ValidationService
 {
 public:
+    // Константы для валидации
+    static constexpr int MIN_ROUTE_NUMBER = 1;
+    static constexpr int MAX_ROUTE_NUMBER = 999;
+    static constexpr int MIN_TRAVEL_TIME = 1;
+    static constexpr int MAX_TRAVEL_TIME = 120;
+    static constexpr int MAX_STOP_NAME_LENGTH = 100;
+    static constexpr int MAX_COORDINATE_LENGTH = 50;
+
     struct ValidationResult {
         bool isValid;
         QString errorMessage;

@@ -7,6 +7,14 @@
 
 class TimeTransport {
 public:
+    // Константы для работы со временем
+    static constexpr int MIN_HOURS = 0;
+    static constexpr int MAX_HOURS = 23;
+    static constexpr int MIN_MINUTES = 0;
+    static constexpr int MAX_MINUTES = 59;
+    static constexpr int MINUTES_PER_HOUR = 60;
+    static constexpr int HOURS_PER_DAY = 24;
+
     int hours;
     int minutes;
 
