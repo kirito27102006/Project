@@ -6,7 +6,7 @@
 
 ScheduleWriter::ScheduleWriter(QObject *parent) : QObject(parent) {}
 
-bool ScheduleWriter::writeToFile(const QString& filename, const QVector<Schedule>& schedules, const QVector<QSharedPointer<Stop>>& allStops)
+bool ScheduleWriter::writeToFile(const QString& filename, const QVector<Schedule>& schedules, const QVector<QSharedPointer<Stop>>& allStops) const
 {
     QFile file(filename);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
@@ -29,7 +29,7 @@ bool ScheduleWriter::writeToFile(const QString& filename, const QVector<Schedule
     return true;
 }
 
-void ScheduleWriter::writeStops(QTextStream& out, const QVector<QSharedPointer<Stop>>& allStops)
+void ScheduleWriter::writeStops(QTextStream& out, const QVector<QSharedPointer<Stop>>& allStops) const
 {
     out << "STOPS:" << allStops.size() << "\n";
     for (const auto& stop : allStops) {
@@ -38,7 +38,7 @@ void ScheduleWriter::writeStops(QTextStream& out, const QVector<QSharedPointer<S
     }
 }
 
-void ScheduleWriter::writeSchedules(QTextStream& out, const QVector<Schedule>& schedules)
+void ScheduleWriter::writeSchedules(QTextStream& out, const QVector<Schedule>& schedules) const
 {
     out << "SCHEDULES:" << schedules.size() << "\n";
     for (const auto& schedule : schedules) {
@@ -46,7 +46,7 @@ void ScheduleWriter::writeSchedules(QTextStream& out, const QVector<Schedule>& s
     }
 }
 
-void ScheduleWriter::writeSchedule(QTextStream& out, const Schedule& schedule)
+void ScheduleWriter::writeSchedule(QTextStream& out, const Schedule& schedule) const
 {
     const auto& route = schedule.getRoute();
     const auto& transport = route.getTransport();

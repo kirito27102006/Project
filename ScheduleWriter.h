@@ -15,12 +15,12 @@ class ScheduleWriter : public QObject
 
 public:
     explicit ScheduleWriter(QObject *parent = nullptr);
-    bool writeToFile(const QString& filename, const QVector<Schedule>& schedules, const QVector<QSharedPointer<Stop>>& allStops);
+    bool writeToFile(const QString& filename, const QVector<Schedule>& schedules, const QVector<QSharedPointer<Stop>>& allStops) const;
 
 private:
-    void writeStops(QTextStream& out, const QVector<QSharedPointer<Stop>>& allStops);
-    void writeSchedules(QTextStream& out, const QVector<Schedule>& schedules);
-    void writeSchedule(QTextStream& out, const Schedule& schedule);
+    void writeStops(QTextStream& out, const QVector<QSharedPointer<Stop>>& allStops) const;
+    void writeSchedules(QTextStream& out, const QVector<Schedule>& schedules) const;
+    void writeSchedule(QTextStream& out, const Schedule& schedule) const;
 };
 
 #endif // SCHEDULEWRITER_H

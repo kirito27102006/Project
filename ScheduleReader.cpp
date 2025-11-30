@@ -67,7 +67,7 @@ ScheduleReader::ReadResult ScheduleReader::readFromFile(const QString& filename,
 }
 
 bool ScheduleReader::readStops(QTextStream& in, int stopCount, QVector<QSharedPointer<Stop>>& allStops,
-                               const std::function<QSharedPointer<Stop>(const QString&, const QString&)>& findOrCreateStopCallback) const  // ДОБАВЛЕНО const
+                               const std::function<QSharedPointer<Stop>(const QString&, const QString&)>& findOrCreateStopCallback) const
 {
     for (int i = 0; i < stopCount; ++i) {
         QString name = in.readLine();
@@ -87,7 +87,7 @@ bool ScheduleReader::readStops(QTextStream& in, int stopCount, QVector<QSharedPo
 }
 
 bool ScheduleReader::readSchedules(QTextStream& in, int scheduleCount, QVector<Schedule>& schedules,
-                                   const std::function<QSharedPointer<Stop>(const QString&, const QString&)>& findOrCreateStopCallback) const  // ДОБАВЛЕНО const
+                                   const std::function<QSharedPointer<Stop>(const QString&, const QString&)>& findOrCreateStopCallback) const
 {
     for (int i = 0; i < scheduleCount; ++i) {
         if (in.readLine() != "ROUTE_START") {
@@ -115,7 +115,7 @@ bool ScheduleReader::readSchedules(QTextStream& in, int scheduleCount, QVector<S
 }
 
 Schedule ScheduleReader::readSingleSchedule(QTextStream& in,
-                                            const std::function<QSharedPointer<Stop>(const QString&, const QString&)>& findOrCreateStopCallback) const  // ДОБАВЛЕНО const
+                                            const std::function<QSharedPointer<Stop>(const QString&, const QString&)>& findOrCreateStopCallback) const
 {
     QString transportTypeStr = in.readLine();
     if (transportTypeStr.isNull()) {

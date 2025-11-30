@@ -159,7 +159,6 @@ void AddRouteDialog::accept() {
 }
 
 bool AddRouteDialog::validateInput() {
-    // Исправлено: tsEmpty -> isEmpty
     if (startStopEdit->text().trimmed().isEmpty()) {
         QMessageBox::warning(this, "Ошибка", "Введите начальную остановку");
         return false;
@@ -176,7 +175,6 @@ bool AddRouteDialog::validateInput() {
         return false;
     }
 
-    // Исправлено: использование init-statement в if
     if (auto days = parseDays(); days.isEmpty()) {
         QMessageBox::warning(this, "Ошибка", "Введите дни работы маршрута");
         return false;

@@ -421,8 +421,20 @@ void RouteDetailsDialog::saveRoute() {
         QMessageBox::information(this, "Успех", "Маршрут успешно сохранен");
         cancelEdit();
 
+    } catch (const std::invalid_argument& e) {
+        QMessageBox::critical(this, "Ошибка ввода данных",
+                              QString("Ошибка при сохранении маршрута: %1").arg(e.what()));
+    } catch (const std::runtime_error& e) {
+        QMessageBox::critical(this, "Ошибка выполнения",
+                              QString("Ошибка при сохранении маршрута: %1").arg(e.what()));
+    } catch (const std::out_of_range& e) {
+        QMessageBox::critical(this, "Ошибка диапазона",
+                              QString("Ошибка при сохранении маршрута: %1").arg(e.what()));
+    } catch (const std::logic_error& e) {
+        QMessageBox::critical(this, "Логическая ошибка",
+                              QString("Ошибка при сохранении маршрута: %1").arg(e.what()));
     } catch (const std::exception& e) {
-        QMessageBox::critical(this, "Ошибка",
+        QMessageBox::critical(this, "Неизвестная ошибка",
                               QString("Ошибка при сохранении маршрута: %1").arg(e.what()));
     }
 }

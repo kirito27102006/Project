@@ -43,7 +43,6 @@ public:
             : FileFormatException(message) {}
     };
 
-    // Упрощаем интерфейс - убираем шаблоны
     ReadResult readFromFile(const QString& filename,
                             const std::function<QSharedPointer<Stop>(const QString&, const QString&)>& findOrCreateStopCallback) const;
 
