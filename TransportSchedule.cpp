@@ -196,10 +196,12 @@ void TransportSchedule::loadFromFile() {
         return;
     }
 
-    auto result = scheduleReader->readFromFile(filename,
-                                               [this](const QString& name, const QString& coordinate) {
-                                                   return findOrCreateStop(name, coordinate);
-                                               });
+    // Используем лямбду с правильной сигнатурой
+    auto stopCreator = [this](const QString& name, const QString& coordinate) {
+        return findOrCreateStop(name, coordinate);
+    };
+
+    auto result = scheduleReader->readFromFile(filename, stopCreator);
 
     if (result.success) {
         schedules = result.schedules;

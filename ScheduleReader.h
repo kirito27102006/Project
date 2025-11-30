@@ -7,6 +7,7 @@
 #include <QVector>
 #include <QSharedPointer>
 #include <functional>
+#include <stdexcept>
 #include "Schedule.h"
 #include "Stop.h"
 
@@ -24,16 +25,37 @@ public:
         QString errorMessage;
     };
 
+    class FileFormatException : public std::runtime_error {
+    public:
+        explicit FileFormatException(const QString& message)
+            : std::runtime_error(message.toStdString()) {}
+    };
+
+    class TimeFormatException : public FileFormatException {
+    public:
+        explicit TimeFormatException(const QString& message)
+            : FileFormatException(message) {}
+    };
+
+    class RouteDataException : public FileFormatException {
+    public:
+        explicit RouteDataException(const QString& message)
+            : FileFormatException(message) {}
+    };
+
+    // Упрощаем интерфейс - убираем шаблоны
     ReadResult readFromFile(const QString& filename,
-                            std::function<QSharedPointer<Stop>(const QString&, const QString&)> findOrCreateStopCallback);
+                            const std::function<QSharedPointer<Stop>(const QString&, const QString&)>& findOrCreateStopCallback) const;
 
 private:
     bool readStops(QTextStream& in, int stopCount, QVector<QSharedPointer<Stop>>& allStops,
-                   std::function<QSharedPointer<Stop>(const QString&, const QString&)> findOrCreateStopCallback);
+                   const std::function<QSharedPointer<Stop>(const QString&, const QString&)>& findOrCreateStopCallback) const;
+
     bool readSchedules(QTextStream& in, int scheduleCount, QVector<Schedule>& schedules,
-                       std::function<QSharedPointer<Stop>(const QString&, const QString&)> findOrCreateStopCallback);
+                       const std::function<QSharedPointer<Stop>(const QString&, const QString&)>& findOrCreateStopCallback) const;
+
     Schedule readSingleSchedule(QTextStream& in,
-                                std::function<QSharedPointer<Stop>(const QString&, const QString&)> findOrCreateStopCallback);
+                                const std::function<QSharedPointer<Stop>(const QString&, const QString&)>& findOrCreateStopCallback) const;
 };
 
 #endif // SCHEDULEREADER_H

@@ -7,7 +7,7 @@
 ScheduleReader::ScheduleReader(QObject *parent) : QObject(parent) {}
 
 ScheduleReader::ReadResult ScheduleReader::readFromFile(const QString& filename,
-                                                        std::function<QSharedPointer<Stop>(const QString&, const QString&)> findOrCreateStopCallback)
+                                                        const std::function<QSharedPointer<Stop>(const QString&, const QString&)>& findOrCreateStopCallback) const
 {
     ReadResult result;
     result.success = false;
@@ -67,13 +67,16 @@ ScheduleReader::ReadResult ScheduleReader::readFromFile(const QString& filename,
 }
 
 bool ScheduleReader::readStops(QTextStream& in, int stopCount, QVector<QSharedPointer<Stop>>& allStops,
-                               std::function<QSharedPointer<Stop>(const QString&, const QString&)> findOrCreateStopCallback)
+                               const std::function<QSharedPointer<Stop>(const QString&, const QString&)>& findOrCreateStopCallback) const  // ДОБАВЛЕНО const
 {
     for (int i = 0; i < stopCount; ++i) {
         QString name = in.readLine();
-        QString coordinate = in.readLine();
-
         if (name.isNull()) {
+            return false;
+        }
+
+        QString coordinate = in.readLine();
+        if (coordinate.isNull()) {
             return false;
         }
 
@@ -84,7 +87,7 @@ bool ScheduleReader::readStops(QTextStream& in, int stopCount, QVector<QSharedPo
 }
 
 bool ScheduleReader::readSchedules(QTextStream& in, int scheduleCount, QVector<Schedule>& schedules,
-                                   std::function<QSharedPointer<Stop>(const QString&, const QString&)> findOrCreateStopCallback)
+                                   const std::function<QSharedPointer<Stop>(const QString&, const QString&)>& findOrCreateStopCallback) const  // ДОБАВЛЕНО const
 {
     for (int i = 0; i < scheduleCount; ++i) {
         if (in.readLine() != "ROUTE_START") {
@@ -94,12 +97,17 @@ bool ScheduleReader::readSchedules(QTextStream& in, int scheduleCount, QVector<S
         try {
             Schedule schedule = readSingleSchedule(in, findOrCreateStopCallback);
             schedules.push_back(schedule);
+        } catch (const FileFormatException& e) {
+            qDebug() << "Error reading schedule:" << e.what();
+            return false;
         } catch (const std::exception& e) {
             qDebug() << "Error reading schedule:" << e.what();
             return false;
         }
 
-        if (in.readLine() != "ROUTE_END") {
+        QString endLine = in.readLine();
+        if (endLine != "ROUTE_END") {
+            qDebug() << "Expected ROUTE_END, got:" << endLine;
             return false;
         }
     }
@@ -107,77 +115,111 @@ bool ScheduleReader::readSchedules(QTextStream& in, int scheduleCount, QVector<S
 }
 
 Schedule ScheduleReader::readSingleSchedule(QTextStream& in,
-                                            std::function<QSharedPointer<Stop>(const QString&, const QString&)> findOrCreateStopCallback)
+                                            const std::function<QSharedPointer<Stop>(const QString&, const QString&)>& findOrCreateStopCallback) const  // ДОБАВЛЕНО const
 {
-    QString transportType = in.readLine();
-    int transportId = in.readLine().toInt();
-
-    QStringList timeParts = in.readLine().split(" ");
-    if (timeParts.size() < 2) {
-        throw std::runtime_error("Invalid time format");
+    QString transportTypeStr = in.readLine();
+    if (transportTypeStr.isNull()) {
+        throw FileFormatException("Unexpected end of file while reading transport type");
     }
-    int startHour = timeParts[0].toInt();
-    int startMinute = timeParts[1].toInt();
 
-    TransportType type(transportType);
-    Transport transport(type, transportId);
+    QString idLine = in.readLine();
+    if (idLine.isNull()) {
+        throw FileFormatException("Unexpected end of file while reading transport ID");
+    }
+    int transportId = idLine.toInt();
+
+    QString timeLine = in.readLine();
+    if (timeLine.isNull()) {
+        throw FileFormatException("Unexpected end of file while reading time");
+    }
+
+    QStringList timeParts = timeLine.split(" ");
+    if (timeParts.size() < 2) {
+        throw TimeFormatException("Invalid time format in schedule");
+    }
+
+    bool ok1, ok2;
+    int startHour = timeParts[0].toInt(&ok1);
+    int startMinute = timeParts[1].toInt(&ok2);
+
+    if (!ok1 || !ok2) {
+        throw TimeFormatException("Invalid time values in schedule");
+    }
+
+    TransportType transportType(transportTypeStr);
+    Transport transport(transportType, transportId);
 
     // Read days
     QString line = in.readLine();
     QStringList days;
-    if (line.startsWith("DAYS:")) {
+    if (!line.isNull() && line.startsWith("DAYS:")) {
         int dayCount = line.mid(5).toInt();
         for (int j = 0; j < dayCount; ++j) {
-            days.push_back(in.readLine());
+            QString day = in.readLine();
+            if (day.isNull()) {
+                throw FileFormatException("Unexpected end of file while reading days");
+            }
+            days.push_back(day);
         }
+        line = in.readLine(); // Read next line
     }
 
     // Read route stops
-    line = in.readLine();
     QVector<QSharedPointer<Stop>> routeStops;
-    if (line.startsWith("ROUTE_STOPS:")) {
+    if (!line.isNull() && line.startsWith("ROUTE_STOPS:")) {
         int stopCount = line.mid(12).toInt();
         for (int j = 0; j < stopCount; ++j) {
             QString stopName = in.readLine();
             if (stopName.isNull()) {
-                throw std::runtime_error("Unexpected end of file while reading stops");
+                throw FileFormatException("Unexpected end of file while reading stops");
             }
             routeStops.push_back(findOrCreateStopCallback(stopName, ""));
         }
+        line = in.readLine(); // Read next line
     }
 
     // Read travel times
-    line = in.readLine();
     QVector<int> travelTimes;
-    if (line.startsWith("TRAVEL_TIMES:")) {
+    if (!line.isNull() && line.startsWith("TRAVEL_TIMES:")) {
         int timeCount = line.mid(13).toInt();
         for (int j = 0; j < timeCount; ++j) {
             QString timeStr = in.readLine();
             if (timeStr.isNull()) {
-                throw std::runtime_error("Unexpected end of file while reading travel times");
+                throw FileFormatException("Unexpected end of file while reading travel times");
             }
-            travelTimes.push_back(timeStr.toInt());
+            bool ok;
+            int time = timeStr.toInt(&ok);
+            if (!ok) {
+                throw FileFormatException("Invalid travel time value");
+            }
+            travelTimes.push_back(time);
         }
     }
 
     // Create route
-    if (routeStops.size() >= 2) {
-        Route route(transport, routeStops[0], routeStops.last());
-        route.setDays(days);
-
-        // Add intermediate stops
-        for (int j = 1; j < routeStops.size() - 1; ++j) {
-            int travelTime = (j - 1 < travelTimes.size()) ? travelTimes[j - 1] : 0;
-            route.addStop(routeStops[j], travelTime);
-        }
-
-        // Add final travel time
-        if (!travelTimes.empty() && travelTimes.size() >= routeStops.size() - 1) {
-            route.addFinalTravelTime(travelTimes.last());
-        }
-
-        return Schedule(route, TimeTransport(startHour, startMinute));
+    if (routeStops.size() < 2) {
+        throw RouteDataException("Invalid route data: not enough stops");
     }
 
-    throw std::runtime_error("Invalid route data: not enough stops");
+    Route route(transport, routeStops[0], routeStops.last());
+    route.setDays(days);
+
+    // Add intermediate stops
+    for (int j = 1; j < routeStops.size() - 1; ++j) {
+        int travelTime = (j - 1 < travelTimes.size()) ? travelTimes[j - 1] : 5; // default 5 minutes
+        route.addStop(routeStops[j], travelTime);
+    }
+
+    // Add final travel time
+    if (!travelTimes.empty() && travelTimes.size() >= routeStops.size() - 1) {
+        route.addFinalTravelTime(travelTimes.last());
+    } else if (!travelTimes.empty()) {
+        route.addFinalTravelTime(travelTimes.last());
+    }
+
+    // Calculate arrival times
+    TimeTransport startTime(startHour, startMinute);
+    route.calculateArrivalTimes(startTime);
+
+    return Schedule(route, startTime);
 }
